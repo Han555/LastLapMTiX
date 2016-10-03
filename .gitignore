@@ -11,3 +11,11 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+/MTiX-ejb/build/
+/MTiX-ejb/dist/
+/MTiX-war/build/
+/MTiX-war/dist/
+/build/
+/MTiXBackend/build/
+/MTiXBackend/dist/
+/dist/

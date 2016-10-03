@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 /**
@@ -37,8 +38,30 @@ public class UserEntity implements Serializable {
     
     @OneToMany(mappedBy="user")
     private Collection<Event> events = new ArrayList<Event>();
+    
+    @OneToMany
+    private Collection<MessageEntity> messages = new ArrayList<MessageEntity> ();
+    
+    @ManyToMany
+    private Collection<BulletinEntity> bulletins = new ArrayList<BulletinEntity> (); 
 
     public UserEntity() {
+    }
+
+    public Collection<MessageEntity> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(Collection<MessageEntity> messages) {
+        this.messages = messages;
+    }
+
+    public Collection<BulletinEntity> getBulletins() {
+        return bulletins;
+    }
+
+    public void setBulletins(Collection<BulletinEntity> bulletins) {
+        this.bulletins = bulletins;
     }
 
     public String getSalt() {
