@@ -10,9 +10,12 @@ import javax.ejb.Stateless;
 import entity.Event;
 import entity.Promotion;
 import entity.PromotionType;
+import entity.Property;
 import entity.SectionCategory;
+import entity.SectionEntity;
 import entity.SessionCategoryPrice;
 import entity.SessionEntity;
+import entity.SessionSeatsInventory;
 import entity.SubEvent;
 import entity.UserEntity;
 import java.text.SimpleDateFormat;
@@ -92,16 +95,17 @@ public class ProductSession implements ProductSessionLocal {
             Query q = em.createQuery("SELECT a FROM UserEntity a WHERE a.username=:name");
             q.setParameter("name", name);
             user = (UserEntity) q.getSingleResult(); //The user will be point to the real user here
-            for (int i = 0; i < user.getRoles().size(); i++){
-                if (user.getRoles().get(i).equals("customer"))
-                    return true; 
-                else
+            for (int i = 0; i < user.getRoles().size(); i++) {
+                if (user.getRoles().get(i).equals("customer")) {
+                    return true;
+                } else {
                     return false;
+                }
             }
             return false;
         } catch (Exception ex) {
             return false;
-        } 
+        }
     }
 
     @Override
@@ -152,7 +156,6 @@ public class ProductSession implements ProductSessionLocal {
     public List<ArrayList> getEventList() {
         Query q = em.createQuery("SELECT a FROM Event a WHERE a.user.userId=:id");
         q.setParameter("id", user.getUserId());
-        
 
         List<ArrayList> eventList = new ArrayList();
         ArrayList list;
@@ -576,7 +579,7 @@ public class ProductSession implements ProductSessionLocal {
     }
 
     @Override
-    public int setPricing(Long id, ArrayList<Double> cat, int no, String apply) {
+    public int setPricing(Long id, ArrayList<Double> cat, int no, String apply, String seatsOption) {
         SessionEntity session = em.find(SessionEntity.class, id);
         if (session == null) {
             return 0;
@@ -587,6 +590,7 @@ public class ProductSession implements ProductSessionLocal {
                     Event eventEntity = em.find(Event.class, eventID);
                     for (Object obj : eventEntity.getSessions()) {
                         SessionEntity sessionEntity = (SessionEntity) obj;
+                        sessionEntity.setSeatOption(seatsOption);
                         setIndividualPricing(sessionEntity, cat, no, eventEntity.getProperty().getId());
                     }
                 } else {
@@ -594,15 +598,18 @@ public class ProductSession implements ProductSessionLocal {
                     SubEvent subEvent = em.find(SubEvent.class, subEventID);
                     for (Object obj : subEvent.getSessions()) {
                         SessionEntity sessionEntity = (SessionEntity) obj;
+                        sessionEntity.setSeatOption(seatsOption);
                         setIndividualPricing(sessionEntity, cat, no, subEvent.getProperty().getId());
                     }
                 }
             } else {
                 if (session.getEvent() != null) {
                     long propertyID = session.getEvent().getProperty().getId();
+                    session.setSeatOption(seatsOption);
                     setIndividualPricing(session, cat, no, propertyID);
                 } else {
                     long propertyID = session.getSubEvent().getProperty().getId();
+                    session.setSeatOption(seatsOption);
                     setIndividualPricing(session, cat, no, propertyID);
                 }
 
@@ -653,6 +660,7 @@ public class ProductSession implements ProductSessionLocal {
                 pricing.add(priceEntity.getSession().getId());
                 pricing.add(priceEntity.getCategory().getCategoryNum());
                 pricing.add(priceEntity.getPrice());
+                pricing.add(priceEntity.getSession().getSeatOption());
 
                 sessionsPricing.add(pricing);
             }
@@ -666,6 +674,7 @@ public class ProductSession implements ProductSessionLocal {
                 pricing.add(priceEntity.getSession().getId());
                 pricing.add(priceEntity.getCategory().getCategoryNum());
                 pricing.add(priceEntity.getPrice());
+                pricing.add(priceEntity.getSession().getSeatOption());
 
                 sessionsPricing.add(pricing);
             }
@@ -1251,7 +1260,7 @@ public class ProductSession implements ProductSessionLocal {
             for (Object o : e.getSubEvents()) {
                 SubEvent s = (SubEvent) o;
                 String alertId = Long.toString(s.getAlert().getId());
-                System.out.println("alert id: " +alertId);
+                System.out.println("alert id: " + alertId);
                 Query q2 = em.createQuery("UPDATE Alert a SET a.percentage =" + percentage + " WHERE a.id = " + alertId);
                 q2.executeUpdate();
                 Query q3 = em.createQuery("UPDATE Alert a SET a.alertType =" + "'" + alertType + "'" + " WHERE a.id = " + alertId);
@@ -1266,11 +1275,395 @@ public class ProductSession implements ProductSessionLocal {
                 em.merge(a);
             }
 
-            
-
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
+    }
+
+    @Override
+    public Date getEventStartDate(long id, String type) {
+        if (type.equals("event")) {
+            Query q = em.createQuery("SELECT a FROM Event a WHERE a.id=:id");
+            q.setParameter("id", id);
+            Event event = (Event) q.getSingleResult();
+            return event.getStart();
+        } else {
+            Query q = em.createQuery("SELECT a FROM SubEvent a WHERE a.id=:id");
+            q.setParameter("id", id);
+            SubEvent subevent = (SubEvent) q.getSingleResult();
+            return subevent.getStart();
+        }
+    }
+
+    @Override
+    public void setReserveSection(String apply, long sessionID, String purpose, String date, String sectionIDs) {
+        Query q = em.createQuery("SELECT a FROM SessionEntity a WHERE a.id=:id");
+        q.setParameter("id", sessionID);
+        SessionEntity sessionEntity = (SessionEntity) q.getSingleResult();
+        long propertyID;
+        SectionEntity sectionEntity;
+        String[] sectionID = sectionIDs.split(" ");
+
+        if (apply.equals("yes")) {
+            if (sessionEntity.getEvent() != null) { //If it is a event session
+                Long eventID = sessionEntity.getEvent().getId();
+                Event eventEntity = em.find(Event.class, eventID);
+                propertyID = eventEntity.getProperty().getId();
+                for (Object obj : eventEntity.getSessions()) {
+                    sessionEntity = (SessionEntity) obj;
+                    for (int i = 0; i < sectionID.length; i++) {
+                        q = em.createQuery("SELECT a FROM SectionEntity a WHERE a.property.id=:id AND a.numberInProperty=:sectionID");
+                        q.setParameter("id", propertyID);
+                        q.setParameter("sectionID", Long.valueOf(sectionID[i]));
+                        sectionEntity = (SectionEntity) q.getSingleResult();
+
+                        this.setSection(sectionEntity, sessionEntity, purpose, date);
+                        em.flush();
+                    }
+
+                }
+            } else {
+                Long eventID = sessionEntity.getSubEvent().getId();
+                SubEvent eventEntity = em.find(SubEvent.class, eventID);
+                propertyID = eventEntity.getProperty().getId();
+                for (Object obj : eventEntity.getSessions()) {
+                    sessionEntity = (SessionEntity) obj;
+                    for (int i = 0; i < sectionID.length; i++) {
+                        q = em.createQuery("SELECT a FROM SectionEntity a WHERE a.property.id=:id AND a.numberInProperty=:sectionID");
+                        q.setParameter("id", propertyID);
+                        q.setParameter("sectionID", Long.valueOf(sectionID[i]));
+                        sectionEntity = (SectionEntity) q.getSingleResult();
+
+                        this.setSection(sectionEntity, sessionEntity, purpose, date);
+                        em.flush();
+                    }
+                }
+            }
+        } else {
+            if (sessionEntity.getEvent() != null) { //Link to event
+                propertyID = sessionEntity.getEvent().getProperty().getId();
+                for (int i = 0; i < sectionID.length; i++) {
+                    q = em.createQuery("SELECT a FROM SectionEntity a WHERE a.property.id=:id AND a.numberInProperty=:sectionID");
+                    q.setParameter("id", propertyID);
+                    q.setParameter("sectionID", Long.valueOf(sectionID[i]));
+                    System.out.println(propertyID + " +++++++++++++++++++++ " + sectionID[i]);
+                    sectionEntity = (SectionEntity) q.getSingleResult();
+
+                    this.setSection(sectionEntity, sessionEntity, purpose, date);
+                }
+
+            } else {
+                propertyID = sessionEntity.getSubEvent().getProperty().getId();
+                for (int i = 0; i < sectionID.length; i++) {
+                    q = em.createQuery("SELECT a FROM SectionEntity a WHERE a.property.id=:id AND a.numberInProperty=:sectionID");
+                    q.setParameter("id", propertyID);
+                    q.setParameter("sectionID", Long.valueOf(sectionID[i]));
+                    sectionEntity = (SectionEntity) q.getSingleResult();
+
+                    this.setSection(sectionEntity, sessionEntity, purpose, date);
+                }
+            }
+        }
+
+    }
+
+    private void setSection(SectionEntity sectionEntity, SessionEntity sessionEntity, String purpose, String date) {
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Date endDate = formatter.parse(date);
+            SessionSeatsInventory reservedSeatsInventory = new SessionSeatsInventory();
+            boolean reserved = false;
+            em.refresh(sessionEntity);
+            for (Object o : sessionEntity.getSeatsInventory()) {
+                SessionSeatsInventory seatsInventory = (SessionSeatsInventory) o;
+                System.out.println("Enter");
+                System.out.println(seatsInventory.getSectionEntity().getId() + "     " + sectionEntity.getId());
+                em.refresh(seatsInventory);
+                if (seatsInventory.getSectionEntity().getId() == sectionEntity.getId()) { //If there are such data in the entity
+                    reserved = true;
+                    reservedSeatsInventory = seatsInventory;
+                    if (seatsInventory.getStopTicketsSales()) { //Overide the data from stop sales to reserve ticket sales
+                        reservedSeatsInventory.setReserveTickets(true);
+                        reservedSeatsInventory.setStopTicketsSales(false);
+                    }
+                    break;
+                }
+            }
+
+            if (reserved) { //There is such reserved section
+                reservedSeatsInventory.setReason(purpose);
+                reservedSeatsInventory.setReservationEndDate(endDate);
+            } else {
+                SessionSeatsInventory inventory = new SessionSeatsInventory();
+                inventory.setReason(purpose);
+                inventory.setReserveTickets(true);
+                inventory.setStopTicketsSales(false);
+                inventory.setReservationEndDate(endDate);
+                inventory.setSectionEntity(sectionEntity);
+                inventory.setSession(sessionEntity);
+                em.persist(inventory);
+                session.getSeatsInventory().add(inventory);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public List<ArrayList> getReservedSections(long id, String type) {
+        List<ArrayList> sessionsInventory = new ArrayList();
+        if (type.equals("event")) {
+            Event event = em.find(Event.class, id);
+
+            for (Object o : event.getSessions()) {
+                SessionEntity session = (SessionEntity) o;
+                Query q = em.createQuery("SELECT a FROM SessionSeatsInventory a where a.session.id=:id AND a.reserveTickets=:reserved");
+                q.setParameter("id", session.getId());
+                q.setParameter("reserved", true);
+                ArrayList sessionInventory = new ArrayList();
+                sessionInventory.add(session.getId()); //For those that doesnt has reserved section, they would only has 1 attribute
+
+                for (Object obj : q.getResultList()) {
+                    SessionSeatsInventory inventory = (SessionSeatsInventory) obj;
+                    sessionInventory.add(inventory.getSectionEntity().getNumberInProperty()); //2
+                    sessionInventory.add(inventory.getReason()); //3
+                    sessionInventory.add(inventory.getReservationEndDate()); //4
+                }
+
+                sessionsInventory.add(sessionInventory);
+            }
+        } else {
+            SubEvent subevent = em.find(SubEvent.class, id);
+
+            for (Object o : subevent.getSessions()) {
+                SessionEntity session = (SessionEntity) o;
+                Query q = em.createQuery("SELECT a FROM SessionSeatsInventory a where a.session.id=:id AND a.reserveTickets=:reserved");
+                q.setParameter("id", session.getId());
+                q.setParameter("reserved", true);
+                ArrayList sessionInventory = new ArrayList();
+                sessionInventory.add(session.getId()); //For those that doesnt has reserved section, they would only has 1 attribute
+
+                for (Object obj : q.getResultList()) {
+                    SessionSeatsInventory inventory = (SessionSeatsInventory) obj;
+                    sessionInventory.add(inventory.getSectionEntity().getNumberInProperty());
+                    sessionInventory.add(inventory.getReason()); //3
+                    sessionInventory.add(inventory.getReservationEndDate()); //4
+                }
+
+                sessionsInventory.add(sessionInventory);
+            }
+
+        }
+
+        return sessionsInventory;
+    }
+
+    @Override
+    public List<ArrayList> getSessionReservedSections(long id) {
+        SessionEntity session = em.find(SessionEntity.class, id);
+        List<ArrayList> sessionsInventory = new ArrayList();
+        em.refresh(session);
+
+        for (Object o : session.getSeatsInventory()) {
+            SessionSeatsInventory inventory = (SessionSeatsInventory) o;
+            if (inventory.getReserveTickets()) {
+                ArrayList sessionInventory = new ArrayList();
+                sessionInventory.add(inventory.getId()); //0
+                sessionInventory.add(inventory.getSectionEntity().getNumberInProperty()); //1
+                sessionInventory.add(inventory.getReason()); //2
+                sessionInventory.add(inventory.getReservationEndDate()); //3
+                sessionsInventory.add(sessionInventory);
+            }
+        }
+        return sessionsInventory;
+    }
+
+    public long getPropertyID(long id) { //sessionID
+        SessionEntity session = em.find(SessionEntity.class, id);
+        if (session.getEvent() != null) {
+            return session.getEvent().getProperty().getId();
+        } else {
+            return session.getSubEvent().getProperty().getId();
+        }
+    }
+
+    @Override
+    public void deleteSessionReservedSections(String[] id) {
+
+        for (int i = 0; i < id.length; i++) {
+            SessionSeatsInventory inventory = em.find(SessionSeatsInventory.class, Long.valueOf(id[i]));
+            em.remove(inventory);
+        }
+    }
+
+    @Override
+    public List<ArrayList> getClosedSections(long id, String type) {
+        List<ArrayList> sessionsInventory = new ArrayList();
+        if (type.equals("event")) {
+            Event event = em.find(Event.class, id);
+
+            for (Object o : event.getSessions()) {
+                SessionEntity session = (SessionEntity) o;
+                Query q = em.createQuery("SELECT a FROM SessionSeatsInventory a where a.session.id=:id AND a.stopTicketsSales=:close");
+                q.setParameter("id", session.getId());
+                q.setParameter("close", true);
+                ArrayList sessionInventory = new ArrayList();
+                sessionInventory.add(session.getId()); //For those that doesnt has reserved section, they would only has 1 attribute
+
+                for (Object obj : q.getResultList()) {
+                    SessionSeatsInventory inventory = (SessionSeatsInventory) obj;
+                    sessionInventory.add(inventory.getSectionEntity().getNumberInProperty()); //2
+                    sessionInventory.add(inventory.getReason()); //3
+                }
+                sessionsInventory.add(sessionInventory);
+            }
+        } else {
+            SubEvent subevent = em.find(SubEvent.class, id);
+
+            for (Object o : subevent.getSessions()) {
+                SessionEntity session = (SessionEntity) o;
+                Query q = em.createQuery("SELECT a FROM SessionSeatsInventory a where a.session.id=:id AND a.stopTicketsSales=:close");
+                q.setParameter("id", session.getId());
+                q.setParameter("close", true);
+                ArrayList sessionInventory = new ArrayList();
+                sessionInventory.add(session.getId()); //For those that doesnt has reserved section, they would only has 1 attribute
+
+                for (Object obj : q.getResultList()) {
+                    SessionSeatsInventory inventory = (SessionSeatsInventory) obj;
+                    sessionInventory.add(inventory.getSectionEntity().getNumberInProperty());
+                    sessionInventory.add(inventory.getReason()); //3
+                }
+                sessionsInventory.add(sessionInventory);
+            }
+        }
+        return sessionsInventory;
+    }
+
+    @Override
+    public void setCloseSections(String apply, long sessionID, String purpose, String sectionIDs) {
+        Query q = em.createQuery("SELECT a FROM SessionEntity a WHERE a.id=:id");
+        q.setParameter("id", sessionID);
+        SessionEntity sessionEntity = (SessionEntity) q.getSingleResult();
+        long propertyID;
+        SectionEntity sectionEntity;
+        String[] sectionID = sectionIDs.split(" ");
+
+        if (apply.equals("yes")) {
+            if (sessionEntity.getEvent() != null) { //If it is a event session
+                Long eventID = sessionEntity.getEvent().getId();
+                Event eventEntity = em.find(Event.class, eventID);
+                propertyID = eventEntity.getProperty().getId();
+                for (Object obj : eventEntity.getSessions()) {
+                    sessionEntity = (SessionEntity) obj;
+                    for (int i = 0; i < sectionID.length; i++) {
+                        q = em.createQuery("SELECT a FROM SectionEntity a WHERE a.property.id=:id AND a.numberInProperty=:sectionID");
+                        q.setParameter("id", propertyID);
+                        q.setParameter("sectionID", Long.valueOf(sectionID[i]));
+                        sectionEntity = (SectionEntity) q.getSingleResult();
+
+                        this.setCloseSection(sectionEntity, sessionEntity, purpose);
+                        em.flush();
+                    }
+
+                }
+            } else {
+                Long eventID = sessionEntity.getSubEvent().getId();
+                SubEvent eventEntity = em.find(SubEvent.class, eventID);
+                propertyID = eventEntity.getProperty().getId();
+                for (Object obj : eventEntity.getSessions()) {
+                    sessionEntity = (SessionEntity) obj;
+                    for (int i = 0; i < sectionID.length; i++) {
+                        q = em.createQuery("SELECT a FROM SectionEntity a WHERE a.property.id=:id AND a.numberInProperty=:sectionID");
+                        q.setParameter("id", propertyID);
+                        q.setParameter("sectionID", Long.valueOf(sectionID[i]));
+                        sectionEntity = (SectionEntity) q.getSingleResult();
+
+                        this.setCloseSection(sectionEntity, sessionEntity, purpose);
+                        em.flush();
+                    }
+                }
+            }
+        } else {
+            if (sessionEntity.getEvent() != null) { //Link to event
+                propertyID = sessionEntity.getEvent().getProperty().getId();
+                for (int i = 0; i < sectionID.length; i++) {
+                    q = em.createQuery("SELECT a FROM SectionEntity a WHERE a.property.id=:id AND a.numberInProperty=:sectionID");
+                    q.setParameter("id", propertyID);
+                    q.setParameter("sectionID", Long.valueOf(sectionID[i]));
+                    System.out.println(propertyID + " +++++++++++++++++++++ " + sectionID[i]);
+                    sectionEntity = (SectionEntity) q.getSingleResult();
+
+                    this.setCloseSection(sectionEntity, sessionEntity, purpose);
+                }
+
+            } else {
+                propertyID = sessionEntity.getSubEvent().getProperty().getId();
+                for (int i = 0; i < sectionID.length; i++) {
+                    q = em.createQuery("SELECT a FROM SectionEntity a WHERE a.property.id=:id AND a.numberInProperty=:sectionID");
+                    q.setParameter("id", propertyID);
+                    q.setParameter("sectionID", Long.valueOf(sectionID[i]));
+                    sectionEntity = (SectionEntity) q.getSingleResult();
+
+                    this.setCloseSection(sectionEntity, sessionEntity, purpose);
+                }
+            }
+        }
+
+    }
+
+    private void setCloseSection(SectionEntity sectionEntity, SessionEntity sessionEntity, String purpose) {
+        try {
+            SessionSeatsInventory reservedSeatsInventory = new SessionSeatsInventory();
+            boolean reserved = false;
+            em.refresh(sessionEntity);
+            for (Object o : sessionEntity.getSeatsInventory()) {
+                SessionSeatsInventory seatsInventory = (SessionSeatsInventory) o;
+                em.refresh(seatsInventory);
+                if (seatsInventory.getSectionEntity().getId() == sectionEntity.getId()) { //If there are such data in the entity
+                    reserved = true;
+                    reservedSeatsInventory = seatsInventory;
+                    if (seatsInventory.getReserveTickets()) { //Overide the data from stop sales to reserve ticket sales
+                        reservedSeatsInventory.setReserveTickets(false);
+                        reservedSeatsInventory.setStopTicketsSales(true);
+                        reservedSeatsInventory.setReservationEndDate(null);
+                    }
+                    break;
+                }
+            }
+
+            if (reserved) { //There is such reserved section
+                reservedSeatsInventory.setReason(purpose);
+            } else {
+                SessionSeatsInventory inventory = new SessionSeatsInventory();
+                inventory.setReason(purpose);
+                inventory.setReserveTickets(false);
+                inventory.setStopTicketsSales(true);
+                inventory.setSectionEntity(sectionEntity);
+                inventory.setSession(sessionEntity);
+                em.persist(inventory);
+                session.getSeatsInventory().add(inventory);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public List<ArrayList> getSessionClosedSections(long id) {
+        SessionEntity session = em.find(SessionEntity.class, id);
+        List<ArrayList> sessionsInventory = new ArrayList();
+        em.refresh(session);
+
+        for (Object o : session.getSeatsInventory()) {
+            SessionSeatsInventory inventory = (SessionSeatsInventory) o;
+            if (inventory.getStopTicketsSales()) {
+                ArrayList sessionInventory = new ArrayList();
+                sessionInventory.add(inventory.getId()); //0
+                sessionInventory.add(inventory.getSectionEntity().getNumberInProperty()); //1
+                sessionInventory.add(inventory.getReason()); //2
+                sessionsInventory.add(sessionInventory);
+            }
+        }
+        return sessionsInventory;
     }
 
 }

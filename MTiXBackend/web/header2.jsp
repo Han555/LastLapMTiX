@@ -140,6 +140,8 @@
                                                     </li>
                                                     <li><c:url var="linkHref" value="/BackController?action=configuration" /><a href="${linkHref}">Seat Configuration</a>
                                                     </li>
+                                                    <li><c:url var="linkHref" value="/BackController?action=ticketReservation" /><a href="${linkHref}">Seats Inventory</a>
+                                                    </li>
                                                     
                                                 </ul>
                                             </div>

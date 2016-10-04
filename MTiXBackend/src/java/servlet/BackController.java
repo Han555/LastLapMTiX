@@ -22,6 +22,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -1145,92 +1146,57 @@ public class BackController extends HttpServlet {
                 request.setAttribute("username", currentUser);
                 request.getRequestDispatcher("/ticketReservation.jsp").forward(request, response);
             } else if (action.equals("setTickets")) {
-                if (request.getParameter("page") != null) {
-                    page = Integer.parseInt(request.getParameter("page"));
-                }
-                ArrayList<ArrayList<String>> promotions = productManager.retrievePromotions();
-                int noOfRecords = promotions.size();
-                int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
-                ArrayList<ArrayList<String>> promotionPage = productManager.promotionPage(promotions, (page - 1) * recordsPerPage, recordsPerPage);
-                request.setAttribute("noOfPages", noOfPages);
-                request.setAttribute("recordSize", String.valueOf(promotionPage.size()));
-                request.setAttribute("currentPage", page);
-                request.setAttribute("username", currentUser);
+                String info = request.getParameter("id");
+                System.out.println(info);
+                String[] idType = info.split(" ");
+                Long i = Long.valueOf(idType[0]);
+                List<ArrayList> data = productSession.searchEventSessions(i, idType[1]);
+                List<ArrayList> sectionData = productSession.getReservedSections(i, idType[1]);
+                Date startDate = productSession.getEventStartDate(i, idType[1]);
+                String date = (String) new SimpleDateFormat("yyyy-MM-dd").format(startDate);
+                request.setAttribute("date", date);
+                request.setAttribute("data", data);
+                request.setAttribute("sectionData", sectionData);
                 request.setAttribute("role", role);
-                request.setAttribute("inbox", promotionPage);
+                request.setAttribute("username", currentUser);
                 request.getRequestDispatcher("/setTickets.jsp").forward(request, response);
             } else if (action.equals("addTickets")) {
-                String promotionId = request.getParameter("promotionId");
-                String numberOfTics = request.getParameter("numberOfTics");
-                productManager.increaseTickets(promotionId, numberOfTics);
-                if (request.getParameter("page") != null) {
-                    page = Integer.parseInt(request.getParameter("page"));
-                }
-                ArrayList<ArrayList<String>> promotions = productManager.retrievePromotions();
-                int noOfRecords = promotions.size();
-                int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
-                ArrayList<ArrayList<String>> promotionPage = productManager.promotionPage(promotions, (page - 1) * recordsPerPage, recordsPerPage);
-                request.setAttribute("added", "true");
-                request.setAttribute("noOfPages", noOfPages);
-                request.setAttribute("recordSize", String.valueOf(promotionPage.size()));
-                request.setAttribute("currentPage", page);
+                String sectionData = request.getParameter("sectionData");
+                System.out.println(sectionData + "****************************");
+                sectionData = sectionData.substring(1, sectionData.length()-1);
+                System.out.println(sectionData + "****************************");
+                
+                
+                String apply = request.getParameter("apply");
+                Long i = Long.valueOf(request.getParameter("id"));
+                String purpose = request.getParameter("purpose");
+                String endDate = request.getParameter("date");
+                request.setAttribute("success", "true");
+                productSession.setReserveSection(apply, i, purpose, endDate, sectionData);
+                
+                List<ArrayList> data = productSession.getEventList();
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
-                request.setAttribute("inbox", promotionPage);
-                request.getRequestDispatcher("/setTickets.jsp").forward(request, response);
+                request.setAttribute("data", data);
+                request.getRequestDispatcher("/reserveTicketsMain.jsp").forward(request, response);
             } else if (action.equals("deleteTickets")) {
-                if (request.getParameter("page") != null) {
-                    page = Integer.parseInt(request.getParameter("page"));
-                }
-                ArrayList<ArrayList<String>> promotions = productManager.retrievePromotions();
-                int noOfRecords = promotions.size();
-                int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
-                ArrayList<ArrayList<String>> promotionPage = productManager.promotionPage(promotions, (page - 1) * recordsPerPage, recordsPerPage);
-                request.setAttribute("noOfPages", noOfPages);
-                request.setAttribute("recordSize", String.valueOf(promotionPage.size()));
-                request.setAttribute("currentPage", page);
+                Long i = Long.valueOf(request.getParameter("id"));
+                List<ArrayList> data = productSession.getSessionReservedSections(i);
+                long propertyID = productSession.getPropertyID(i);
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
-                request.setAttribute("inbox", promotionPage);
+                request.setAttribute("data", data);
+                request.setAttribute("propertyID", propertyID);
                 request.getRequestDispatcher("/deleteTickets.jsp").forward(request, response);
-
             } else if (action.equals("deletedTickets")) {
-                String promotionId = request.getParameter("promotionId");
-                if (productManager.checkTicAmt(promotionId, "")) {
-                    productManager.deleteTics(promotionId, "");
-                    if (request.getParameter("page") != null) {
-                        page = Integer.parseInt(request.getParameter("page"));
-                    }
-                    ArrayList<ArrayList<String>> promotions = productManager.retrievePromotions();
-                    int noOfRecords = promotions.size();
-                    int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
-                    ArrayList<ArrayList<String>> promotionPage = productManager.promotionPage(promotions, (page - 1) * recordsPerPage, recordsPerPage);
-                    request.setAttribute("deleted", "true");
-                    request.setAttribute("noOfPages", noOfPages);
-                    request.setAttribute("recordSize", String.valueOf(promotionPage.size()));
-                    request.setAttribute("currentPage", page);
-                    request.setAttribute("role", role);
-                    request.setAttribute("username", currentUser);
-                    request.setAttribute("inbox", promotionPage);
-                    request.getRequestDispatcher("/deleteTickets.jsp").forward(request, response);
-                } else {
-                    if (request.getParameter("page") != null) {
-                        page = Integer.parseInt(request.getParameter("page"));
-                    }
-                    ArrayList<ArrayList<String>> promotions = productManager.retrievePromotions();
-                    int noOfRecords = promotions.size();
-                    int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
-                    ArrayList<ArrayList<String>> promotionPage = productManager.promotionPage(promotions, (page - 1) * recordsPerPage, recordsPerPage);
-                    request.setAttribute("exceeded", "true");
-                    request.setAttribute("noOfPages", noOfPages);
-                    request.setAttribute("recordSize", String.valueOf(promotionPage.size()));
-                    request.setAttribute("currentPage", page);
-                    request.setAttribute("role", role);
-                    request.setAttribute("username", currentUser);
-                    request.setAttribute("inbox", promotionPage);
-                    request.getRequestDispatcher("/deleteTickets.jsp").forward(request, response);
-                }
-
+                String[] id = request.getParameterValues("id");
+                productSession.deleteSessionReservedSections(id);
+                List<ArrayList> data = productSession.getEventList();
+                request.setAttribute("success", "true");
+                request.setAttribute("role", role);
+                request.setAttribute("username", currentUser);
+                request.setAttribute("data", data);
+                request.getRequestDispatcher("/deleteTicketsMain.jsp").forward(request, response);
             } else if (action.equals("editTickets")) {
                 if (request.getParameter("page") != null) {
                     page = Integer.parseInt(request.getParameter("page"));
@@ -1429,7 +1395,7 @@ public class BackController extends HttpServlet {
                 request.getRequestDispatcher("/displaySeats.jsp").forward(request, response);
             } else if (action.equals("seatsPriceCreated")) {
                 String apply = request.getParameter("apply");
-                System.out.println(apply);
+                String seatsOption = request.getParameter("seatsOption");
                 Long i = Long.valueOf(request.getParameter("id"));
                 Integer noCat = Integer.valueOf(request.getParameter("noCat").toString());
                 ArrayList<Double> cat = new ArrayList<Double>();
@@ -1437,14 +1403,15 @@ public class BackController extends HttpServlet {
                 for (int j = 1; j <= noCat; j++) {
                     cat.add(Double.valueOf(request.getParameter("cat" + j)));
                 }
-                productSession.setPricing(i, cat, noCat, apply);
+                
+                productSession.setPricing(i, cat, noCat, apply, seatsOption);
                 List<ArrayList> data = productSession.getEventList();
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
                 request.setAttribute("data", data);
                 request.setAttribute("success", "true");
                 request.getRequestDispatcher("/displaySeatsMain.jsp").forward(request, response);
-            } else if (action.equals("productEnterUser")) {;
+            } else if (action.equals("productEnterUser")) {
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
                 request.getRequestDispatcher("/productEnterUser.jsp").forward(request, response);
@@ -1576,8 +1543,97 @@ public class BackController extends HttpServlet {
                 request.setAttribute("properties", spm.getAllProperties());
 
                 request.getRequestDispatcher("/editOutlet.jsp").forward(request, response);
+            } else if (action.equals("reserveTicketsMain")){
+                List<ArrayList> data = productSession.getEventList();
+                request.setAttribute("role", role);
+                request.setAttribute("username", currentUser);
+                request.setAttribute("data", data);
+                request.getRequestDispatcher("/reserveTicketsMain.jsp").forward(request, response);
+            } else if (action.equals("deleteTicketsMain")){
+                List<ArrayList> data = productSession.getEventList();
+                request.setAttribute("role", role);
+                request.setAttribute("username", currentUser);
+                request.setAttribute("data", data);
+                request.getRequestDispatcher("/deleteTicketsMain.jsp").forward(request, response);
+            } else if (action.equals("deleteTicketSelectSession")){
+                String info = request.getParameter("id");
+                String[] idType = info.split(" ");
+                Long i = Long.valueOf(idType[0]);
+                List<ArrayList> data = productSession.searchEventSessions(i, idType[1]);
+                request.setAttribute("eventType", idType[1]);
+                request.setAttribute("data", data);
+                request.setAttribute("role", role);
+                request.setAttribute("username", currentUser);
+                request.getRequestDispatcher("/deleteTicketSelectSession.jsp").forward(request, response);
+            } else if (action.equals("closeSectionsMain")){
+                List<ArrayList> data = productSession.getEventList();
+                request.setAttribute("role", role);
+                request.setAttribute("username", currentUser);
+                request.setAttribute("data", data);
+                request.getRequestDispatcher("/closeSectionsMain.jsp").forward(request, response);
+            } else if (action.equals("closeSections")) {
+                String info = request.getParameter("id");
+                System.out.println(info);
+                String[] idType = info.split(" ");
+                Long i = Long.valueOf(idType[0]);
+                List<ArrayList> data = productSession.searchEventSessions(i, idType[1]);
+                List<ArrayList> sectionData = productSession.getClosedSections(i, idType[1]);
+                request.setAttribute("data", data);
+                request.setAttribute("sectionData", sectionData);
+                request.setAttribute("role", role);
+                request.setAttribute("username", currentUser);
+                request.getRequestDispatcher("/closeSections.jsp").forward(request, response);
+            } else if (action.equals("closedSections")) {
+                String sectionData = request.getParameter("sectionData");
+                sectionData = sectionData.substring(1, sectionData.length()-1);
+                
+                String apply = request.getParameter("apply");
+                Long i = Long.valueOf(request.getParameter("id"));
+                String purpose = request.getParameter("purpose");
+                
+                productSession.setCloseSections(apply, i, purpose, sectionData);
+                
+                request.setAttribute("success", "true");
+                List<ArrayList> data = productSession.getEventList();
+                request.setAttribute("role", role);
+                request.setAttribute("username", currentUser);
+                request.setAttribute("data", data);
+                request.getRequestDispatcher("/closeSectionsMain.jsp").forward(request, response);
+            } else if (action.equals("resumeTicketMain")){
+                List<ArrayList> data = productSession.getEventList();
+                request.setAttribute("role", role);
+                request.setAttribute("username", currentUser);
+                request.setAttribute("data", data);
+                request.getRequestDispatcher("/resumeTicketMain.jsp").forward(request, response);
+            } else if (action.equals("resumeTicketSelectSession")){
+                String info = request.getParameter("id");
+                String[] idType = info.split(" ");
+                Long i = Long.valueOf(idType[0]);
+                List<ArrayList> data = productSession.searchEventSessions(i, idType[1]);
+                request.setAttribute("eventType", idType[1]);
+                request.setAttribute("data", data);
+                request.setAttribute("role", role);
+                request.setAttribute("username", currentUser);
+                request.getRequestDispatcher("/resumeTicketSelectSession.jsp").forward(request, response);
+            } else if (action.equals("resumeSectionTickets")) {
+                Long i = Long.valueOf(request.getParameter("id"));
+                List<ArrayList> data = productSession.getSessionClosedSections(i);
+                long propertyID = productSession.getPropertyID(i);
+                request.setAttribute("role", role);
+                request.setAttribute("username", currentUser);
+                request.setAttribute("data", data);
+                request.setAttribute("propertyID", propertyID);
+                request.getRequestDispatcher("/resumeSectionTickets.jsp").forward(request, response);
+            } else if (action.equals("resumedTickets")) {
+                String[] id = request.getParameterValues("id");
+                productSession.deleteSessionReservedSections(id); //Cause this will delete the closed sections. So just reuse back
+                List<ArrayList> data = productSession.getEventList();
+                request.setAttribute("success", "true");
+                request.setAttribute("role", role);
+                request.setAttribute("username", currentUser);
+                request.setAttribute("data", data);
+                request.getRequestDispatcher("/resumeTicketMain.jsp").forward(request, response);
             }
-
         } catch (Exception ex) {
             ex.printStackTrace();
             //request.getRequestDispatcher("/error.jsp").forward(request, response);
