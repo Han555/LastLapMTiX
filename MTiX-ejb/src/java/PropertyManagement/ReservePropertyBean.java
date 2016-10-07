@@ -427,6 +427,20 @@ public class ReservePropertyBean implements ReservePropertyBeanLocal {
             return false;
         }
     }
+    
+    
+    public List<SubEvent> getListOfSubEvent(Event event){
+        Query query = em.createQuery("SELECT e FROM SubEvent e WHERE e.event=:event");
+        query.setParameter("event", event);
+       
+        List resultList = query.getResultList();
+        if(resultList.isEmpty()){
+            return null;
+        }
+        return resultList;
+        
+        
+    }
 
 
     // Add business logic below. (Right-click in editor and choose

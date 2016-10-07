@@ -6,11 +6,13 @@
 package entity;
 
 import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import org.hibernate.validator.constraints.Length;
 
 /**
  *
@@ -25,6 +27,8 @@ public class FoodOutlet implements Serializable {
     private String outletId;
     private String outletName;
     private String outletType;
+    private String location;
+    @Length(max=255)
     private String outletDescription;
     @ManyToOne
     private Property property;
@@ -36,10 +40,11 @@ public class FoodOutlet implements Serializable {
         this.setOutletDescription(outletDescription);
     }
     
-    public void createOutlet(String name, String type, String description) {
+    public void createOutlet(String name, String type, String description, String location) {
         this.outletName = name;
         this.outletType = type;
-        this.outletDescription = description;      
+        this.outletDescription = description;
+        this.setLocation(location);
     }
     
     public Long getId() {
@@ -143,6 +148,20 @@ public class FoodOutlet implements Serializable {
      */
     public void setOutletId(String outletId) {
         this.outletId = outletId;
+    }
+
+    /**
+     * @return the location
+     */
+    public String getLocation() {
+        return location;
+    }
+
+    /**
+     * @param location the location to set
+     */
+    public void setLocation(String location) {
+        this.location = location;
     }
     
 }

@@ -57,4 +57,6 @@ public interface SeatingPlanManagementBeanLocal {
     public Boolean linkCategoryToProperty();
 
     public List<SectionCategory> getAllCategoryInOneProperty(Long propertyId);
+
+    public Long getPropertyByName(String name);
 }

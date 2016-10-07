@@ -28,6 +28,32 @@
                         <c:url var="formAction" value="/BackController?action=equipmentCreated" />
                         <form class="form-horizontal" id="formSubmit" action="${formAction}" method="post" >
                             <div class="form-group" style="padding-bottom: 20px;" >
+                                <label for="ename" class="col-sm-2 control-label">MIEC Property it belongs to<span style="color:#FF0000">*</span></label>
+                                <div class="col-sm-4">
+                                    <select class="js-example-basic-single js-states" style="width: 100%" name="epname" id="epname" required = "true">
+
+                                        <c:forEach items="${properties}" var="properties">
+                                            <option value="${properties.id}">${properties.propertyName}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div> 
+                            </div>
+                            
+                            <div class="form-group" style="padding-bottom: 20px;" >
+                                <label for="elocation" class="col-sm-2 control-label">Location<span style="color:#FF0000">*</span></label>
+                                <div class="col-sm-4">
+                                    <select class="js-example-basic-single js-states" style="width: 100%" name="elocation" id="elocation" required = "true">
+
+                                     
+                                            <option value="Storage Room A">Storage Room A</option>
+                                            <option value="Storage Room B">Storage Room B</option>
+                                            <option value="Storage Room C">Storage Room C</option>
+                                      
+                                    </select>
+                                    
+                                </div> 
+                            </div>
+                            <div class="form-group" style="padding-bottom: 20px;" >
                                 <label for="ename" class="col-sm-2 control-label">Equipment Name<span style="color:#FF0000">*</span></label>
                                 <div class="col-sm-4">
                                     <input type="text" name="ename" id="ename" class="form-control" value="" required = "true"> 
@@ -56,17 +82,7 @@
                                     <input type="number" name="eprice" id="eprice" class="form-control" value="" required = "true" min="0"> 
                                 </div> 
                             </div> -->
-                            <div class="form-group" style="padding-bottom: 20px;" >
-                                <label for="ename" class="col-sm-2 control-label">MIEC Property it belongs to<span style="color:#FF0000">*</span></label>
-                                <div class="col-sm-4">
-                                    <select class="js-example-basic-single js-states" style="width: 100%" name="epname" id="epname" required = "true">
-
-                                        <c:forEach items="${properties}" var="properties">
-                                            <option value="${properties.id}">${properties.propertyName}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div> 
-                            </div>
+                            
 
 
                             <div class="form-group" style="padding-bottom: 20px;">

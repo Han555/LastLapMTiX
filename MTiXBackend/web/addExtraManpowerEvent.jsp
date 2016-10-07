@@ -28,7 +28,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <c:url var="formAction" value="/BackController?action=saveExtraManpower" />
+                        <c:url var="formAction" value="/BackController?action=saveExtraManpowerEvent" />
                         <form class="form-horizontal" id="formSubmit" action="${formAction}" method="post">
                             <div class="form-group" style="padding-bottom: 20px;" >
                                 <label for="evalue" class="col-sm-2 control-label">Add Non-Standard Manpower</label>
@@ -43,15 +43,7 @@
                             </div>
                             
 
-                            <div class="form-group" style="padding-bottom: 20px;">
-
-                               
-                                <div class="col-sm-6">
-                                    <input type="hidden" name="seid" id="seid" class="form-control" value="${seid}">
-                                   
-
-                                </div> 
-                            </div>
+  
                                     <div class="form-group" style="padding-bottom: 20px;">
 
                                
