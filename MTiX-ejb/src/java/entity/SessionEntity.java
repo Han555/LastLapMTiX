@@ -35,6 +35,7 @@ public class SessionEntity implements Serializable {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date timeEnd;
     private String descriptions;
+    private String seatOption;
 
     @ManyToOne //Owning side, has foreign key!
     private Event event;
@@ -42,12 +43,15 @@ public class SessionEntity implements Serializable {
     private SubEvent subEvent;
     @OneToMany(cascade={CascadeType.REMOVE}, mappedBy = "session")
     private Collection<SessionCategoryPrice> price = new ArrayList<SessionCategoryPrice>();
+    @OneToMany(cascade={CascadeType.REMOVE}, mappedBy = "session")
+    private Collection<SessionSeatsInventory> seatsInventory = new ArrayList<SessionSeatsInventory>();
 
     public void createSession(String name, Date start, Date end, String descriptions) {
         this.setName(name);
         this.setDescriptions(descriptions);
         this.setTimeStart(start);
         this.setTimeEnd(end);
+        this.setSeatOption(null);
     }
 
     public Long getId() {
@@ -112,6 +116,22 @@ public class SessionEntity implements Serializable {
 
     public void setPrice(Collection<SessionCategoryPrice> price) {
         this.price = price;
+    }
+
+    public String getSeatOption() {
+        return seatOption;
+    }
+
+    public void setSeatOption(String seatOption) {
+        this.seatOption = seatOption;
+    }
+
+    public Collection<SessionSeatsInventory> getSeatsInventory() {
+        return seatsInventory;
+    }
+
+    public void setSeatsInventory(Collection<SessionSeatsInventory> seatsInventory) {
+        this.seatsInventory = seatsInventory;
     }
 
     @Override

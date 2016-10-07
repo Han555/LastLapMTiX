@@ -1,7 +1,7 @@
 <%-- 
-    Document   : deleteTickets
-    Created on : Sep 22, 2016, 7:29:26 PM
-    Author     : Student-ID
+    Document   : resumeSectionTickets
+    Created on : 4 Oct, 2016, 3:52:04 PM
+    Author     : JingYing
 --%>
 
 <%@page import="java.util.List"%>
@@ -20,17 +20,17 @@
         List<ArrayList> data = (List<ArrayList>) request.getAttribute("data");
         String property = request.getAttribute("propertyID").toString();
     %>
-    <c:url var="formAction" value="/BackController?action=deletedTickets" />
+    <c:url var="formAction" value="/BackController?action=resumedTickets" />
     <div class="side-body padding-top">
 
         <div class="row">
             <div class="col-sm-6">
                 <div class="header">
-                    <h4 class="title">Delete Reserved Section Tickets</h4>   
+                    <h4 class="title">Resume Section Tickets</h4>   
                 </div>  <%
                     if (data.size() == 0) {
                 %>
-                <div align="center"><h3>No Reserved Section Found!</h3></div><br><br>
+                <div align="center"><h3>No Closed Section Found!</h3></div><br><br>
                 <%} else {
                 %>
                 <%  if (property.equals("1")) { %>
@@ -77,17 +77,17 @@
                 <%} else {%>
                 <img id="shape1" src="img/property/TheatreNo.png" style="width:100%; height: 100%;" usemap="#theatre"/>
                 <map name="theatre" id="theatre">
-                    <area shape="rect" coords="766,574,768,576" alt="Image Map" style="outline:none;" title="Image Map" href="http://www.image-maps.com/index.php?aff=mapped_users_0" />
-                    <area id="seat_1" onclick="openNav(1)" alt="1" title="seat_1" href="#" shape="poly" coords="375,462,348,448,330,426,310,397,322,387,346,379,363,392,379,412,392,423,406,439,406,451" style="outline:none;" target="_self"     />
-                    <area id="seat_2" onclick="openNav(2)" alt="2" title="seat_2" href="#" shape="poly" coords="412,431,397,415,378,392,369,373,371,356,398,354,421,347,438,356,450,368,471,392,493,413,502,432,477,448,442,451" style="outline:none;" target="_self"     />
-                    <area id="seat_3" onclick="openNav(3)" alt="3" title="seat_3" href="#" shape="poly" coords="516,422,496,407,480,376,467,349,494,343,511,355,524,370,540,387,554,401,552,415" style="outline:none;" target="_self"     />
-                    <area id="seat_4" onclick="openNav(4)" alt="4" title="seat_4" href="#" shape="poly" coords="274,325,254,307,242,293,244,283,264,273,280,273,298,285,310,299,314,311" style="outline:none;" target="_self"     />
-                    <area id="seat_5" onclick="openNav(5)" alt="5" title="seat_5" href="#" shape="poly" coords="356,304,330,309,314,300,304,285,300,273,313,266,344,260,362,258,375,255,386,268,394,283,386,295" style="outline:none;" target="_self"     />
-                    <area id="seat_6" onclick="openNav(6)" alt="6" title="seat_6" href="#" shape="poly" coords="419,288,408,288,396,275,389,259,382,249,392,242,418,241,430,241,440,257,446,277" style="outline:none;" target="_self"     />
-                    <area id="seat_7" onclick="openNav(7)" alt="7" title="seat_7" href="#" shape="poly" coords="234,269,215,270,203,252,193,242,205,232,227,225,241,229,253,247,258,257" style="outline:none;" target="_self"     />
-                    <area id="seat_8" onclick="openNav(8)" alt="8" title="seat_8" href="#" shape="poly" coords="294,246,272,249,255,238,240,221,252,216,276,209,310,206,320,201,332,221,338,232" style="outline:none;" target="_self"     />
-                    <area id="seat_9" onclick="openNav(9)" alt="9" title="seat_9" href="#" shape="poly" coords="378,231,358,233,344,227,341,212,336,203,354,198,375,196,384,198,390,219" style="outline:none;" target="_self"     />
-                </map>
+                        <area shape="rect" coords="766,574,768,576" alt="Image Map" style="outline:none;" title="Image Map" href="http://www.image-maps.com/index.php?aff=mapped_users_0" />
+                        <area id="seat_1" onclick="openNav(1)" alt="1" title="seat_1" href="#" shape="poly" coords="375,462,348,448,330,426,310,397,322,387,346,379,363,392,379,412,392,423,406,439,406,451" style="outline:none;" target="_self"     />
+                        <area id="seat_2" onclick="openNav(2)" alt="2" title="seat_2" href="#" shape="poly" coords="412,431,397,415,378,392,369,373,371,356,398,354,421,347,438,356,450,368,471,392,493,413,502,432,477,448,442,451" style="outline:none;" target="_self"     />
+                        <area id="seat_3" onclick="openNav(3)" alt="3" title="seat_3" href="#" shape="poly" coords="516,422,496,407,480,376,467,349,494,343,511,355,524,370,540,387,554,401,552,415" style="outline:none;" target="_self"     />
+                        <area id="seat_4" onclick="openNav(4)" alt="4" title="seat_4" href="#" shape="poly" coords="274,325,254,307,242,293,244,283,264,273,280,273,298,285,310,299,314,311" style="outline:none;" target="_self"     />
+                        <area id="seat_5" onclick="openNav(5)" alt="5" title="seat_5" href="#" shape="poly" coords="356,304,330,309,314,300,304,285,300,273,313,266,344,260,362,258,375,255,386,268,394,283,386,295" style="outline:none;" target="_self"     />
+                        <area id="seat_6" onclick="openNav(6)" alt="6" title="seat_6" href="#" shape="poly" coords="419,288,408,288,396,275,389,259,382,249,392,242,418,241,430,241,440,257,446,277" style="outline:none;" target="_self"     />
+                        <area id="seat_7" onclick="openNav(7)" alt="7" title="seat_7" href="#" shape="poly" coords="234,269,215,270,203,252,193,242,205,232,227,225,241,229,253,247,258,257" style="outline:none;" target="_self"     />
+                        <area id="seat_8" onclick="openNav(8)" alt="8" title="seat_8" href="#" shape="poly" coords="294,246,272,249,255,238,240,221,252,216,276,209,310,206,320,201,332,221,338,232" style="outline:none;" target="_self"     />
+                        <area id="seat_9" onclick="openNav(9)" alt="9" title="seat_9" href="#" shape="poly" coords="378,231,358,233,344,227,341,212,336,203,354,198,375,196,384,198,390,219" style="outline:none;" target="_self"     />
+                    </map>
                 <script lang="javascript">
 
                     $(document).ready(function () {
@@ -120,7 +120,6 @@
                                     <th data-radio="true"></th>
                                     <th>Property No.</th>
                                     <th>Purpose</th>
-                                    <th>Reserved End Date</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -130,8 +129,7 @@
                                 <tr>
                                     <td><input type="checkbox" name="id" value="<%= data.get(i).get(0)%>"></td>
                                     <td><%= data.get(i).get(1)%></td>
-                                    <td><%= data.get(i).get(2)%></td>
-                                    <td><%= data.get(i).get(3)%></td></tr>
+                                    <td><%= data.get(i).get(2)%></td></tr>
                                     <% }%>
                             </tbody>
 
@@ -162,4 +160,5 @@
 </div>
 
 <jsp:include page="footer.jsp" />
+
 

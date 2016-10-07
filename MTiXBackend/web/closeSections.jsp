@@ -1,8 +1,9 @@
 <%-- 
-    Document   : copySetTickets
-    Created on : Sep 22, 2016, 6:35:43 PM
-    Author     : Student-ID
+    Document   : closeSections
+    Created on : 4 Oct, 2016, 2:14:14 PM
+    Author     : JingYing
 --%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.ArrayList, java.util.List" %>
 <!DOCTYPE html>
@@ -12,18 +13,15 @@
 <!doctype html>
 <jsp:include page="header2.jsp" />
 <!-- Main Content -->
-<!-- Multidates -->
-<script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
 
 
 <div class="container-fluid">
     <%
-        List<ArrayList> data = (List<ArrayList>) request.getAttribute("data");
-        List<ArrayList> sectionData = (List<ArrayList>) request.getAttribute("sectionData");
-        String date = (String) request.getAttribute("date");
+        List<ArrayList> data = (List<ArrayList>) request.getAttribute("data"); //sessionData
+        List<ArrayList> sectionData = (List<ArrayList>) request.getAttribute("sectionData"); //SectionData
     %>
 
-    <c:url var="formAction" value="/BackController?action=addTickets" />
+    <c:url var="formAction" value="/BackController?action=closedSections" />
     <div class="side-body padding-top">
 
         <div class="row">
@@ -38,7 +36,7 @@
 
                 <div class="col-sm-6">
                     <div class="header">
-                        <h4 class="title">Reserve/Edit Sections</h4>   
+                        <h4 class="title">Close Sections</h4>   
                     </div> 
                     <%  if (x.equals("1")) { %>
                     <img id="shape1" src="img/property/ConcerthallNo.png" style="width:100%; height: 100%;" usemap="#concertHall"/>
@@ -213,7 +211,7 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="dropdown">
-                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Reserved Section
+                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Closed Section
                             <span class="caret"></span></button>
                         <ul class="dropdown-menu">
                             <li><a tabindex="-1" href="#">SessionNo: </a></li>
@@ -224,11 +222,11 @@
                             <li class="dropdown-submenu pull-left">
                                 <a class="test" tabindex="-1" href="#"><%=sectionData.get(i).get(0)%><span class="caret"></span></a>
                             <ul class="dropdown-menu pull-left">
-                                <li><a tabindex="-1" href="#">SectionNo | Purpose | ReservedDate </a></li>
+                                <li><a tabindex="-1" href="#">SectionNo | Purpose </a></li>
                                 <%
-                                    for (int j = 1; j < sectionData.get(i).size(); j += 3) {
+                                    for (int j = 1; j < sectionData.get(i).size(); j += 2) {
                                 %>
-                                <li><a tabindex="-1" href="#"><%=sectionData.get(i).get(j) + " | " + sectionData.get(i).get(j + 1) + " | " + sectionData.get(i).get(j + 2)%></a></li>
+                                <li><a tabindex="-1" href="#"><%=sectionData.get(i).get(j) + " | " + sectionData.get(i).get(j + 1)%></a></li>
                                     <%}%>
                             </ul>
                             </li>
@@ -271,20 +269,6 @@
                         <tr>
                             <td>Purpose : &nbsp</td>
                             <td align="left"><input type="text" class="form-control" required="true" id="purpose" name="purpose"</td> 
-                        </tr>
-                        <tr>
-                            <td>&nbsp</td> 
-                        </tr>
-                        <tr><td align="right">End Date : &nbsp</td>
-                            <td align="left"><input type="text" class="form-control date" required="true" name="date"</td>    
-                        <script>
-                            $('.date').datepicker({
-                                multidate: false,
-                                format: 'yyyy-mm-dd',
-                                startDate: '$.now()',
-                                endDate: '<%=date%>'
-                            });
-                        </script>
                         </tr>
                         <tr>
                             <td>&nbsp</td> 

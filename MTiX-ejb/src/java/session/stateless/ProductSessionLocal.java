@@ -32,7 +32,7 @@ public interface ProductSessionLocal {
 
     public ArrayList getSessionEvent(String type, Long id, int no);
 
-    public int setPricing(Long id, ArrayList<Double> cat, int no, String apply);
+    public int setPricing(Long id, ArrayList<Double> cat, int no, String apply, String seatsOption);
 
     public ArrayList getPricing(Long id);
 
@@ -81,6 +81,25 @@ public interface ProductSessionLocal {
     void editAlert(String percentage, String alertType, String username, String date, String eventId);
 
     void editSubEventAlert(String percentage, String alertType, String username, String date, String eventId);
+
+    public Date getEventStartDate(long id, String type);
+
+    public void setReserveSection(String apply, long sessionID, String purpose, String date, String sectionIDs);
+
+    public List<ArrayList> getReservedSections(long id, String type);
+
+    public List<ArrayList> getSessionReservedSections(long id);
+
+    public void deleteSessionReservedSections(String[] id);
+
+    public long getPropertyID(long id);
+
+    public List<ArrayList> getClosedSections(long id, String type);
+
+    public void setCloseSections(String apply, long sessionID, String purpose, String sectionIDs);
+
+    public List<ArrayList> getSessionClosedSections(long id);
+
 
 
 

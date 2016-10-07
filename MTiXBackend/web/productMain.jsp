@@ -14,8 +14,8 @@
     <div class="container"> 
         <div class="page-title">
             <span class="title">Product Management System</span>
-            
-              
+
+
         </div>
 
         <div class="row">
@@ -44,6 +44,17 @@
                     <div class="caption">
                         <h3>Promotions</h3>
                         <p><c:url var="linkHref" value="/BackController?action=promotionMain" /><a href="${linkHref}" class="btn btn-primary" role="button">Enter</a> </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                    <img src="img/ticket.jpg" alt="ticket_main" style="width:300 px;height:300px">
+                    <div class="caption">
+                        <h3 style="text-align: center">Seats Inventory</h3>
+                        <p><c:url var="linkHref" value="/BackController?action=ticketReservation" /><a href="${linkHref}" class="btn btn-primary" role="button">Enter</a> </p>
                     </div>
                 </div>
             </div>
