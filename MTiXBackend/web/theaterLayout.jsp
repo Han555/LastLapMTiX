@@ -1,5 +1,5 @@
 <%-- 
-    Document   : concertHallLayout
+    Document   : theaterLayout
     Created on : Sep 20, 2016, 4:32:07 PM
     Author     : catherinexiong
 --%>
