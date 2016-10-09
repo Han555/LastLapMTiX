@@ -91,7 +91,7 @@ public class RegisterManager {
         String password = resetPassword(username);
         
         registerSessionLocal.sendMail(username, "is3012mtix@gmail.com", "http://localhost:8080/MTiXBackend/BackController?" + "name=" + username+"     username: "+username+"    password: "+password, "MTiX backend account created", "smtp.gmail.com");
-        
+        System.out.println("Entered here checking registration 2");
         String salt;
         SecurityManager secure = new SecurityManager();
         byte[] secureSalt = secure.getNextSalt();

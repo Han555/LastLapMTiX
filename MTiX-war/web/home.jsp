@@ -44,27 +44,34 @@
                     </div>
                 </a>
             </div>
-            
+
 
         </div>
         <div class="row">
-                <div class="col-sm-6 col-md-6">
-                    <div class="thumbnail">
-                        <img src="assets/img/faces/purchasetickets.jpg" style="width:300 px;height:300px">
-                        <div class="caption">
-                            <h3 style="text-align: center">Buy Tickets</h3>
-                            <p><c:url var="linkHref" value="/Controller?action=buyTickets" /><a href="${linkHref}" class="btn btn-primary" role="button">Enter</a> </p>
-                        </div>
+            <div class="col-sm-6 col-md-6">
+                <div class="thumbnail">
+                    <img src="assets/img/faces/purchasetickets.jpg" style="width:300 px;height:300px">
+                    <div class="caption">
+                        <h3 style="text-align: center">Buy Tickets</h3>
+                        <p><c:url var="linkHref" value="/Controller?action=buyTickets" /><a href="${linkHref}" class="btn btn-primary" role="button">Enter</a> </p>
                     </div>
                 </div>
-        
+            </div>
+
 
             <div class="col-sm-6 col-md-6">
                 <div class="thumbnail">
                     <img src="assets/img/faces/personalfinances.jpg" alt="theater_main" style="width:300 px;height:300px">
                     <div class="caption">
                         <h3 style="text-align: center">Finances</h3>
-                        <p><c:url var="linkHref" value="/Controller?action=testTable" /><a href="${linkHref}" class="btn btn-primary" role="button">Enter</a> </p>
+                        <c:url var="formAction" value="/FinanceController?action=viewPayment" />
+                        <form id="verifyForm" name="verifyForm" action="${formAction}" method="post">
+                            <c:url var="formAction" value="/FinanceController?action=viewPayment" />
+                            <input type="hidden" name="username" value=<%= request.getAttribute("username")%> readonly="readonly" />
+
+                            <c:url var="formAction" value="/FinanceController" />
+                            <input type="submit" class="btn btn-primary" value="Enter" /> 
+                        </form>
                     </div>
                 </div>
             </div>

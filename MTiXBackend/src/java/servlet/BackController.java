@@ -266,7 +266,8 @@ public class BackController extends HttpServlet {
                     request.setAttribute("username", currentUser);
                     request.setAttribute("conflict", "true");
                     request.getRequestDispatcher("/createAccount.jsp").forward(request, response);
-                } else {
+                } else {                   
+                    System.out.println("Entered here checking registration");
                     registerManager.adminCreate(request.getParameter("username"), request.getParameter("role"), request.getParameter("mobileNumber"));
                     request.setAttribute("username", currentUser);
                     request.setAttribute("created", "true");

@@ -44,8 +44,32 @@ public class UserEntity implements Serializable {
     
     @ManyToMany
     private Collection<BulletinEntity> bulletins = new ArrayList<BulletinEntity> (); 
+    
+    @ManyToMany
+    private Collection<RightsEntity> rights = new ArrayList<RightsEntity> ();
+    
+    @OneToMany
+    private Collection<PaymentRecord> payments = new ArrayList<PaymentRecord> ();
 
     public UserEntity() {
+    }
+
+    public Collection<PaymentRecord> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(Collection<PaymentRecord> payments) {
+        this.payments = payments;
+    }
+    
+    
+    
+    public Collection<RightsEntity> getRights() {
+        return rights;
+    }
+
+    public void setRights(Collection<RightsEntity> rights) {
+        this.rights = rights;
     }
 
     public Collection<MessageEntity> getMessages() {
@@ -88,8 +112,15 @@ public class UserEntity implements Serializable {
         this.resetPassword = false;
         this.salt = salt;
         ArrayList<String> roles = new ArrayList();
-        roles.add("customer");
+        roles.add("customer");       
         this.roles = roles;
+        
+        ArrayList<String> dynamic= new ArrayList();
+        dynamic.add("buy tickets");
+        dynamic.add("finances");
+        RightsEntity rights = new RightsEntity();
+        rights.createRight("customer", dynamic);
+        this.rights.add(rights);
     }
 
     public Collection<SubEvent> getSubEvents() {
