@@ -181,6 +181,48 @@ public class PaymentSession implements PaymentSessionLocal {
         }
         return address;
     }
+
+    @Override
+    public ArrayList<String> retrieveEvents(String receiver) {
+        Query q = entityManager.createQuery("SELECT i FROM PaymentRecord i WHERE i.receiver = " + "'"+receiver+"'");
+        ArrayList<String> events = new ArrayList();
+        System.out.println("receiver: "+receiver);
+        for(Object o: q.getResultList()) {
+            PaymentRecord p = new PaymentRecord();
+            p = (PaymentRecord) o;
+            System.out.println("event name: "+p.getEventName());
+            events.add(p.getEventName());
+        }
+        
+        for(int i=0; i<events.size(); i++) {
+            for(int u = i +1; u<events.size(); u++) {
+                if(events.get(i).equals(events.get(u))) {
+                    events.remove(u);
+                }
+            }
+        }
+        return events;
+    }
+
+    @Override
+    public ArrayList<ArrayList<String>> retrieveRecords(String event, String receiver) {
+        Query q = entityManager.createQuery("SELECT i FROM PaymentRecord i WHERE i.receiver = " + "'"+receiver+"'"+ " AND i.eventName = "+"'"+event+"'");
+        ArrayList<ArrayList<String>> records = new ArrayList();
+        
+        for(Object o: q.getResultList()) {
+            PaymentRecord p = new PaymentRecord();
+            p = (PaymentRecord) o;
+            ArrayList<String> record = new ArrayList();
+            record.add(p.getPayer());
+            record.add(p.getTicketQuantity());
+            record.add(p.getAmount());
+            record.add(p.getPaymentStatus());
+            records.add(record);
+        }
+        
+        return records;
+    }
+
     
     
 }

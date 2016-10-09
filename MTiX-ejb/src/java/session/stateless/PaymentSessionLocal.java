@@ -28,5 +28,10 @@ public interface PaymentSessionLocal {
     int sendMail(String to, String from, String message, String subject, String smtpServ);
 
     ArrayList<String> retrieveAddress(String paymentId);
+
+    ArrayList<String> retrieveEvents(String receiver);
+
+    ArrayList<ArrayList<String>> retrieveRecords(String event, String receiver);
+
     
 }

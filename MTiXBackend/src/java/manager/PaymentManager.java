@@ -77,10 +77,48 @@ public class PaymentManager {
         return paymentSessionLocal.retrieveAddress(paymentId);
     }
     
-    
-    public ArrayList<String> getEvents(String receiver) {
+    public ArrayList<String> getEvents(String receiver) { 
         return paymentSessionLocal.retrieveEvents(receiver);
     }
+        
+    public ArrayList<String> eventPage(ArrayList<String> events, int offset, int noOfRecords) {
+        ArrayList<String> eventPage = new ArrayList();
+        int size = events.size();
+        int finalRecord = offset + noOfRecords;
+        if(finalRecord >= size) {
+            finalRecord = size;
+        }
+        for(int i=offset; i<finalRecord; i++) {
+            
+            eventPage.add(events.get(i));
+        }
+        
+       
+        return eventPage;
+    }
     
+    public ArrayList<ArrayList<String>> getEventRecords(String event, String receiver) {
+        return paymentSessionLocal.retrieveRecords(event, receiver);
+    }
     
+     public ArrayList<ArrayList<String>> getEventRecordsPage(ArrayList<ArrayList<String>> eventRecords, int offset, int noOfRecords) {
+        ArrayList<ArrayList<String>> eventRecordsPage = new ArrayList();
+        int size = eventRecords.size();
+        int finalRecord = offset + noOfRecords;
+        if(finalRecord >= size) {
+            finalRecord = size;
+        }
+        for(int i=offset; i<finalRecord; i++) {
+            
+            ArrayList<String> eventRecord = new ArrayList();
+            eventRecord.add(eventRecords.get(i).get(0));
+            eventRecord.add(eventRecords.get(i).get(1));
+            eventRecord.add(eventRecords.get(i).get(2));
+            eventRecord.add(eventRecords.get(i).get(3));
+            eventRecordsPage.add(eventRecord);
+        }
+        
+       
+        return eventRecordsPage;
+    }
 }
