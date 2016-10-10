@@ -33,7 +33,7 @@
                                 <div class="form-group" style="padding-bottom: 20px;" >
                                     <label for="equipment" class="col-sm-4 control-label">Event Name<span style="color:#FF0000;">*</span></label>
                                     <div class="col-sm-8">
-                                        <Input type="text" id="eventname" name="eventname" required>
+                                        <Input type="text" id="eventname" name="eventname" value="${eventname}" required>
                                     </div> 
                                 </div>
 
@@ -42,7 +42,7 @@
 
                                     <label for="manpower" class="col-sm-4 control-label">Event Description<span style="color:#FF0000;">*</span></label>
                                     <div class="col-sm-8">
-                                        <textarea class="form-control" rows="3" required id="eventdes" name="eventdes"></textarea>
+                                        <textarea class="form-control" rows="3" required id="eventdes" name="eventdes">${eventdes}</textarea>
                                     </div>
                                 </div>
                                 <div class="form-group" style="padding-bottom: 20px;" >
@@ -55,7 +55,7 @@
                                 <div class="form-group" style="padding-bottom: 20px;">
 
 
-                                    <input type="hidden" name="propertyId" value="2">
+                                     <input type="hidden" name="pname" value="Merlion Star Theater">
 
                                 </div>
                                 <div class="form-group" >

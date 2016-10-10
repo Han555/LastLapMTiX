@@ -27,6 +27,7 @@
 
         <!-- Javascript Libs -->
         <script type="text/javascript" src="lib/js/jquery.min.js"></script>
+        
         <script type="text/javascript" src="lib/js/animatedModal.js"></script>
         <script type="text/javascript" src="lib/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="lib/js/jquery.seat-charts.js"></script>
@@ -46,6 +47,7 @@
         <script type="text/javascript" src="js/moment.min.js"></script>
         <!--   <script type="text/javascript" src="js/modal.js"></script> -->
         <script type="text/javascript" src="js/daterangepicker.js"></script>
+        <script type="text/javascript" src="query.maphilight.min.js"></script>
     </head>
 
     <body class="flat-blue">

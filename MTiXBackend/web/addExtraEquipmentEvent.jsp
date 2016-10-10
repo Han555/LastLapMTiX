@@ -1,5 +1,5 @@
 <%-- 
-    Document   : addExtraManpower
+    Document   : addExtraEquipmentEvent
     Created on : Sep 23, 2016, 9:12:28 AM
     Author     : catherinexiong
 --%>
@@ -28,14 +28,14 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <c:url var="formAction" value="/BackController?action=saveExtraManpower" />
+                        <c:url var="formAction" value="/BackController?action=saveExtraEquipmentEvent" />
                         <form class="form-horizontal" id="formSubmit" action="${formAction}" method="post">
                             <div class="form-group" style="padding-bottom: 20px;" >
-                                <label for="evalue" class="col-sm-2 control-label">Add Non-Standard Manpower</label>
+                                <label for="evalue" class="col-sm-2 control-label">Non-Standard Equipment</label>
                                 <div class="col-sm-6">
                                     <select class="js-example-basic-multiple" multiple="multiple" style="width: 100%" name="evalue" id="evalue" required>
-                                        <c:forEach items="${manpower}" var="manpower">
-                                            <option value="${manpower.id}">${manpower.staffRole} $ ${manpower.price}</option>
+                                        <c:forEach items="${equipments}" var="equipment">
+                                            <option value="${equipment.id}">${equipment.equipmentName} $ ${equipment.price}</option>
                                         </c:forEach>
 
                                     </select>

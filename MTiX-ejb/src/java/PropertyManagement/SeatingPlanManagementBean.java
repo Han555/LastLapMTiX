@@ -243,6 +243,16 @@ public class SeatingPlanManagementBean implements SeatingPlanManagementBeanLocal
         return property.getSections();
 
     }
+    
+    @Override
+    public Long getPropertyByName(String name){
+        Query query = em.createQuery("SELECT p FROM Property p WHERE p.propertyName = :inName");
+        query.setParameter("inName", name);
+        if(query.getSingleResult() != null){
+        Property property = (Property) query.getSingleResult();
+        return property.getId();
+        } else return null;
+    }
 
     /**
      * *************************************************************

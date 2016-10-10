@@ -67,5 +67,9 @@ public class SeatingPlanManager {
     public Property getPropertyById(Long propertyId) {
         return seatingPlanManagementBeanLocal.getPropertyById(propertyId);
     }
+    
+    public Long getPropertyByName(String name){
+        return seatingPlanManagementBeanLocal.getPropertyByName(name);
+    }
 
 }

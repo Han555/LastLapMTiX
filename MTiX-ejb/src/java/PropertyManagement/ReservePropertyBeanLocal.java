@@ -68,6 +68,8 @@ public interface ReservePropertyBeanLocal {
 
     public SubEvent getSubEventById(Long id);
 
+    public List<SubEvent> getListOfSubEvent(Event event);
+
 
     
 }

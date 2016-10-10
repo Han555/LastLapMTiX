@@ -34,19 +34,19 @@
                                 <label for="eventscale" class="col-sm-2 control-label">Scale of Event</label>
                                 <div class="col-sm-6">
                                     <select class="js-example-basic-single js-states" style="width: 100%" name="eventscale" id="eventscale">
-                                        <option value="SS">Small Scale</option>
-                                        <option value="SS">Medium Scale</option>
-                                        <option value="LS">Large Scale</option>
+                                        <option value="SS">Expect Audience smaller than 3000</option>
+                                        <option value="SS">Expect Audience between (3000,7000)</option>
+                                        <option value="LS">Expect Audience larger than 8000</option>
 
                                     </select>
                                 </div> 
                             </div>
                             <div class="form-group" style="padding-bottom: 20px;">
 
-                                <label for="visualevent" class="col-sm-2 control-label">Visual Event</label>
+                                <label for="radio1" class="col-sm-2 control-label">Visual Event</label>
                                 <div class="col-sm-4">
                                     <div class="radio3 radio-check radio-inline">
-                                        <input type="radio" id="radio1" name="radioV" value="yes" checked="" required
+                                        <input type="radio" id="radio1" name="radioV" value="${visual}" checked="" required
                                                data-fv-notempty-message="Visual Event is required">
                                         <label for="radio1">
                                             Yes

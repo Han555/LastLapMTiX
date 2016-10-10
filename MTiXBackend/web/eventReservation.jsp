@@ -151,21 +151,22 @@
         
         console.log(eList);
         var originalname;
-        var originalloca;
+        var originaldes;
         for (var i = 0; i < eList.length; i++) {
            if (eList[i].id == eId) {
                originalname = eList[i].name;
-               originalloca = eList[i].description;
+               originaldes = eList[i].des;
            }   
         }
         $("#update-name").val(originalname);
-        $("#update-description").val(originalloca);
+        $("#update-description").val(originaldes);
         $("#update-data").modal();
     }
     
     $("#updateOk").click(function() {
         console.log("DAS");
         console.log($("#update-name").val());
+        console.log($("#update-description").val());
         $.ajax({
             url: "UpdateEvent?eid=" + eId + "&propertyId=" + propertyId + "&ename=" + $("#update-name").val()+ "&edes=" + $("#update-description").val(),
             success:function(result) {

@@ -132,5 +132,13 @@ public class ReservationManager {
     public SubEvent getSubEventById(Long id){
         return rpb.getSubEventById(id);
     }
+    
+    public Event getEventById(Long id){
+        return rpb.getEventById(id);
+    }
+    
+    public List<SubEvent> getListOfSubEvent(Event event){
+        return rpb.getListOfSubEvent(event);
+    }
 
 }
