@@ -369,6 +369,8 @@ public class Controller extends HttpServlet {
             } else if (action.equals("finances")) {
                 request.setAttribute("username", currentUser);
                 request.getRequestDispatcher("/finances.jsp").forward(request, response);
+            } else if (action.equals("createAdmin")) {
+                registerManager.createAdministrator();
             }
         } catch (Exception ex) {
             ex.printStackTrace();

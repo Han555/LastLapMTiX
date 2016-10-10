@@ -50,8 +50,19 @@ public class UserEntity implements Serializable {
     
     @OneToMany
     private Collection<PaymentRecord> payments = new ArrayList<PaymentRecord> ();
-
+    
+    @OneToMany
+    private Collection<BookingFees> bookingfees = new ArrayList<BookingFees> ();
+    
     public UserEntity() {
+    }
+
+    public Collection<BookingFees> getBookingfees() {
+        return bookingfees;
+    }
+
+    public void setBookingfees(Collection<BookingFees> bookingfees) {
+        this.bookingfees = bookingfees;
     }
 
     public Collection<PaymentRecord> getPayments() {
