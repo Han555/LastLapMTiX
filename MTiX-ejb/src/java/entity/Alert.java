@@ -26,35 +26,33 @@ import javax.persistence.Temporal;
 public class Alert implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int percentage;
-    private String alertType;
-    private String username;
+    private int sales; //Below percentage
+    private String alertType; //Urgent, Important, Inform
+    private String inChargePersonEmail;
     @Temporal(javax.persistence.TemporalType.DATE)
-    private Date alertDate;
+    private Date alertStartDate;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date alertEndDate;
     
-  
+    @OneToOne
+    private SessionEntity session; //The one that has the foriegn key
     
-
-    public Alert() {
-    }
-    
-    public void createAlert(String alertType, String username, Date alertDate, int percentage) {
-        this.percentage = percentage;
-        this.alertDate = alertDate;
-        this.username = username;
-        this.alertType = alertType;        
-    }
-    
-   
-
-    public int getPercentage() {
-        return percentage;
+    public void createAlert(int percentage, String alertType, String email, Date start, Date end){
+        this.setAlertType(alertType);
+        this.setInChargePersonEmail(email);
+        this.setAlertStartDate(start);
+        this.setAlertEndDate(end);
+        this.setSales(percentage);
     }
 
-    public void setPercentage(int percentage) {
-        this.percentage = percentage;
+    public int getSales() {
+        return sales;
+    }
+
+    public void setSales(int sales) {
+        this.sales = sales;
     }
 
     public String getAlertType() {
@@ -65,28 +63,44 @@ public class Alert implements Serializable {
         this.alertType = alertType;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public Date getAlertDate() {
-        return alertDate;
-    }
-
-    public void setAlertDate(Date alertDate) {
-        this.alertDate = alertDate;
-    }
-
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getInChargePersonEmail() {
+        return inChargePersonEmail;
+    }
+
+    public void setInChargePersonEmail(String inChargePersonEmail) {
+        this.inChargePersonEmail = inChargePersonEmail;
+    }
+
+    public Date getAlertStartDate() {
+        return alertStartDate;
+    }
+
+    public void setAlertStartDate(Date alertStartDate) {
+        this.alertStartDate = alertStartDate;
+    }
+
+    public Date getAlertEndDate() {
+        return alertEndDate;
+    }
+
+    public void setAlertEndDate(Date alertEndDate) {
+        this.alertEndDate = alertEndDate;
+    }
+
+    public SessionEntity getSession() {
+        return session;
+    }
+
+    public void setSession(SessionEntity session) {
+        this.session = session;
     }
 
     @Override

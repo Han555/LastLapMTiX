@@ -1,109 +1,180 @@
 <%-- 
-    Document   : createAlert
-    Created on : Sep 23, 2016, 4:10:45 PM
+    Document   : copySetTickets
+    Created on : Sep 22, 2016, 6:35:43 PM
     Author     : Student-ID
 --%>
-
-<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
+<%@page import="java.util.ArrayList, java.util.List" %>
+<!DOCTYPE html>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <!doctype html>
-<jsp:include page="header.jsp" />
+<jsp:include page="header2.jsp" />
 <!-- Main Content -->
-<!-- Main Content -->
+<!-- Multidates -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
+
+
 <div class="container-fluid">
-    <c:url var="formAction" value="/BackController?action=addAlert" />
+    <%
+        List<ArrayList> data = (List<ArrayList>) request.getAttribute("data");
+        List<ArrayList> alerts = (List<ArrayList>) request.getAttribute("alerts");
+        String date = (String) request.getAttribute("date");
+        String endDate = (String) request.getAttribute("endDate");
+    %>
+
+    <c:url var="formAction" value="/BackController?action=createdAlert" />
     <div class="side-body padding-top">
 
-
         <div class="row">
-            <c:if test="${alertCreated == 'true'}">
-                <font color="red">Alert successfully created!</font><br/>
-            </c:if>
-        </div>
-        
-        <div class="row">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="header">
-                        <h4 class="title">Events</h4>
-
-                    </div>
-                    <div class="content">
-                        <table class="table table-inbox table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Description</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <%
-                                    int size = (int) Integer.parseInt((String) request.getAttribute("recordSize"));
-                                    ArrayList<ArrayList<String>> inboxPage = (ArrayList<ArrayList<String>>) request.getAttribute("inbox");
-                                    for (int i = 0; i < size; i++) {
-                                        String id = inboxPage.get(i).get(0);
-                                        String event = inboxPage.get(i).get(1);
-                                        String description = inboxPage.get(i).get(2);
-                                %>
-
-                                <c:url var="formAction" value="/BackController?action=addAlert" />
-
-                                <tr class="unread">
-
-
-
-
-                                    <td class="view-message  dont-show"><%= event%></td>
-                                    <td class="view-message "><%= description%></td>
-
-                                <td class="view-message">
-                                    <form id="verifyForm" name="verifyForm" action="${formAction}" method="post">
-                                        <input type="hidden" name="eventId" value=<%= id%> readonly="readonly" />
-                                        <c:url var="formAction" value="/BackController" />
-                                        <input type="submit" value="Create Alert" /> 
-                                    </form></td>
-
-
-                                </tr>
-                                <%
-                                    }
-                                %>
-                                </tbody>
-                        </table>
-                        <table border="1" cellpadding="5" cellspacing="5">
+            <form id="contact_form" action="${formAction}" method="POST">
+                <%
+                    if (data == null) {
+                %>
+                <div align="center"><h3>No SESSION Found!</h3></div><br><br>
+                <%} else {
+                %>
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="header">
+                            <h4 class="title">Reserve/Edit Sections</h4>   
+                        </div> 
+                        <table align="center">
                             <tr>
-                                <c:forEach begin="1" end="${noOfPages}" var="i">
-                                    <c:choose>
-                                        <c:when test="${currentPage eq i}">
-                                            <td>${i}</td>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <td>
-                                                <c:url var="linkHref" value="/BackController?action=creatAlert&page=${i}" />
+                                <td>&nbsp</td> 
+                            </tr>
+                            <tr>
+                                <td>&nbsp</td> 
+                            </tr>
+                            <tr>
+                                <td align="right">Apply to all Event/Sub-Event Session : &nbsp;</td>
+                                <td align="center"><input type="radio" required="true" name="apply" value="yes">Yes &nbsp;<br></td>
+                                <td align="left"><input type="radio" required="true" name="apply" value="no">No<br></td>
 
-                                                <a href="${linkHref}">${i}</a></td>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </c:forEach>
+                            </tr>
+                            <tr>
+                                <td>&nbsp</td> 
                             </tr>
                         </table>
-                        <div class="footer">
+                        <table align="center">
+                            <tr>
+                                <td align="right">Session : &nbsp</td>
+                                <td>
+                                    <select class="form-control" id="id" name="id" required="true">
+                                        <%                                            for (int i = 0; i < data.size(); i++) {
+                                        %>
+                                        <option value="<%=data.get(i).get(0)%>"><%=data.get(i).get(0) + " | " + data.get(i).get(1) + " | " + data.get(i).get(3) + " | " + data.get(i).get(4)%></option>
+                                        <% }%>
+                                    </select></td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp</td> 
+                            </tr>
+                            <tr>
+                                <td align="right">Alert Type : &nbsp</td>
+                                <td align="left">
+                                    <select class="form-control" name="type" required="true">
+                                        <option value="1">Informative Alert - Check every 3 days</option>
+                                        <option value="2">Important Alert - Check every 2 days</option>
+                                        <option value="3">Urgent Alert - Check every 1 day</option>
+                                    </select></td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp</td> 
+                            </tr>
+                            <tr><td align="right">Start Alert Date : &nbsp</td>
+                                <td align="left"><input type="text" class="form-control startdate" id="start" required="true" name="date"</td>    
+                            <font color="red">From now till <%=date%></font><br/>
+                            <script>
+                                $('.startdate').datepicker({
+                                    multidate: false,
+                                    format: 'yyyy-mm-dd',
+                                    startDate: '$.now()',
+                                    endDate: '<%=date%>'
+                                });
+                            </script>
+                            </tr>
+                            <tr>
+                                <td>&nbsp</td> 
+                            </tr>
+                            <tr><td align="right">End Alert Date : &nbsp</td>
+                                <td align="left"><input type="text" class="form-control enddate" id="end" required="true" name="endDate"</td>    
+                            <font color="red">From Start Alert Date till <%=endDate%></font><br/>
+                            <script>
+                                $('.enddate').datepicker({
+                                    multidate: false,
+                                    format: 'yyyy-mm-dd',
+                                    startDate: '$.now()',
+                                    endDate: '<%=endDate%>'
+                                });
 
-                        </div>
+                                $("form").submit(function (event) {
+                                    if (new Date($('.enddate').val()) <= new Date($('.startdate').val())) {
+                                        alert("Alert Start Date must before Alert End Date.");
+                                        return false;
+                                    }
+                                });
+                            </script>
+                            </tr>
+                            <tr>
+                                <td>&nbsp</td> 
+                            </tr>
+                            <tr>
+                                <td align="right">Below sales(%) : &nbsp</td>
+                                <td align="left"><input type="number" min="0" max="100" name="sales" required="true" class="form-control"></td> 
+                            </tr>
+                            <tr>
+                                <td>&nbsp</td> 
+                            </tr>
+                            <tr>
+                                <td align="right">In-Charge email : &nbsp</td>
+                                <td align="left"><input type="email" name="email" required="true" class="form-control"></td> 
+                            </tr>
+                            <tr>
+                                <td>&nbsp</td> 
+                            </tr>
+                            <tr>
+                                <td align="center"><input type="submit" value="Submit"/></td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
-            </div>
+            </form>
 
-        </div>
-    </div> 
-</div>
+            <div class="col-sm-6">
+                    <table id="table" class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th data-field="type">Session No.</th>
+                                <th data-field="name">Sales(%)</th>
+                                <th data-field="start">Alert Type</th>
+                                <th data-field="email">Email</th>
+                                <th data-field="start">Start Date</th>
+                                <th data-field="end">End Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%
+                                for (int i = 0; i < alerts.size(); i++) {
+                            %>
+                            <tr>
+                                <td><%= alerts.get(i).get(0)%></td>
+                                <td><%= alerts.get(i).get(1)%></td>
+                                <td><%= alerts.get(i).get(2)%></td>
+                                <td><%= alerts.get(i).get(3)%></td>
+                                <td><%= alerts.get(i).get(4)%></td>
+                                <td><%= alerts.get(i).get(5)%></td></tr>
+                                <% }%>
+                        </tbody>
+
+                    </table>
+                    <%}%>
+                </div>
+
+        </div> 
+    </div>
+
 </div>
 
 <jsp:include page="footer.jsp" />
-
-
