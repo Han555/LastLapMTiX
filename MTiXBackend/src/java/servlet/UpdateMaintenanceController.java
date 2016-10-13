@@ -5,9 +5,9 @@
  */
 package servlet;
 
-import PropertyManagement.MaintenanceBeanLocal;
-import PropertyManagement.ReservePropertyBeanLocal;
-import PropertyManagement.SeatingPlanManagementBeanLocal;
+import session.stateless.propertymanagement.MaintenanceBeanLocal;
+import session.stateless.propertymanagement.ReservePropertyBeanLocal;
+import session.stateless.propertymanagement.SeatingPlanManagementBeanLocal;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;

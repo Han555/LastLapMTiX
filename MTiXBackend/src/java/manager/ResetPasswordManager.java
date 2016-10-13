@@ -5,7 +5,7 @@
  */
 package manager;
 
-import session.stateless.ResetPasswordSessionLocal;
+import session.stateless.commoninfrastucture.ResetPasswordSessionLocal;
 
 /**
  *

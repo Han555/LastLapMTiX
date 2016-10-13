@@ -6,7 +6,7 @@
 package manager;
 
 import entity.SectionEntity;
-import session.stateless.ProductSessionLocal;
+import session.stateless.commoninfrastucture.ProductSessionLocal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;

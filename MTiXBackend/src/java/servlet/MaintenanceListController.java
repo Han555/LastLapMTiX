@@ -5,8 +5,8 @@
  */
 package servlet;
 
-import PropertyManagement.MaintenanceBeanLocal;
-import PropertyManagement.SeatingPlanManagementBeanLocal;
+import session.stateless.propertymanagement.MaintenanceBeanLocal;
+import session.stateless.propertymanagement.SeatingPlanManagementBeanLocal;
 import com.google.gson.Gson;
 import entity.MaintenanceSchedule;
 import entity.Property;

@@ -5,7 +5,7 @@
  */
 package manager;
 
-import session.stateless.LockAccountSessionLocal;
+import session.stateless.commoninfrastucture.LockAccountSessionLocal;
 
 /**
  *

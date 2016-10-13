@@ -5,8 +5,8 @@
  */
 package servlet;
 
-import PropertyManagement.EquipmentBeanLocal;
-import PropertyManagement.ManpowerBeanLocal;
+import session.stateless.propertymanagement.EquipmentBeanLocal;
+import session.stateless.propertymanagement.ManpowerBeanLocal;
 import com.google.gson.Gson;
 import entity.Equipment;
 import entity.Manpower;

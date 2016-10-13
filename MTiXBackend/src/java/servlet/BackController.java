@@ -6,11 +6,11 @@
  */
 package servlet;
 
-import PropertyManagement.EquipmentBeanLocal;
-import PropertyManagement.FoodOutletBeanLocal;
-import PropertyManagement.ManpowerBeanLocal;
-import PropertyManagement.ReservePropertyBeanLocal;
-import PropertyManagement.SeatingPlanManagementBeanLocal;
+import session.stateless.propertymanagement.EquipmentBeanLocal;
+import session.stateless.propertymanagement.FoodOutletBeanLocal;
+import session.stateless.propertymanagement.ManpowerBeanLocal;
+import session.stateless.propertymanagement.ReservePropertyBeanLocal;
+import session.stateless.propertymanagement.SeatingPlanManagementBeanLocal;
 import entity.Equipment;
 import entity.Event;
 import entity.FoodOutlet;
@@ -48,15 +48,15 @@ import manager.ReservationManager;
 import manager.ResetPasswordManager;
 import manager.SeatingPlanManager;
 import manager.UnlockManager;
-import session.stateless.BulletinSessionLocal;
-import session.stateless.GetAllProductDetailsLocal;
-import session.stateless.LockAccountSessionLocal;
-import session.stateless.LoginSessionLocal;
-import session.stateless.MessageSessionLocal;
-import session.stateless.ProductSessionLocal;
-import session.stateless.RegisterSessionLocal;
-import session.stateless.ResetPasswordSessionLocal;
-import session.stateless.UnlockAccountSessionLocal;
+import session.stateless.commoninfrastucture.BulletinSessionLocal;
+import session.stateless.commoninfrastucture.GetAllProductDetailsLocal;
+import session.stateless.commoninfrastucture.LockAccountSessionLocal;
+import session.stateless.commoninfrastucture.LoginSessionLocal;
+import session.stateless.commoninfrastucture.MessageSessionLocal;
+import session.stateless.commoninfrastucture.ProductSessionLocal;
+import session.stateless.commoninfrastucture.RegisterSessionLocal;
+import session.stateless.commoninfrastucture.ResetPasswordSessionLocal;
+import session.stateless.commoninfrastucture.UnlockAccountSessionLocal;
 
 /**
  *

@@ -5,8 +5,8 @@
  */
 package manager;
 
-import PropertyManagement.ReservePropertyBeanLocal;
-import PropertyManagement.SeatingPlanManagementBeanLocal;
+import session.stateless.propertymanagement.ReservePropertyBeanLocal;
+import session.stateless.propertymanagement.SeatingPlanManagementBeanLocal;
 import entity.Equipment;
 import entity.Event;
 import entity.Manpower;

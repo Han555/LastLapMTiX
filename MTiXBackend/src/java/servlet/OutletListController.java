@@ -5,7 +5,7 @@
  */
 package servlet;
 
-import PropertyManagement.FoodOutletBeanLocal;
+import session.stateless.propertymanagement.FoodOutletBeanLocal;
 import com.google.gson.Gson;
 import entity.FoodOutlet;
 import java.io.IOException;

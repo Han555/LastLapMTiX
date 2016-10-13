@@ -8,7 +8,7 @@ package manager;
 import java.util.List;
 import java.util.Random;
 import java.util.Vector;
-import session.stateless.RegisterSessionLocal;
+import session.stateless.commoninfrastucture.RegisterSessionLocal;
 
 /**
  *

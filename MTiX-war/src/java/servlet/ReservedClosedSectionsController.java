@@ -5,7 +5,7 @@
  */
 package servlet;
 
-import PropertyManagement.ReservePropertyBeanLocal;
+import session.stateless.propertymanagement.ReservePropertyBeanLocal;
 import com.google.gson.Gson;
 import entity.Equipment;
 import entity.Event;
@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import manager.ProductManager;
-import session.stateless.ProductSessionLocal;
+import session.stateless.commoninfrastucture.ProductSessionLocal;
 
 /**
  *

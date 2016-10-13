@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 import javax.persistence.Query;
-import session.stateless.LoginSessionLocal;
+import session.stateless.commoninfrastucture.LoginSessionLocal;
 
 /**
  *

@@ -5,7 +5,7 @@
  */
 package manager;
 
-import PropertyManagement.MaintenanceBeanLocal;
+import session.stateless.propertymanagement.MaintenanceBeanLocal;
 import java.util.List;
 import entity.MaintenanceSchedule;
 import java.text.DateFormat;

@@ -5,7 +5,7 @@
  */
 package manager;
 
-import PropertyManagement.SeatingPlanManagementBeanLocal;
+import session.stateless.propertymanagement.SeatingPlanManagementBeanLocal;
 import entity.Property;
 import entity.Seat;
 import entity.SectionEntity;

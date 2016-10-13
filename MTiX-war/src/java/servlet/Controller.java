@@ -5,7 +5,7 @@
  */
 package servlet;
 
-import session.stateless.ticketing.BookingSessionBeanLocal;
+import session.stateless.ticketing.BookingSessionLocal;
 import entity.Event;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -30,19 +30,19 @@ import manager.ResetPasswordManager;
 import manager.SeatingPlanManager;
 import manager.SessionManager;
 import manager.UnlockManager;
-import session.stateless.BulletinSessionLocal;
-import session.stateless.LockAccountSessionLocal;
-import session.stateless.LoginSessionLocal;
-import session.stateless.MessageSessionLocal;
-import session.stateless.RegisterSessionLocal;
-import session.stateless.ResetPasswordSessionLocal;
-import session.stateless.UnlockAccountSessionLocal;
-import PropertyManagement.SeatingPlanManagementBeanLocal;
-import PropertyManagement.ReservePropertyBeanLocal;
+import session.stateless.commoninfrastucture.BulletinSessionLocal;
+import session.stateless.commoninfrastucture.LockAccountSessionLocal;
+import session.stateless.commoninfrastucture.LoginSessionLocal;
+import session.stateless.commoninfrastucture.MessageSessionLocal;
+import session.stateless.commoninfrastucture.RegisterSessionLocal;
+import session.stateless.commoninfrastucture.ResetPasswordSessionLocal;
+import session.stateless.commoninfrastucture.UnlockAccountSessionLocal;
+import session.stateless.propertymanagement.SeatingPlanManagementBeanLocal;
+import session.stateless.propertymanagement.ReservePropertyBeanLocal;
 import entity.SubEvent;
 import manager.ProductManager;
 import manager.ReservationManager;
-import session.stateless.ProductSessionLocal;
+import session.stateless.commoninfrastucture.ProductSessionLocal;
 
 
 /**
@@ -68,7 +68,7 @@ public class Controller extends HttpServlet {
     private LockAccountSessionLocal lockAccountSession;
     
     @EJB
-    private BookingSessionBeanLocal bookingSession;
+    private BookingSessionLocal bookingSession;
     
     @EJB
     private ProductSessionLocal productSession;

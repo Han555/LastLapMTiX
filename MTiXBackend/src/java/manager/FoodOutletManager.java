@@ -5,7 +5,7 @@
  */
 package manager;
 
-import PropertyManagement.FoodOutletBeanLocal;
+import session.stateless.propertymanagement.FoodOutletBeanLocal;
 import entity.FoodOutlet;
 import java.util.List;
 

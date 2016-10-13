@@ -5,7 +5,7 @@
  */
 package servlet;
 
-import PropertyManagement.ManpowerBeanLocal;
+import session.stateless.propertymanagement.ManpowerBeanLocal;
 import com.google.gson.Gson;
 import java.io.IOException;
 import javax.ejb.EJB;

@@ -5,7 +5,7 @@
  */
 package manager;
 
-import PropertyManagement.EquipmentBeanLocal;
+import session.stateless.propertymanagement.EquipmentBeanLocal;
 import entity.Equipment;
 import java.util.List;
 

@@ -8,16 +8,16 @@ import entity.SessionEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-import session.stateless.ticketing.BookingSessionBeanLocal;
+import session.stateless.ticketing.BookingSessionLocal;
 
 /**
  *
  * @author catherinexiong
  */
 public class SessionManager {
-    private BookingSessionBeanLocal bsbl;
+    private BookingSessionLocal bsbl;
     
-    public SessionManager(BookingSessionBeanLocal bsbl) {
+    public SessionManager(BookingSessionLocal bsbl) {
         this.bsbl= bsbl;
     }
     
