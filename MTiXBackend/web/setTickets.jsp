@@ -276,7 +276,8 @@
                             <td>&nbsp</td> 
                         </tr>
                         <tr><td align="right">End Date : &nbsp</td>
-                            <td align="left"><input type="text" class="form-control date" required="true" name="date"</td>    
+                            <td align="left"><input type="text" class="form-control date" required="true" name="date"</td>  
+                            <font color="red">From now till <%=date%> (Event Start Date)</font><br/>
                         <script>
                             $('.date').datepicker({
                                 multidate: false,

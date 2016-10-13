@@ -177,7 +177,7 @@ public class ProductSession implements ProductSessionLocal {
 
         q = em.createQuery("SELECT a FROM SubEvent a WHERE a.user.userId=:id");
         q.setParameter("id", user.getUserId());
-        
+
         for (Object o : q.getResultList()) {
             SubEvent subEventEntity = (SubEvent) o;
             list = new ArrayList();

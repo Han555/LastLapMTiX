@@ -134,13 +134,15 @@
                                         <div id="dropdown-element" class="panel-collapse collapse">
                                             <div class="panel-body">
                                                 <ul class="nav navbar-nav">
-                                                    <li><c:url var="linkHref" value="/BackController?action=promotionMain" /><a href="${linkHref}">Promotion</a>
+                                                    <li><c:url var="linkHref" value="/BackController?action=alertEnterUser" /><a href="${linkHref}">Alert</a>
                                                     </li>
-                                                    <li><c:url var="linkHref" value="/BackController?action=sessionMain" /><a href="${linkHref}">Sessions</a>
+                                                    <li><c:url var="linkHref" value="/BackController?action=promotionEnterUser" /><a href="${linkHref}">Promotion</a>
                                                     </li>
-                                                    <li><c:url var="linkHref" value="/BackController?action=configuration" /><a href="${linkHref}">Seat Configuration</a>
+                                                    <li><c:url var="linkHref" value="/BackController?action=productEnterUser" /><a href="${linkHref}">Session</a>
                                                     </li>
-                                                    <li><c:url var="linkHref" value="/BackController?action=ticketReservation" /><a href="${linkHref}">Seats Inventory</a>
+                                                    <li><c:url var="linkHref" value="/BackController?action=displaySeatsEnterUser" /><a href="${linkHref}">Seat Configuration</a>
+                                                    </li>
+                                                    <li><c:url var="linkHref" value="/BackController?action=ticketReservationEnterUser" /><a href="${linkHref}">Seats Inventory</a>
                                                     </li>
                                                     
                                                 </ul>

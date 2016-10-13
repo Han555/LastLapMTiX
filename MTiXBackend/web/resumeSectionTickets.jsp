@@ -118,7 +118,7 @@
                             <thead>
                                 <tr>
                                     <th data-radio="true"></th>
-                                    <th>Property No.</th>
+                                    <th>Section No.</th>
                                     <th>Purpose</th>
                                 </tr>
                             </thead>
@@ -150,6 +150,14 @@
                             checkboxes.click(function () {
                                 submitButt.attr("disabled", !checkboxes.is(":checked"));
                             });
+                            
+                              $("form").submit(function (event) {
+                             if (confirm("You are about to resumed the closed sections. Are you sure about that?")){
+                                 return true;
+                             } else {
+                                 return false;
+                             }
+                        });
                         </script>
                         <%}%>
                     </form> 

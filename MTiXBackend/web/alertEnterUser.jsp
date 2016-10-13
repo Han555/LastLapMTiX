@@ -1,6 +1,6 @@
 <%-- 
-    Document   : productEnterUser
-    Created on : 22 Sep, 2016, 5:26:25 PM
+    Document   : alertEnterUser
+    Created on : 10 Oct, 2016, 11:51:40 PM
     Author     : JingYing
 --%>
 
@@ -18,7 +18,7 @@
     <%
         ArrayList data = (ArrayList) request.getAttribute("data");
     %>
-    <c:url var="formAction" value="/BackController?action=sessionMain" />
+    <c:url var="formAction" value="/BackController?action=alertMain" />
     <div class="side-body padding-top">
 
         <div class="row">
@@ -64,5 +64,9 @@
 </div>
 
 <jsp:include page="footer.jsp" />
+
+
+
+
 
 

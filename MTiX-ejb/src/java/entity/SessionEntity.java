@@ -16,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
 /**
@@ -45,7 +46,12 @@ public class SessionEntity implements Serializable {
     private Collection<SessionCategoryPrice> price = new ArrayList<SessionCategoryPrice>();
     @OneToMany(cascade={CascadeType.REMOVE}, mappedBy = "session")
     private Collection<SessionSeatsInventory> seatsInventory = new ArrayList<SessionSeatsInventory>();
-
+    @OneToOne(cascade={CascadeType.REMOVE}, mappedBy = "session")
+    private Alert alert;
+    @OneToMany(cascade={CascadeType.REMOVE}, mappedBy = "session")
+    private Collection<TicketSales> ticketSales = new ArrayList<TicketSales>();
+    
+    
     public void createSession(String name, Date start, Date end, String descriptions) {
         this.setName(name);
         this.setDescriptions(descriptions);
@@ -132,6 +138,22 @@ public class SessionEntity implements Serializable {
 
     public void setSeatsInventory(Collection<SessionSeatsInventory> seatsInventory) {
         this.seatsInventory = seatsInventory;
+    }
+
+    public Alert getAlert() {
+        return alert;
+    }
+
+    public void setAlert(Alert alert) {
+        this.alert = alert;
+    }
+
+    public Collection<TicketSales> getTicketSales() {
+        return ticketSales;
+    }
+
+    public void setTicketSales(Collection<TicketSales> ticketSales) {
+        this.ticketSales = ticketSales;
     }
 
     @Override
