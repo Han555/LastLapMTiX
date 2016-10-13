@@ -182,26 +182,9 @@ public class ProductManager {
         session.writePromotion(data);
     }
     
-    public boolean checkPromotionPresence() {
-        if(session.getPromotion().isEmpty()) {
-            return false;
-        } else {
-            return true;
-        }
-    }
+  
     
-    public ArrayList<ArrayList<String>> retrievePromotions() {
-         ArrayList<ArrayList<String>> promotions = session.getPromotion();
-        ArrayList<ArrayList<String>> arrangedPromotion = new ArrayList();
-        int size = promotions.size();
-        size--;
-        
-        for(int i=size; i>=0; i--) {
-            arrangedPromotion.add(promotions.get(i));
-        }
-        
-        return arrangedPromotion;
-    }
+   
     
     public ArrayList<ArrayList<String>> promotionPage(ArrayList<ArrayList<String>> promotions, int offset, int noOfRecords) {
         ArrayList<ArrayList<String>> promotionPage = new ArrayList();
@@ -223,34 +206,9 @@ public class ProductManager {
         return promotionPage;
     }
     
-    public void increaseTickets(String promotionId, String numOfTics) {
-        session.addTickets(promotionId, numOfTics);
-    }
+ 
     
-    public boolean checkTicAmt(String promotionId, String numOfTics) {
-        return session.checkTicketAmount(promotionId, numOfTics);
-    }
-    
-    public void deleteTics(String promotionId, String numOfTics) {
-        session.deleteTickets(promotionId, numOfTics);
-    }
-    
-    public void editTicAmt(String promotionId, String ticAmt) {
-        session.editTicketAmount(promotionId, ticAmt);
-    }
-    
-    public ArrayList<ArrayList<String>> getEvents() {
-         ArrayList<ArrayList<String>> events = session.retrieveEvents();
-        ArrayList<ArrayList<String>> arrangedEvents = new ArrayList();
-        int size = events.size();
-        size--;
-        
-        for(int i=size; i>=0; i--) {
-            arrangedEvents.add(events.get(i));
-        }
-        
-        return arrangedEvents;
-    }
+ 
     
     public boolean checkEventPresence(ArrayList<ArrayList<String>> events) {
         if(events.isEmpty()) {
@@ -277,26 +235,7 @@ public class ProductManager {
         return eventPage;
     }
     
-    public void createAlert(String percentage, String alertType, String username, String date, String eventId) {
-        session.addAlert(percentage, alertType, username, date, eventId);
-    }
-    
-    public boolean checkingSubEventPresence(String eventId) {
-        return session.checkSubEvent(eventId);
-    }
-    
-    public void createSubEventAlert(String percentage, String alertType, String username, String date, String eventId) {
-        session.addSubEventAlert(percentage, alertType, username, date, eventId);
-    }
-    
-    public void editAlert(String percentage, String alertType, String username, String date, String eventId) {
-        session.editAlert(percentage, alertType, username, date, eventId);
-    }
-    
-    public void editSubEventAlert(String percentage, String alertType, String username, String date, String eventId) {
-        session.editSubEventAlert(percentage, alertType, username, date, eventId);
-    }
-    
+
     public List<SectionEntity> getReservedSectionsBySessionId (Long id){
         return session.getReservedSectionsBySessionId(id);
     }
