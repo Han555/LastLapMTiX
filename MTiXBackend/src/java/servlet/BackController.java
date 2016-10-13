@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -48,6 +49,7 @@ import manager.ResetPasswordManager;
 import manager.SeatingPlanManager;
 import manager.UnlockManager;
 import session.stateless.BulletinSessionLocal;
+import session.stateless.GetAllProductDetailsLocal;
 import session.stateless.LockAccountSessionLocal;
 import session.stateless.LoginSessionLocal;
 import session.stateless.MessageSessionLocal;
@@ -93,6 +95,9 @@ public class BackController extends HttpServlet {
     private ManpowerBeanLocal manpowerBeanLocal;
     @EJB
     private FoodOutletBeanLocal foodoutletBeanLocal;
+    
+    @EJB
+    private GetAllProductDetailsLocal getAllProductDetailsLocal;
 
     public String currentUser;
     public String subject = "";
@@ -419,32 +424,34 @@ public class BackController extends HttpServlet {
                 request.setAttribute("username", currentUser);
                 request.setAttribute("message", message);
                 request.getRequestDispatcher("/readBulletin.jsp").forward(request, response);
-            } else if (action.equals("productMain")) {
-                String email = request.getParameter("email");
-                boolean userFound = productSession.signIn(email);
+            } /*
+             Product Management System
+            
+            
+            
+            
+            
+            
+            
+             */else if (action.equals("productMain")) {
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
-
-                if (userFound) {
-                    request.getRequestDispatcher("/productMain.jsp").forward(request, response);
-                } else {
-                    request.setAttribute("error", "true");
-                    request.getRequestDispatcher("/productEnterUser.jsp").forward(request, response);
-                }
+                request.getRequestDispatcher("/productMain.jsp").forward(request, response);
+                
             } else if (action.equals("propertyMain")) {
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
                 request.getRequestDispatcher("/propertyMain.jsp").forward(request, response);
             } else if (action.equals("sessionMain")) {
+                String email = request.getParameter("email");
+                boolean userFound = productSession.signIn(email);
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
-                String email = request.getParameter("id");
-                //  productSession.signIn(email);
                 request.getRequestDispatcher("/sessionMain.jsp").forward(request, response);
-            } else if (action.equals("promotionMain")) {
+            } else if (action.equals("promotionMain")) {                
                 request.setAttribute("role", role);
-                request.setAttribute("username", currentUser);
-                request.getRequestDispatcher("/promotionOptions.jsp").forward(request, response);
+                request.setAttribute("username", currentUser);    
+                request.getRequestDispatcher("/promotionMain.jsp").forward(request, response);
             } else if (action.equals("editPromo")) {
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
@@ -575,6 +582,8 @@ public class BackController extends HttpServlet {
                 String desc = request.getParameter("description");
                 productSession.setPromotion_1(id, type, name2, discount, requirement, desc);
                 request.setAttribute("promotionCreated1245", "true");
+                request.setAttribute("role", role);
+                request.setAttribute("username", currentUser);
                 request.getRequestDispatcher("/promotionMain.jsp").forward(request, response);
             } else if (action.equals("setPromotion")) {
                 request.setAttribute("role", role);
@@ -1169,9 +1178,33 @@ public class BackController extends HttpServlet {
                 request.getRequestDispatcher("/createManpower.jsp").forward(request, response);
             } /* End of Property Management System Part 1
             
-             */ else if (action.equals("ticketReservation")) {
+             
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            Start Product Management System Part 2
+             */else if (action.equals("ticketReservation")) {
+                String email = request.getParameter("email");
+                boolean userFound = productSession.signIn(email);
+                
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
+                
                 request.getRequestDispatcher("/ticketReservation.jsp").forward(request, response);
             } else if (action.equals("setTickets")) {
                 String info = request.getParameter("id");
@@ -1191,17 +1224,16 @@ public class BackController extends HttpServlet {
             } else if (action.equals("addTickets")) {
                 String sectionData = request.getParameter("sectionData");
                 System.out.println(sectionData + "****************************");
-                sectionData = sectionData.substring(1, sectionData.length()-1);
+                sectionData = sectionData.substring(1, sectionData.length() - 1);
                 System.out.println(sectionData + "****************************");
-                
-                
+
                 String apply = request.getParameter("apply");
                 Long i = Long.valueOf(request.getParameter("id"));
                 String purpose = request.getParameter("purpose");
                 String endDate = request.getParameter("date");
                 request.setAttribute("success", "true");
                 productSession.setReserveSection(apply, i, purpose, endDate, sectionData);
-                
+
                 List<ArrayList> data = productSession.getEventList();
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
@@ -1225,180 +1257,6 @@ public class BackController extends HttpServlet {
                 request.setAttribute("username", currentUser);
                 request.setAttribute("data", data);
                 request.getRequestDispatcher("/deleteTicketsMain.jsp").forward(request, response);
-            } else if (action.equals("editTickets")) {
-                if (request.getParameter("page") != null) {
-                    page = Integer.parseInt(request.getParameter("page"));
-                }
-                ArrayList<ArrayList<String>> promotions = productManager.retrievePromotions();
-                int noOfRecords = promotions.size();
-                int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
-                ArrayList<ArrayList<String>> promotionPage = productManager.promotionPage(promotions, (page - 1) * recordsPerPage, recordsPerPage);
-                request.setAttribute("noOfPages", noOfPages);
-                request.setAttribute("recordSize", String.valueOf(promotionPage.size()));
-                request.setAttribute("currentPage", page);
-                request.setAttribute("role", role);
-                request.setAttribute("username", currentUser);
-                request.setAttribute("inbox", promotionPage);
-                request.getRequestDispatcher("/editTickets.jsp").forward(request, response);
-            } else if (action.equals("editedTickets")) {
-                String promotionId = request.getParameter("promotionId");
-                String numberOfTics = request.getParameter("numberOfTics");
-                productManager.editTicAmt(promotionId, numberOfTics);
-                if (request.getParameter("page") != null) {
-                    page = Integer.parseInt(request.getParameter("page"));
-                }
-                ArrayList<ArrayList<String>> promotions = productManager.retrievePromotions();
-                int noOfRecords = promotions.size();
-                int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
-                ArrayList<ArrayList<String>> promotionPage = productManager.promotionPage(promotions, (page - 1) * recordsPerPage, recordsPerPage);
-                request.setAttribute("edited", "true");
-                request.setAttribute("noOfPages", noOfPages);
-                request.setAttribute("recordSize", String.valueOf(promotionPage.size()));
-                request.setAttribute("currentPage", page);
-                request.setAttribute("role", role);
-                request.setAttribute("username", currentUser);
-                request.setAttribute("inbox", promotionPage);
-                request.getRequestDispatcher("/editTickets.jsp").forward(request, response);
-            } else if (action.equals("salesAlerts")) {
-                request.setAttribute("role", role);
-                request.setAttribute("username", currentUser);
-                request.getRequestDispatcher("/salesAlerts.jsp").forward(request, response);
-            } else if (action.equals("createAlert")) {
-                if (request.getParameter("page") != null) {
-                    page = Integer.parseInt(request.getParameter("page"));
-                }
-                ArrayList<ArrayList<String>> events = productManager.getEvents();
-                int noOfRecords = events.size();
-                int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
-                ArrayList<ArrayList<String>> eventPage = productManager.eventPage(events, (page - 1) * recordsPerPage, recordsPerPage);
-                request.setAttribute("noOfPages", noOfPages);
-                request.setAttribute("recordSize", String.valueOf(eventPage.size()));
-                request.setAttribute("currentPage", page);
-                request.setAttribute("role", role);
-                request.setAttribute("username", currentUser);
-                request.setAttribute("inbox", eventPage);
-                request.getRequestDispatcher("/createAlert.jsp").forward(request, response);
-            } else if (action.equals("addAlert")) {
-                String eventId = request.getParameter("eventId");
-                request.setAttribute("eventId", eventId);
-                request.setAttribute("role", role);
-                request.setAttribute("username", currentUser);
-                request.getRequestDispatcher("addAlert.jsp").forward(request, response);
-            } else if (action.equals("addingAlert")) {
-                System.out.println("percentage: " + request.getParameter("sales"));
-                System.out.println("Alert Type: " + request.getParameter("alertType"));
-                System.out.println("person: " + request.getParameter("person"));
-                System.out.println("date: " + request.getParameter("date"));
-                System.out.println("eventId: " + request.getParameter("eventId"));
-                if (productManager.checkingSubEventPresence(request.getParameter("eventId"))) {
-                    System.out.println("Entered subevent alert");
-                    productManager.createSubEventAlert(request.getParameter("sales"), request.getParameter("alertType"), request.getParameter("person"), request.getParameter("date"), request.getParameter("eventId"));
-                    System.out.println("Entered subevent alert");
-                    if (request.getParameter("page") != null) {
-                        page = Integer.parseInt(request.getParameter("page"));
-                    }
-                    System.out.println("Entered subevent alert 2");
-                    ArrayList<ArrayList<String>> events = productManager.getEvents();
-                    int noOfRecords = events.size();
-                    int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
-                    ArrayList<ArrayList<String>> eventPage = productManager.eventPage(events, (page - 1) * recordsPerPage, recordsPerPage);
-                    request.setAttribute("alertCreated", "true");
-                    request.setAttribute("noOfPages", noOfPages);
-                    request.setAttribute("recordSize", String.valueOf(eventPage.size()));
-                    request.setAttribute("currentPage", page);
-                    request.setAttribute("role", role);
-                    request.setAttribute("username", currentUser);
-                    request.setAttribute("inbox", eventPage);
-                    request.getRequestDispatcher("/createAlert.jsp").forward(request, response);
-                } else {
-                    System.out.println("Entered event alert");
-                    productManager.createAlert(request.getParameter("sales"), request.getParameter("alertType"), request.getParameter("person"), request.getParameter("date"), request.getParameter("eventId"));
-                    if (request.getParameter("page") != null) {
-                        page = Integer.parseInt(request.getParameter("page"));
-                    }
-                    ArrayList<ArrayList<String>> events = productManager.getEvents();
-                    int noOfRecords = events.size();
-                    int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
-                    ArrayList<ArrayList<String>> eventPage = productManager.eventPage(events, (page - 1) * recordsPerPage, recordsPerPage);
-                    request.setAttribute("alertCreated", "true");
-                    request.setAttribute("noOfPages", noOfPages);
-                    request.setAttribute("recordSize", String.valueOf(eventPage.size()));
-                    request.setAttribute("currentPage", page);
-                    request.setAttribute("role", role);
-                    request.setAttribute("username", currentUser);
-                    request.setAttribute("inbox", eventPage);
-                    request.getRequestDispatcher("/createAlert.jsp").forward(request, response);
-                }
-            } else if (action.equals("editAlert")) {
-                if (request.getParameter("page") != null) {
-                    page = Integer.parseInt(request.getParameter("page"));
-                }
-                ArrayList<ArrayList<String>> events = productManager.getEvents();
-                int noOfRecords = events.size();
-                int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
-                ArrayList<ArrayList<String>> eventPage = productManager.eventPage(events, (page - 1) * recordsPerPage, recordsPerPage);
-                request.setAttribute("noOfPages", noOfPages);
-                request.setAttribute("recordSize", String.valueOf(eventPage.size()));
-                request.setAttribute("currentPage", page);
-                request.setAttribute("role", role);
-                request.setAttribute("username", currentUser);
-                request.setAttribute("inbox", eventPage);
-                request.getRequestDispatcher("/editAlert.jsp").forward(request, response);
-            } else if (action.equals("editingAlert")) {
-                String eventId = request.getParameter("eventId");
-                request.setAttribute("eventId", eventId);
-                request.setAttribute("role", role);
-                request.setAttribute("username", currentUser);
-                request.getRequestDispatcher("editingAlert.jsp").forward(request, response);
-            } else if (action.equals("editedAlert")) {
-                System.out.println("percentage: " + request.getParameter("sales"));
-                System.out.println("Alert Type: " + request.getParameter("alertType"));
-                System.out.println("person: " + request.getParameter("person"));
-                System.out.println("date: " + request.getParameter("date"));
-                System.out.println("eventId: " + request.getParameter("eventId"));
-                System.out.println("Entered subevent alert");
-                if (productManager.checkingSubEventPresence(request.getParameter("eventId"))) {
-                    productManager.editSubEventAlert(request.getParameter("sales"), request.getParameter("alertType"), request.getParameter("person"), request.getParameter("date"), request.getParameter("eventId"));
-                    if (request.getParameter("page") != null) {
-                        page = Integer.parseInt(request.getParameter("page"));
-                    }
-                    System.out.println("Entered subevent alert 2");
-                    ArrayList<ArrayList<String>> events = productManager.getEvents();
-                    int noOfRecords = events.size();
-                    int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
-                    ArrayList<ArrayList<String>> eventPage = productManager.eventPage(events, (page - 1) * recordsPerPage, recordsPerPage);
-                    request.setAttribute("alertEdited", "true");
-                    request.setAttribute("noOfPages", noOfPages);
-                    request.setAttribute("recordSize", String.valueOf(eventPage.size()));
-                    request.setAttribute("currentPage", page);
-                    request.setAttribute("role", role);
-                    request.setAttribute("username", currentUser);
-                    request.setAttribute("inbox", eventPage);
-                    request.getRequestDispatcher("/editAlert.jsp").forward(request, response);
-                } else {
-                    System.out.println("Entered edit single alert");
-                    productManager.editAlert(request.getParameter("sales"), request.getParameter("alertType"), request.getParameter("person"), request.getParameter("date"), request.getParameter("eventId"));
-                    System.out.println("Entered subevent alert");
-                    if (request.getParameter("page") != null) {
-                        page = Integer.parseInt(request.getParameter("page"));
-                    }
-                    System.out.println("Entered subevent alert 2");
-                    ArrayList<ArrayList<String>> events = productManager.getEvents();
-                    int noOfRecords = events.size();
-                    int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
-                    ArrayList<ArrayList<String>> eventPage = productManager.eventPage(events, (page - 1) * recordsPerPage, recordsPerPage);
-                    request.setAttribute("alertEdited", "true");
-                    request.setAttribute("noOfPages", noOfPages);
-                    request.setAttribute("recordSize", String.valueOf(eventPage.size()));
-                    request.setAttribute("currentPage", page);
-                    request.setAttribute("role", role);
-                    request.setAttribute("username", currentUser);
-                    request.setAttribute("inbox", eventPage);
-                    request.getRequestDispatcher("/editAlert.jsp").forward(request, response);
-                }
-
-            } else if (action.equals("addingSub")) {
-                productSession.addSubEvent();
             } else if (action.equals("logout")) {
                 request.getRequestDispatcher("/logout.jsp").forward(request, response);
             } else if (action.equals("generateUser")) {
@@ -1431,7 +1289,7 @@ public class BackController extends HttpServlet {
                 for (int j = 1; j <= noCat; j++) {
                     cat.add(Double.valueOf(request.getParameter("cat" + j)));
                 }
-                
+
                 productSession.setPricing(i, cat, noCat, apply, seatsOption);
                 List<ArrayList> data = productSession.getEventList();
                 request.setAttribute("role", role);
@@ -1440,10 +1298,17 @@ public class BackController extends HttpServlet {
                 request.setAttribute("success", "true");
                 request.getRequestDispatcher("/displaySeatsMain.jsp").forward(request, response);
             } else if (action.equals("productEnterUser")) {
+                ArrayList email = productSession.getEventOrganizersEmail();
+                request.setAttribute("data", email);
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
                 request.getRequestDispatcher("/productEnterUser.jsp").forward(request, response);
             } /*
+            End Product Management Part 2
+            
+            
+            
+            
              Property management System Part 2 Manpower and Outlets
              */ else if (action.equals("manpowerMain")) {
                 request.setAttribute("role", role);
@@ -1573,19 +1438,25 @@ public class BackController extends HttpServlet {
                 request.setAttribute("properties", spm.getAllProperties());
 
                 request.getRequestDispatcher("/editOutlet.jsp").forward(request, response);
-            } else if (action.equals("reserveTicketsMain")){
+            } /*
+             End of Property Management System Part 2
+            
+            
+            
+             Start PRoduct Management System Part 3
+             */else if (action.equals("reserveTicketsMain")) {
                 List<ArrayList> data = productSession.getEventList();
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
                 request.setAttribute("data", data);
                 request.getRequestDispatcher("/reserveTicketsMain.jsp").forward(request, response);
-            } else if (action.equals("deleteTicketsMain")){
+            } else if (action.equals("deleteTicketsMain")) {
                 List<ArrayList> data = productSession.getEventList();
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
                 request.setAttribute("data", data);
                 request.getRequestDispatcher("/deleteTicketsMain.jsp").forward(request, response);
-            } else if (action.equals("deleteTicketSelectSession")){
+            } else if (action.equals("deleteTicketSelectSession")) {
                 String info = request.getParameter("id");
                 String[] idType = info.split(" ");
                 Long i = Long.valueOf(idType[0]);
@@ -1595,7 +1466,7 @@ public class BackController extends HttpServlet {
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
                 request.getRequestDispatcher("/deleteTicketSelectSession.jsp").forward(request, response);
-            } else if (action.equals("closeSectionsMain")){
+            } else if (action.equals("closeSectionsMain")) {
                 List<ArrayList> data = productSession.getEventList();
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
@@ -1615,27 +1486,27 @@ public class BackController extends HttpServlet {
                 request.getRequestDispatcher("/closeSections.jsp").forward(request, response);
             } else if (action.equals("closedSections")) {
                 String sectionData = request.getParameter("sectionData");
-                sectionData = sectionData.substring(1, sectionData.length()-1);
-                
+                sectionData = sectionData.substring(1, sectionData.length() - 1);
+
                 String apply = request.getParameter("apply");
                 Long i = Long.valueOf(request.getParameter("id"));
                 String purpose = request.getParameter("purpose");
-                
+
                 productSession.setCloseSections(apply, i, purpose, sectionData);
-                
+
                 request.setAttribute("success", "true");
                 List<ArrayList> data = productSession.getEventList();
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
                 request.setAttribute("data", data);
                 request.getRequestDispatcher("/closeSectionsMain.jsp").forward(request, response);
-            } else if (action.equals("resumeTicketMain")){
+            } else if (action.equals("resumeTicketMain")) {
                 List<ArrayList> data = productSession.getEventList();
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
                 request.setAttribute("data", data);
                 request.getRequestDispatcher("/resumeTicketMain.jsp").forward(request, response);
-            } else if (action.equals("resumeTicketSelectSession")){
+            } else if (action.equals("resumeTicketSelectSession")) {
                 String info = request.getParameter("id");
                 String[] idType = info.split(" ");
                 Long i = Long.valueOf(idType[0]);
@@ -1663,10 +1534,106 @@ public class BackController extends HttpServlet {
                 request.setAttribute("username", currentUser);
                 request.setAttribute("data", data);
                 request.getRequestDispatcher("/resumeTicketMain.jsp").forward(request, response);
-            }
+            } else if (action.equals("alertMain")) {
+                String email = request.getParameter("email");
+                boolean userFound = productSession.signIn(email);
+                
+                request.setAttribute("role", role);
+                request.setAttribute("username", currentUser);
+                request.getRequestDispatcher("/alertMain.jsp").forward(request, response);
+            } else if (action.equals("createAlertMain")) {
+                List<ArrayList> data = productSession.getEventList();
+                request.setAttribute("role", role);
+                request.setAttribute("username", currentUser);
+                request.setAttribute("data", data);
+                request.getRequestDispatcher("/createAlertMain.jsp").forward(request, response);
+            } else if (action.equals("createAlert")) {
+                String info = request.getParameter("id");
+                System.out.println(info);
+                String[] idType = info.split(" ");
+                Long i = Long.valueOf(idType[0]);
+                List<ArrayList> data = productSession.searchEventSessions(i, idType[1]);
+                List<ArrayList> alerts = productSession.getAlerts(i, idType[1]);
+                Date startDate = productSession.getEventStartDate(i, idType[1]);
+                Date endDate = productSession.getEventEndDate(i, idType[1]);
+                String startDateString = (String) new SimpleDateFormat("yyyy-MM-dd").format(startDate);
+                String endDateString = (String) new SimpleDateFormat("yyyy-MM-dd").format(endDate);
+                request.setAttribute("date", startDateString);
+                request.setAttribute("alerts", alerts);
+                request.setAttribute("endDate", endDateString);
+                request.setAttribute("data", data);
+                request.setAttribute("role", role);
+                request.setAttribute("username", currentUser);
+                request.getRequestDispatcher("/createAlert.jsp").forward(request, response);
+            } else if (action.equals("createdAlert")) {
 
-            /*
-             End of Property Management System Part 2
+                String apply = request.getParameter("apply");
+                Long i = Long.valueOf(request.getParameter("id"));
+                String type = request.getParameter("type");
+                String startDate = request.getParameter("date");
+                String endDate = request.getParameter("endDate");
+                int sales = Integer.valueOf(request.getParameter("sales"));
+                String inCharge = request.getParameter("email");
+                productSession.createAlert(apply, i, type, startDate, endDate, sales, inCharge);
+
+                request.setAttribute("success", "true");
+                List<ArrayList> data = productSession.getEventList();
+                request.setAttribute("role", role);
+                request.setAttribute("username", currentUser);
+                request.setAttribute("data", data);
+                request.getRequestDispatcher("/createAlertMain.jsp").forward(request, response);
+            } else if (action.equals("viewSalesProgress")) {
+                List<ArrayList> data = productSession.getEventList();
+                request.setAttribute("data", data);
+                request.getRequestDispatcher("/viewSalesProgress.jsp").forward(request, response);
+            } else if (action.equals("viewProgress")) {
+                List<ArrayList> data = productSession.getEventList();
+                List<ArrayList> sessionsDetails = getAllProductDetailsLocal.getAllSessions();
+                List<ArrayList> salesDetails = getAllProductDetailsLocal.getSalesDetails();
+                request.setAttribute("data", data);
+                request.setAttribute("sessions", sessionsDetails);
+                request.setAttribute("sales", salesDetails);
+                request.setAttribute("role", role);
+                request.setAttribute("username", currentUser);
+                request.getRequestDispatcher("/viewProgress.jsp").forward(request, response);
+            } else if (action.equals("seatConfiguration")){
+                String email = request.getParameter("email");
+                boolean userFound = productSession.signIn(email);
+                request.setAttribute("role", role);
+                request.setAttribute("username", currentUser);   
+                request.getRequestDispatcher("/seatConfiguration.jsp").forward(request, response);
+            } else if (action.equals("displaySeatsEnterUser")){
+                ArrayList email = productSession.getEventOrganizersEmail();
+                request.setAttribute("data", email);
+                 request.setAttribute("role", role);
+                request.setAttribute("username", currentUser);
+                request.getRequestDispatcher("/displaySeatsEnterUser.jsp").forward(request, response);
+            } else if (action.equals("promotionEnterUser")){
+                ArrayList email = productSession.getEventOrganizersEmail();
+                request.setAttribute("data", email);
+                request.setAttribute("role", role);
+                request.setAttribute("username", currentUser);
+                request.getRequestDispatcher("/promotionEnterUser.jsp").forward(request, response);
+            } else if (action.equals("ticketReservationEnterUser")){
+                ArrayList email = productSession.getEventOrganizersEmail();
+                request.setAttribute("data", email);
+                request.setAttribute("role", role);
+                request.setAttribute("username", currentUser);
+                request.getRequestDispatcher("/ticketReservationEnterUser.jsp").forward(request, response);
+            } else if (action.equals("alertEnterUser")){
+                ArrayList email = productSession.getEventOrganizersEmail();
+                request.setAttribute("data", email);
+                request.setAttribute("role", role);
+                request.setAttribute("username", currentUser);
+                request.getRequestDispatcher("/alertEnterUser.jsp").forward(request, response);
+            } else if (action.equals("promotionOptions")){
+                String email = request.getParameter("email");
+                boolean userFound = productSession.signIn(email);
+                request.setAttribute("role", role);
+                request.setAttribute("username", currentUser);
+                request.getRequestDispatcher("/promotionOptions.jsp").forward(request, response);
+            }/*
+             End of Product Management Part 3
              */
         } catch (Exception ex) {
             ex.printStackTrace();
