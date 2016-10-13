@@ -708,7 +708,14 @@ public class BackController extends HttpServlet {
                 request.setAttribute("username", currentUser);
                 request.setAttribute("sections",spm.getAllSectionsInOneProperty(spm.getPropertyByName("Merlion Concert Hall")));
                 request.getRequestDispatcher("/concertHallLayout.jsp").forward(request, response);
-            } else if (action.equals("reservationMain")) {
+                
+            } else if (action.equals("theaterLayout")) {
+                request.setAttribute("role", role);
+                request.setAttribute("username", currentUser);
+                request.setAttribute("sections",spm.getAllSectionsInOneProperty(spm.getPropertyByName("Merlion Star Theater")));
+                request.getRequestDispatcher("/theaterLayout.jsp").forward(request, response);
+                
+            }else if (action.equals("reservationMain")) {
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
                 request.getRequestDispatcher("/reservationMain.jsp").forward(request, response);

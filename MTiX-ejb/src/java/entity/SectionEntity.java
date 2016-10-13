@@ -30,7 +30,7 @@ public class SectionEntity implements Serializable {
     private Long id; 
     private Integer numberInProperty;
     private Integer capacity;
-    @Length(max=255)
+    @Column(length = 1000)
     private String coords;
     
     

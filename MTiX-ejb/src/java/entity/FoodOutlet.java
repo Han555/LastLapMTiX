@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,7 +29,7 @@ public class FoodOutlet implements Serializable {
     private String outletName;
     private String outletType;
     private String location;
-    @Length(max=255)
+    @Column(length = 255)
     private String outletDescription;
     @ManyToOne
     private Property property;

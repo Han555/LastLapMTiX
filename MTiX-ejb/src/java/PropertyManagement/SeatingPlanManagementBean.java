@@ -253,6 +253,8 @@ public class SeatingPlanManagementBean implements SeatingPlanManagementBeanLocal
         return property.getId();
         } else return null;
     }
+    
+    //public List<ArrayList> getSectionStatusBySession(Long sessionId);
 
     /**
      * *************************************************************

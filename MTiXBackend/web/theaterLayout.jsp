@@ -13,10 +13,10 @@
 <div class="side-body">
     <div class="container">
         <div class="page-title">
-            <span class="title" style="font-size: 40px;color: #22A7F0">Merlion Concert Hall</span>
+            <span class="title" style="font-size: 40px;color: #22A7F0">Merlion Start Theatre</span>
         </div>
         <div class="row">
-            <img src="img/property/Concerthall_layout.png" alt="concert_layout" usemap="#image-map" >
+            <img src="img/property/Theatre.png" alt="theatre_layout" usemap="#image-map" >
             <map name="image-map">
                 <c:forEach items="${sections}" var="section">
                 <area data-toggle="modal" data-target="#myModal" id="${section.numberInProperty}" class= "p1" alt="section${section.numberInProperty}" title="section${section.numberInProperty}" href="#" coords="${section.coords}" shape="poly">

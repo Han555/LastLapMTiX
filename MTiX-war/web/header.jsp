@@ -1,235 +1,758 @@
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
-
 <head>
-    <title>MTiX</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Fonts -->
-    <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:300,400' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,900' rel='stylesheet' type='text/css'>
-    <!-- CSS Libs -->
-    <link rel="stylesheet" type="text/css" href="lib/css/bootstrap.min.css">
-    
-    <link rel="stylesheet" type="text/css" href="lib/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="lib/css/animate.min.css">
-    <link rel="stylesheet" type="text/css" href="lib/css/bootstrap-switch.min.css">
-    <link rel="stylesheet" type="text/css" href="lib/css/checkbox3.min.css">
-    <link rel="stylesheet" type="text/css" href="lib/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" type="text/css" href="lib/css/dataTables.bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="lib/css/select2.min.css">
-    <link rel="stylesheet" type="text/css" href="lib/css/jquery.seat-charts.css">
-    <!-- CSS App -->
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link rel="stylesheet" type="text/css" href="css/themes/flat-blue.css">
-    
-    <!-- Javascript Libs -->
-            <script type="text/javascript" src="lib/js/jquery.min.js"></script>
-            <script type="text/javascript" src="lib/js/animatedModal.js"></script>
-            <script type="text/javascript" src="lib/js/bootstrap.min.js"></script>
-            <script type="text/javascript" src="lib/js/jquery.seat-charts.js"></script>
-            <script type="text/javascript" src="lib/js/Chart.min.js"></script>
-            <script type="text/javascript" src="lib/js/bootstrap-switch.min.js"></script>
-            <script type="text/javascript" src="lib/js/jquery.matchHeight-min.js"></script>
-            <script type="text/javascript" src="lib/js/jquery.dataTables.min.js"></script>
-            <script type="text/javascript" src="lib/js/dataTables.bootstrap.min.js"></script>
-            <script type="text/javascript" src="lib/js/select2.full.min.js"></script>
-            <script type="text/javascript" src="lib/js/ace/ace.js"></script>
-            <script type="text/javascript" src="lib/js/ace/mode-html.js"></script>
-            <script type="text/javascript" src="lib/js/ace/theme-github.js"></script>
-            <!-- Javascript -->
-            
-            <script type="text/javascript" src="js/app.js"></script>
-            <script type="text/javascript" src="js/index.js"></script>
-            <script type="text/javascript" src="js/modal.js"></script>
+<title>Gretong a Ecommerce Category Flat Bootstarp Responsive Website Template | Home :: w3layouts</title>
+<link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
+<!-- jQuery (necessary JavaScript plugins) -->
+<script type='text/javascript' src="js/jquery-1.11.1.min.js"></script>
+<!--<script type='text/javascript' src="js/jquery.js"></script>-->
+<script type='text/javascript' src="js/jquery-ui.min.js"></script>
+<!-- Custom Theme files -->
+<link href="css/style.css" rel='stylesheet' type='text/css' />
+<!-- Custom Theme files -->
+<!--//theme-style-->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Gretong Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template, 
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
+<link href='http://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Playfair+Display:400,700,900' rel='stylesheet' type='text/css'>
+<!-- start menu -->
+<link href="css/megamenu.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="js/megamenu.js"></script>
+<script>$(document).ready(function(){$(".megamenu").megamenu();});</script>
+<script src="js/menu_jquery.js"></script>
+<script src="js/simpleCart.min.js"> </script>
+<!--<script type="text/javascript" src="js/jquery-scrollto.js"></script>-->
 </head>
-
-<body class="flat-blue">
-	<div class="app-container">
-        <div class="row content-container">
-            <nav class="navbar navbar-default navbar-fixed-top navbar-top">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-expand-toggle">
-                            <i class="fa fa-bars icon"></i>
-                        </button>
-                        <ol class="breadcrumb navbar-breadcrumb">
-                            <li class="active">MTiX</li>
-                        </ol>
-                        <button type="button" class="navbar-right-expand-toggle pull-right visible-xs">
-                            <i class="fa fa-th icon"></i>
-                        </button>
+<body>
+<!-- header_top -->
+<div class="top_bg" style="background-color:#F0F0E9">
+	<div class="container">
+	<div class="header_top" >
+			<div class="top_right" style="background-color:#F0F0E9">
+				<ul>
+					<li><a href="#"><span style="color:#696763">help</span></a></li>
+					<li><a href="contact.html"><span style="color:#696763">Contact</span></a></li>
+					<li><a href="#"><span style="color:#696763">Delivery information</span></a></li>
+				</ul>
+			</div>
+			<div class="top_left">
+				<h2><span style="color:#696763">Call us : 032 2352 782</span></h2>
+			</div>
+				<div class="clearfix"> </div>
+		</div>
+	</div>
+</div>
+<!-- header -->
+<div class="header_bg">
+<div class="container">
+   
+                   <div class="header">
+ <div class="head-t">
+      <div class="logo">
+			<a href="index.html"><img src="images/sistic.png" style="width:60px;height:60px;" class="img-responsive" alt=""/> </a>
+		</div>
+<!--		<div class="logo">
+			<a href="index.html"><img src="images/sistic.png" style="width:80px;height:80px;" class="img-responsive" alt=""/> </a>
+		</div>-->
+		<!-- start header_right -->
+		<div class="header_right" style="margin-right:-10px">
+			<div class="rgt-bottom">
+				<div class="log">
+					<div class="login" >
+						<div id="loginContainer"><a href="#" id="loginButton"><span style=" color:#696763;">Login</span></a>
+						    <div id="loginBox">                
+						        <form id="loginForm">
+						                <fieldset id="body">
+						                	<fieldset>
+						                          <label for="email">Email Address</label>
+						                          <input type="text" name="email" id="email">
+						                    </fieldset>
+						                    <fieldset>
+						                            <label for="password">Password</label>
+						                            <input type="password" name="password" id="password">
+						                     </fieldset>
+						                    <input type="submit" id="login" value="Sign in">
+						                	<label for="checkbox"><input type="checkbox" id="checkbox"> <i>Remember me</i></label>
+						            	</fieldset>
+						            <span><a href="#">Forgot your password?</a></span>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="reg">
+					<a href="register.html"><span style=" color:#696763;">REGISTER</span></a>
+				</div>
+			<div class="cart box_1">
+				<a href="checkout.html">
+					<h3> <span class="simpleCart_total" style=" color:#696763;">$0.00</span> (<span id="simpleCart_quantity" class="simpleCart_quantity" style=" color:#696763;">0</span> <span style=" color:#696763;">items</span>)<img src="images/bag.png" alt=""></h3>
+				</a>	
+				<p ><a href="javascript:;" class="simpleCart_empty"><span style=" color:#696763;">(empty card)</span></a></p>
+				<div class="clearfix"> </div>
+			</div>
+		<div class="create_btn">
+				<a href="checkout.html">CHECKOUT</a>
+			</div>
+			<div class="clearfix"> </div>
+		</div>
                     </div>
-                    <ul class="nav navbar-nav navbar-right">
-                        <button type="button" class="navbar-right-expand-toggle pull-right visible-xs">
-                            <i class="fa fa-times icon"></i>
-                        </button>
-                     
-                        <li class="dropdown profile">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><%= request.getAttribute("username")%> <span class="caret"></span></a>
-                            <ul class="dropdown-menu animated fadeInDown">
-                                <li class="profile-img">
-                                    <img src="img/profile/picjumbo.com_HNCK4153_resize.jpg" class="profile-img">
-                                </li>
-                                <li>
-                                    <div class="profile-info">
-                                        
-                                        <h4 class="username"><%= request.getAttribute("username")%></h4>
-                                        <p><%= request.getAttribute("username")%></p>
-                                        <div class="btn-group margin-bottom-2x" role="group">
-                                            <button type="button" class="btn btn-default"><i class="fa fa-user"></i> Profile</button>
-                                            <button type="button" class="btn btn-default"><i class="fa fa-sign-out"></i> Logout</button>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-            <div class="side-menu sidebar-inverse">
-                <nav class="navbar navbar-default" role="navigation">
-                    <div class="side-menu-container">
-                        <div class="navbar-header">
-                            <c:url var="linkHref" value="/Controller"/>
-                            <a class="navbar-brand" href="${linkHref}">
-                                <div class="icon fa fa-paper-plane"></div>
-                                <div class="title">Property Management System</div>
-                            </a>
-                            <button type="button" class="navbar-expand-toggle pull-right visible-xs">
-                                <i class="fa fa-times icon"></i>
-                            </button>
-                        </div>
-                        <ul class="nav navbar-nav">
-                            <li class="active">
-                                <c:url var="linkHref" value="/Controller?action=home" />
-                                <a href="${linkHref}">
-                                    <span class="icon fa fa-tachometer"></span><span class="title">Home</span>
-                                </a>
-                            </li>
-                            <li class="panel panel-default dropdown">
-                                <a data-toggle="collapse" href="#dropdown-element">
-                                    <span class="icon fa fa-desktop"></span><span class="title">Seating Plan Management</span>
-                                </a>
-                                <!-- Dropdown level 1 -->
-                                <div id="dropdown-element" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        <ul class="nav navbar-nav">
-                                            <li><a href="ui-kits/theming.html">Theming</a>
-                                            </li>
-                                            <li><a href="ui-kits/grid.html">Grid</a>
-                                            </li>
-                                            <li><a href="ui-kits/button.html">Buttons</a>
-                                            </li>
-                                            <li><a href="ui-kits/card.html">Cards</a>
-                                            </li>
-                                            <li><a href="ui-kits/list.html">Lists</a>
-                                            </li>
-                                            <li><a href="ui-kits/modal.html">Modals</a>
-                                            </li>
-                                            <li><a href="ui-kits/alert.html">Alerts & Toasts</a>
-                                            </li>
-                                            <li><a href="ui-kits/panel.html">Panels</a>
-                                            </li>
-                                            <li><a href="ui-kits/loader.html">Loaders</a>
-                                            </li>
-                                            <li><a href="ui-kits/step.html">Tabs & Steps</a>
-                                            </li>
-                                            <li><a href="ui-kits/other.html">Other</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="panel panel-default dropdown">
-                                <a data-toggle="collapse" href="#dropdown-table">
-                                    <span class="icon fa fa-table"></span><span class="title">Reservation of Properties</span>
-                                </a>
-                                <!-- Dropdown level 1 -->
-                                <div id="dropdown-table" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        <ul class="nav navbar-nav">
-                                            <li><a href="table/table.html">Table</a>
-                                            </li>
-                                            <li><a href="table/datatable.html">Datatable</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="panel panel-default dropdown">
-                                <a data-toggle="collapse" href="#dropdown-form">
-                                    <span class="icon fa fa-file-text-o"></span><span class="title">Maintenance Schedule Management</span>
-                                </a>
-                                <!-- Dropdown level 1 -->
-                                <div id="dropdown-form" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        <ul class="nav navbar-nav">
-                                            <li><a href="form/ui-kits.html">Form UI Kits</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </li>
-                            <!-- Dropdown-->
-                            <li class="panel panel-default dropdown">
-                                <a data-toggle="collapse" href="#component-example">
-                                    <span class="icon fa fa-cubes"></span><span class="title">Manpower Management</span>
-                                </a>
-                                <!-- Dropdown level 1 -->
-                                <div id="component-example" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        <ul class="nav navbar-nav">
-                                            <li><a href="components/pricing-table.html">Pricing Table</a>
-                                            </li>
-                                            <li><a href="components/chartjs.html">Chart.JS</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </li>
-                            <!-- Dropdown-->
-                            <li class="panel panel-default dropdown">
-                                <a data-toggle="collapse" href="#dropdown-example">
-                                    <span class="icon fa fa-slack"></span><span class="title">Equipment and Fixture Management</span>
-                                </a>
-                                <!-- Dropdown level 1 -->
-                                <div id="dropdown-example" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        <ul class="nav navbar-nav">
-                                            <li><a href="pages/login.html">Login</a>
-                                            </li>
-                                            <li><a href="pages/index.html">Landing Page</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </li>
-                            <!-- Dropdown-->
-                            <li class="panel panel-default dropdown">
-                                <a data-toggle="collapse" href="#dropdown-icon">
-                                    <span class="icon fa fa-archive"></span><span class="title">Food Outlets Management</span>
-                                </a>
-                                <!-- Dropdown level 1 -->
-                                <div id="dropdown-icon" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        <ul class="nav navbar-nav">
-                                            <li><a href="icons/glyphicons.html">Glyphicons</a>
-                                            </li>
-                                            <li><a href="icons/font-awesome.html">Font Awesomes</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <a href="license.html">
-                                    <span class="icon fa fa-thumbs-o-up"></span><span class="title">License</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- /.navbar-collapse -->
-                </nav>
-            </div>
+<!--		<div class="search">
+		    <form>
+		    	<input type="text" value="" placeholder="search...">
+				<input type="submit" value="">
+			</form>
+		</div>-->
+		<div class="clearfix"> </div>
+	
+		<!-- start header menu -->
+		<ul class="megamenu skyblue" style="background-color:white;">
+			<li class="grid"><a class="color1" href="index.html"><span style=" color:#696763;">Home</span></a></li>
+			<li class="grid"><a class="color2" href="#"><span style=" color:#696763;">new arrivals</span></a>
+				<div class="megapanel">
+					<div class="row">
+						<div class="col1">
+							<div class="h_nav">
+								<h4> Clothing </h4>
+								<ul>
+									<li><a href="women.html">new arrivals</a></li>
+									<li><a href="women.html">men</a></li>
+									<li><a href="women.html">women</a></li>
+									<li><a href="women.html">accessories</a></li>
+									<li><a href="women.html">kids</a></li>
+									<li><a href="women.html">brands</a></li>
+								</ul>	
+							</div>							
+						</div>
+						<div class="col1">
+							<div class="h_nav">
+								<h4 style=" color:#696763;">kids</h4>
+								<ul>
+									<li><a href="women.html">Pools&Tees</a></li>
+									<li><a href="women.html">shirts</a></li>
+									<li><a href="women.html">shorts</a></li>
+									<li><a href="women.html">twinsets</a></li>
+									<li><a href="women.html">kurts</a></li>
+									<li><a href="women.html">jackets</a></li>
+								</ul>	
+							</div>							
+						</div>
+						<div class="col1">
+							<div class="h_nav">
+								<h4 style=" color:#696763;">Bags</h4>
+								<ul>
+									<li><a href="women.html">Handbag</a></li>
+									<li><a href="women.html">Slingbags</a></li>
+									<li><a href="women.html">Clutches</a></li>
+									<li><a href="women.html">Totes</a></li>
+									<li><a href="women.html">Wallets</a></li>
+									<li><a href="women.html">Laptopbags</a></li>
+								</ul>	
+							</div>												
+						</div>
+						<div class="col1">
+							<div class="h_nav">
+								<h4 style=" color:#696763;">account</h4>
+								<ul>
+									<li><a href="#">login</a></li>
+									<li><a href="register.html">create an account</a></li>
+									<li><a href="women.html">create wishlist</a></li>
+									<li><a href="women.html">my shopping bag</a></li>
+									<li><a href="women.html">brands</a></li>
+									<li><a href="women.html">create wishlist</a></li>
+								</ul>	
+							</div>						
+						</div>
+						<div class="col1">
+							<div class="h_nav">
+								<h4 style=" color:#696763;">Accessories</h4>
+								<ul>
+									<li><a href="women.html">Belts</a></li>
+									<li><a href="women.html">Pens</a></li>
+									<li><a href="women.html">Eyeglasses</a></li>
+									<li><a href="women.html">accessories</a></li>
+									<li><a href="women.html">Watches</a></li>
+									<li><a href="women.html">Jewellery</a></li>
+								</ul>	
+							</div>
+						</div>
+						<div class="col1">
+							<div class="h_nav">
+								<h4 style=" color:#696763;">Footwear</h4>
+								<ul>
+									<li><a href="women.html">new arrivals</a></li>
+									<li><a href="women.html">men</a></li>
+									<li><a href="women.html">women</a></li>
+									<li><a href="women.html">accessories</a></li>
+									<li><a href="women.html">kids</a></li>
+									<li><a href="women.html">style videos</a></li>
+								</ul>	
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col2"></div>
+						<div class="col1"></div>
+						<div class="col1"></div>
+						<div class="col1"></div>
+						<div class="col1"></div>
+					</div>
+    				</div>
+				</li>
+			<li><a class="color4" href="#"><span style=" color:#696763;">TUXEDO</span></a>
+				<div class="megapanel">
+					<div class="row">
+						<div class="col1">
+							<div class="h_nav">
+								<h4>Clothing</h4>
+								<ul>
+									<li><a href="women.html">new arrivals</a></li>
+									<li><a href="women.html">men</a></li>
+									<li><a href="women.html">women</a></li>
+									<li><a href="women.html">accessories</a></li>
+									<li><a href="women.html">kids</a></li>
+									<li><a href="women.html">brands</a></li>
+								</ul>	
+							</div>							
+						</div>
+						<div class="col1">
+							<div class="h_nav">
+								<h4>kids</h4>
+								<ul>
+									<li><a href="women.html">Pools&Tees</a></li>
+									<li><a href="women.html">shirts</a></li>
+									<li><a href="women.html">shorts</a></li>
+									<li><a href="women.html">twinsets</a></li>
+									<li><a href="women.html">kurts</a></li>
+									<li><a href="women.html">jackets</a></li>
+								</ul>	
+							</div>							
+						</div>
+						<div class="col1">
+							<div class="h_nav">
+								<h4>Bags</h4>
+								<ul>
+									<li><a href="women.html">Handbag</a></li>
+									<li><a href="women.html">Slingbags</a></li>
+									<li><a href="women.html">Clutches</a></li>
+									<li><a href="women.html">Totes</a></li>
+									<li><a href="women.html">Wallets</a></li>
+									<li><a href="women.html">Laptopbags</a></li>
+								</ul>	
+							</div>												
+						</div>
+						<div class="col1">
+							<div class="h_nav">
+								<h4>account</h4>
+								<ul>
+									<li><a href="#">login</a></li>
+									<li><a href="register.html">create an account</a></li>
+									<li><a href="women.html">create wishlist</a></li>
+									<li><a href="women.html">my shopping bag</a></li>
+									<li><a href="women.html">brands</a></li>
+									<li><a href="women.html">create wishlist</a></li>
+								</ul>	
+							</div>						
+						</div>
+						<div class="col1">
+							<div class="h_nav">
+								<h4>Accessories</h4>
+								<ul>
+									<li><a href="women.html">Belts</a></li>
+									<li><a href="women.html">Pens</a></li>
+									<li><a href="women.html">Eyeglasses</a></li>
+									<li><a href="women.html">accessories</a></li>
+									<li><a href="women.html">Watches</a></li>
+									<li><a href="women.html">Jewellery</a></li>
+								</ul>	
+							</div>
+						</div>
+						<div class="col1">
+							<div class="h_nav">
+								<h4>Footwear</h4>
+								<ul>
+									<li><a href="women.html">new arrivals</a></li>
+									<li><a href="women.html">men</a></li>
+									<li><a href="women.html">women</a></li>
+									<li><a href="women.html">accessories</a></li>
+									<li><a href="women.html">kids</a></li>
+									<li><a href="women.html">style videos</a></li>
+								</ul>	
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col2"></div>
+						<div class="col1"></div>
+						<div class="col1"></div>
+						<div class="col1"></div>
+						<div class="col1"></div>
+					</div>
+    				</div>
+				</li>				
+				<li><a class="color5" href="#"><span style=" color:#696763;">SWEATER</span></a>
+				<div class="megapanel">
+					<div class="row">
+						<div class="col1">
+							<div class="h_nav">
+								<h4>Clothing</h4>
+								<ul>
+									<li><a href="women.html">new arrivals</a></li>
+									<li><a href="women.html">men</a></li>
+									<li><a href="women.html">women</a></li>
+									<li><a href="women.html">accessories</a></li>
+									<li><a href="women.html">kids</a></li>
+									<li><a href="women.html">brands</a></li>
+								</ul>	
+							</div>							
+						</div>
+						<div class="col1">
+							<div class="h_nav">
+								<h4>kids</h4>
+								<ul>
+									<li><a href="women.html">Pools&Tees</a></li>
+									<li><a href="women.html">shirts</a></li>
+									<li><a href="women.html">shorts</a></li>
+									<li><a href="women.html">twinsets</a></li>
+									<li><a href="women.html">kurts</a></li>
+									<li><a href="women.html">jackets</a></li>
+								</ul>	
+							</div>							
+						</div>
+						<div class="col1">
+							<div class="h_nav">
+								<h4>Bags</h4>
+								<ul>
+									<li><a href="women.html">Handbag</a></li>
+									<li><a href="women.html">Slingbags</a></li>
+									<li><a href="women.html">Clutches</a></li>
+									<li><a href="women.html">Totes</a></li>
+									<li><a href="women.html">Wallets</a></li>
+									<li><a href="women.html">Laptopbags</a></li>
+								</ul>	
+							</div>												
+						</div>
+						<div class="col1">
+							<div class="h_nav">
+								<h4>account</h4>
+								<ul>
+									<li><a href="#">login</a></li>
+									<li><a href="register.html">create an account</a></li>
+									<li><a href="women.html">create wishlist</a></li>
+									<li><a href="women.html">my shopping bag</a></li>
+									<li><a href="women.html">brands</a></li>
+									<li><a href="women.html">create wishlist</a></li>
+								</ul>	
+							</div>						
+						</div>
+						<div class="col1">
+							<div class="h_nav">
+								<h4>Accessories</h4>
+								<ul>
+									<li><a href="women.html">Belts</a></li>
+									<li><a href="women.html">Pens</a></li>
+									<li><a href="women.html">Eyeglasses</a></li>
+									<li><a href="women.html">accessories</a></li>
+									<li><a href="women.html">Watches</a></li>
+									<li><a href="women.html">Jewellery</a></li>
+								</ul>	
+							</div>
+						</div>
+						<div class="col1">
+							<div class="h_nav">
+								<h4>Footwear</h4>
+								<ul>
+									<li><a href="women.html">new arrivals</a></li>
+									<li><a href="women.html">men</a></li>
+									<li><a href="women.html">women</a></li>
+									<li><a href="women.html">accessories</a></li>
+									<li><a href="women.html">kids</a></li>
+									<li><a href="women.html">style videos</a></li>
+								</ul>	
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col2"></div>
+						<div class="col1"></div>
+						<div class="col1"></div>
+						<div class="col1"></div>
+						<div class="col1"></div>
+					</div>
+    				</div>
+				</li>
+				<li><a class="color6" href="#"><span style=" color:#696763;">SHOES</span></a>
+				<div class="megapanel">
+					<div class="row">
+						<div class="col1">
+							<div class="h_nav">
+								<h4>Clothing</h4>
+								<ul>
+									<li><a href="women.html">new arrivals</a></li>
+									<li><a href="women.html">men</a></li>
+									<li><a href="women.html">women</a></li>
+									<li><a href="women.html">accessories</a></li>
+									<li><a href="women.html">kids</a></li>
+									<li><a href="women.html">brands</a></li>
+								</ul>	
+							</div>							
+						</div>
+						<div class="col1">
+							<div class="h_nav">
+								<h4>kids</h4>
+								<ul>
+									<li><a href="women.html">Pools&Tees</a></li>
+									<li><a href="women.html">shirts</a></li>
+									<li><a href="women.html">shorts</a></li>
+									<li><a href="women.html">twinsets</a></li>
+									<li><a href="women.html">kurts</a></li>
+									<li><a href="women.html">jackets</a></li>
+								</ul>	
+							</div>							
+						</div>
+						<div class="col1">
+							<div class="h_nav">
+								<h4>Bags</h4>
+								<ul>
+									<li><a href="women.html">Handbag</a></li>
+									<li><a href="women.html">Slingbags</a></li>
+									<li><a href="women.html">Clutches</a></li>
+									<li><a href="women.html">Totes</a></li>
+									<li><a href="women.html">Wallets</a></li>
+									<li><a href="women.html">Laptopbags</a></li>
+								</ul>	
+							</div>												
+						</div>
+						<div class="col1">
+							<div class="h_nav">
+								<h4>account</h4>
+								<ul>
+									<li><a href="#">login</a></li>
+									<li><a href="register.html">create an account</a></li>
+									<li><a href="women.html">create wishlist</a></li>
+									<li><a href="women.html">my shopping bag</a></li>
+									<li><a href="women.html">brands</a></li>
+									<li><a href="women.html">create wishlist</a></li>
+								</ul>	
+							</div>						
+						</div>
+						<div class="col1">
+							<div class="h_nav">
+								<h4>Accessories</h4>
+								<ul>
+									<li><a href="women.html">Belts</a></li>
+									<li><a href="women.html">Pens</a></li>
+									<li><a href="women.html">Eyeglasses</a></li>
+									<li><a href="women.html">accessories</a></li>
+									<li><a href="women.html">Watches</a></li>
+									<li><a href="women.html">Jewellery</a></li>
+								</ul>	
+							</div>
+						</div>
+						<div class="col1">
+							<div class="h_nav">
+								<h4>Footwear</h4>
+								<ul>
+									<li><a href="women.html">new arrivals</a></li>
+									<li><a href="women.html">men</a></li>
+									<li><a href="women.html">women</a></li>
+									<li><a href="women.html">accessories</a></li>
+									<li><a href="women.html">kids</a></li>
+									<li><a href="women.html">style videos</a></li>
+								</ul>	
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col2"></div>
+						<div class="col1"></div>
+						<div class="col1"></div>
+						<div class="col1"></div>
+						<div class="col1"></div>
+					</div>
+    				</div>
+				</li>				
+			
+				<li><a class="color7" href="#"><span style=" color:#696763;">GLASSES</span></a>
+				<div class="megapanel">
+					<div class="row">
+						<div class="col1">
+							<div class="h_nav">
+								<h4>Clothing</h4>
+								<ul>
+									<li><a href="women.html">new arrivals</a></li>
+									<li><a href="women.html">men</a></li>
+									<li><a href="women.html">women</a></li>
+									<li><a href="women.html">accessories</a></li>
+									<li><a href="women.html">kids</a></li>
+									<li><a href="women.html">brands</a></li>
+								</ul>	
+							</div>							
+						</div>
+						<div class="col1">
+							<div class="h_nav">
+								<h4>kids</h4>
+								<ul>
+									<li><a href="women.html">Pools&Tees</a></li>
+									<li><a href="women.html">shirts</a></li>
+									<li><a href="women.html">shorts</a></li>
+									<li><a href="women.html">twinsets</a></li>
+									<li><a href="women.html">kurts</a></li>
+									<li><a href="women.html">jackets</a></li>
+								</ul>	
+							</div>							
+						</div>
+						<div class="col1">
+							<div class="h_nav">
+								<h4>Bags</h4>
+								<ul>
+									<li><a href="women.html">Handbag</a></li>
+									<li><a href="women.html">Slingbags</a></li>
+									<li><a href="women.html">Clutches</a></li>
+									<li><a href="women.html">Totes</a></li>
+									<li><a href="women.html">Wallets</a></li>
+									<li><a href="women.html">Laptopbags</a></li>
+								</ul>	
+							</div>												
+						</div>
+						<div class="col1">
+							<div class="h_nav">
+								<h4>account</h4>
+								<ul>
+									<li><a href="#">login</a></li>
+									<li><a href="register.html">create an account</a></li>
+									<li><a href="women.html">create wishlist</a></li>
+									<li><a href="women.html">my shopping bag</a></li>
+									<li><a href="women.html">brands</a></li>
+									<li><a href="women.html">create wishlist</a></li>
+								</ul>	
+							</div>						
+						</div>
+						<div class="col1">
+							<div class="h_nav">
+								<h4>Accessories</h4>
+								<ul>
+									<li><a href="women.html">Belts</a></li>
+									<li><a href="women.html">Pens</a></li>
+									<li><a href="women.html">Eyeglasses</a></li>
+									<li><a href="women.html">accessories</a></li>
+									<li><a href="women.html">Watches</a></li>
+									<li><a href="women.html">Jewellery</a></li>
+								</ul>	
+							</div>
+						</div>
+						<div class="col1">
+							<div class="h_nav">
+								<h4>Footwear</h4>
+								<ul>
+									<li><a href="women.html">new arrivals</a></li>
+									<li><a href="women.html">men</a></li>
+									<li><a href="women.html">women</a></li>
+									<li><a href="women.html">accessories</a></li>
+									<li><a href="women.html">kids</a></li>
+									<li><a href="women.html">style videos</a></li>
+								</ul>	
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col2"></div>
+						<div class="col1"></div>
+						<div class="col1"></div>
+						<div class="col1"></div>
+						<div class="col1"></div>
+					</div>
+    				</div>
+				</li>				
+			
+				<li><a class="color8" href="#"><span style=" color:#696763;">T-SHIRT</span></a>
+				<div class="megapanel">
+					<div class="row">
+						<div class="col1">
+							<div class="h_nav">
+								<h4>Clothing</h4>
+								<ul>
+									<li><a href="women.html">new arrivals</a></li>
+									<li><a href="women.html">men</a></li>
+									<li><a href="women.html">women</a></li>
+									<li><a href="women.html">accessories</a></li>
+									<li><a href="women.html">kids</a></li>
+									<li><a href="women.html">brands</a></li>
+								</ul>	
+							</div>							
+						</div>
+						<div class="col1">
+							<div class="h_nav">
+								<h4>kids</h4>
+								<ul>
+									<li><a href="women.html">trends</a></li>
+									<li><a href="women.html">sale</a></li>
+									<li><a href="women.html">style videos</a></li>
+									<li><a href="women.html">accessories</a></li>
+									<li><a href="women.html">kids</a></li>
+									<li><a href="women.html">style videos</a></li>
+								</ul>	
+							</div>							
+						</div>
+						<div class="col1">
+							<div class="h_nav">
+								<h4>Bags</h4>
+								<ul>
+									<li><a href="women.html">trends</a></li>
+									<li><a href="women.html">sale</a></li>
+									<li><a href="women.html">style videos</a></li>
+									<li><a href="women.html">accessories</a></li>
+									<li><a href="women.html">kids</a></li>
+									<li><a href="women.html">style videos</a></li>
+								</ul>	
+							</div>												
+						</div>
+						<div class="col1">
+							<div class="h_nav">
+								<h4>account</h4>
+								<ul>
+									<li><a href="#">login</a></li>
+									<li><a href="register.html">create an account</a></li>
+									<li><a href="women.html">create wishlist</a></li>
+									<li><a href="women.html">my shopping bag</a></li>
+									<li><a href="women.html">brands</a></li>
+									<li><a href="women.html">create wishlist</a></li>
+								</ul>	
+							</div>						
+						</div>
+						<div class="col1">
+							<div class="h_nav">
+								<h4>Accessories</h4>
+								<ul>
+									<li><a href="women.html">trends</a></li>
+									<li><a href="women.html">sale</a></li>
+									<li><a href="women.html">style videos</a></li>
+									<li><a href="women.html">accessories</a></li>
+									<li><a href="women.html">kids</a></li>
+									<li><a href="women.html">style videos</a></li>
+								</ul>	
+							</div>
+						</div>
+						<div class="col1">
+							<div class="h_nav">
+								<h4>Footwear</h4>
+								<ul>
+									<li><a href="women.html">new arrivals</a></li>
+									<li><a href="women.html">men</a></li>
+									<li><a href="women.html">women</a></li>
+									<li><a href="women.html">accessories</a></li>
+									<li><a href="women.html">kids</a></li>
+									<li><a href="women.html">style videos</a></li>
+								</ul>	
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col2"></div>
+						<div class="col1"></div>
+						<div class="col1"></div>
+						<div class="col1"></div>
+						<div class="col1"></div>
+					</div>
+    				</div>
+				</li>
+				<li><a class="color9" href="#"><span style=" color:#696763;">WATCHES</span></a>
+				<div class="megapanel">
+					<div class="row">
+						<div class="col1">
+							<div class="h_nav">
+								<h4>Clothing</h4>
+								<ul>
+									<li><a href="women.html">new arrivals</a></li>
+									<li><a href="women.html">men</a></li>
+									<li><a href="women.html">women</a></li>
+									<li><a href="women.html">accessories</a></li>
+									<li><a href="women.html">kids</a></li>
+									<li><a href="women.html">brands</a></li>
+								</ul>	
+							</div>							
+						</div>
+						<div class="col1">
+							<div class="h_nav">
+								<h4>kids</h4>
+								<ul>
+									<li><a href="women.html">trends</a></li>
+									<li><a href="women.html">sale</a></li>
+									<li><a href="women.html">style videos</a></li>
+									<li><a href="women.html">accessories</a></li>
+									<li><a href="women.html">kids</a></li>
+									<li><a href="women.html">style videos</a></li>
+								</ul>	
+							</div>							
+						</div>
+						<div class="col1">
+							<div class="h_nav">
+								<h4>Bags</h4>
+								<ul>
+									<li><a href="women.html">trends</a></li>
+									<li><a href="women.html">sale</a></li>
+									<li><a href="women.html">style videos</a></li>
+									<li><a href="women.html">accessories</a></li>
+									<li><a href="women.html">kids</a></li>
+									<li><a href="women.html">style videos</a></li>
+								</ul>	
+							</div>												
+						</div>
+						<div class="col1">
+							<div class="h_nav">
+								<h4>account</h4>
+								<ul>
+									<li><a href="#">login</a></li>
+									<li><a href="register.html">create an account</a></li>
+									<li><a href="women.html">create wishlist</a></li>
+									<li><a href="women.html">my shopping bag</a></li>
+									<li><a href="women.html">brands</a></li>
+									<li><a href="women.html">create wishlist</a></li>
+								</ul>	
+							</div>						
+						</div>
+						<div class="col1">
+							<div class="h_nav">
+								<h4>Accessories</h4>
+								<ul>
+									<li><a href="women.html">trends</a></li>
+									<li><a href="women.html">sale</a></li>
+									<li><a href="women.html">style videos</a></li>
+									<li><a href="women.html">accessories</a></li>
+									<li><a href="women.html">kids</a></li>
+									<li><a href="women.html">style videos</a></li>
+								</ul>	
+							</div>
+						</div>
+						<div class="col1">
+							<div class="h_nav">
+								<h4>Footwear</h4>
+								<ul>
+									<li><a href="women.html">new arrivals</a></li>
+									<li><a href="women.html">men</a></li>
+									<li><a href="women.html">women</a></li>
+									<li><a href="women.html">accessories</a></li>
+									<li><a href="women.html">kids</a></li>
+									<li><a href="women.html">style videos</a></li>
+								</ul>	
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col2"></div>
+						<div class="col1"></div>
+						<div class="col1"></div>
+						<div class="col1"></div>
+						<div class="col1"></div>
+					</div>
+    				</div>
+				</li>
+		 </ul> 
+ 
+	</div>
+		<div class="clearfix"> </div>
+	</div>
+	</div>
+</div>
+</div>

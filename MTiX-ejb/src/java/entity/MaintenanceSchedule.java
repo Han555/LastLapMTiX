@@ -31,7 +31,7 @@ public class MaintenanceSchedule implements Serializable {
     private Date startDate;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date endDate;
-    @Length(max=255)
+    @Column(length = 255)
     private String purpose;
     
     @ManyToOne

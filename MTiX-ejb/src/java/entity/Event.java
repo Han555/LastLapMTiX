@@ -35,7 +35,7 @@ public class Event implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @Length(max=500)
+    @Column(length = 255)
     private String description;
     
     @Temporal(javax.persistence.TemporalType.DATE)

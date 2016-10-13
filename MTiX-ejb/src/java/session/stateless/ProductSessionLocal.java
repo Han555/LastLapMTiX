@@ -5,6 +5,7 @@
  */
 package session.stateless;
 
+import entity.SectionEntity;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -99,6 +100,8 @@ public interface ProductSessionLocal {
     public void setCloseSections(String apply, long sessionID, String purpose, String sectionIDs);
 
     public List<ArrayList> getSessionClosedSections(long id);
+
+    
 
 
 

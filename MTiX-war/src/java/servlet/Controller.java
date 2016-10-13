@@ -5,6 +5,8 @@
  */
 package servlet;
 
+import session.stateless.ticketing.BookingSessionBeanLocal;
+import entity.Event;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -25,6 +27,8 @@ import manager.LoginManager;
 import manager.MessageManager;
 import manager.RegisterManager;
 import manager.ResetPasswordManager;
+import manager.SeatingPlanManager;
+import manager.SessionManager;
 import manager.UnlockManager;
 import session.stateless.BulletinSessionLocal;
 import session.stateless.LockAccountSessionLocal;
@@ -33,6 +37,13 @@ import session.stateless.MessageSessionLocal;
 import session.stateless.RegisterSessionLocal;
 import session.stateless.ResetPasswordSessionLocal;
 import session.stateless.UnlockAccountSessionLocal;
+import PropertyManagement.SeatingPlanManagementBeanLocal;
+import PropertyManagement.ReservePropertyBeanLocal;
+import entity.SubEvent;
+import manager.ProductManager;
+import manager.ReservationManager;
+import session.stateless.ProductSessionLocal;
+
 
 /**
  *
@@ -55,11 +66,22 @@ public class Controller extends HttpServlet {
 
     @EJB
     private LockAccountSessionLocal lockAccountSession;
+    
+    @EJB
+    private BookingSessionBeanLocal bookingSession;
+    
+    @EJB
+    private ProductSessionLocal productSession;
 
     @EJB
     private LoginSessionLocal loginSession;
     @EJB
     private RegisterSessionLocal registerSession;
+    
+    @EJB
+    private SeatingPlanManagementBeanLocal spmbl;
+    @EJB
+    private ReservePropertyBeanLocal rpbl;
 
     public String currentUser;
     public String subject = "";
@@ -88,6 +110,10 @@ public class Controller extends HttpServlet {
             LogManager logManager = new LogManager();
             MessageManager messageManager = new MessageManager(messageSession);
             BulletinManager bulletinManager = new BulletinManager(bulletinSession);
+            SessionManager sessionManager = new SessionManager(bookingSession);
+            SeatingPlanManager spm  = new SeatingPlanManager(spmbl);
+            ReservationManager rm = new ReservationManager(rpbl);
+            ProductManager pm = new ProductManager(productSession);
 
             action = request.getParameter("action");
             String name = request.getParameter("name");
@@ -364,6 +390,31 @@ public class Controller extends HttpServlet {
                 request.setAttribute("board", board);
                 request.setAttribute("username", currentUser);
                 request.getRequestDispatcher("/testTable.jsp").forward(request, response);
+            } else if (action.equals("bookTicket")) {
+                HttpSession session = request.getSession();
+                //String type = session.getAttribute("type");
+                //Long id = (Long) session.getAttribute("id");
+
+                String type="event";
+                Long id = Long.valueOf("1");
+                
+                if (type.equals("event")) { 
+                    Event event = rm.getEventById(id);
+                    request.setAttribute("sessions", sessionManager.getSessionsByEventId(id));
+                    request.setAttribute("sections", spm.getAllSectionsInOneProperty(event.getProperty().getId()));
+                    request.setAttribute("reservedSection", pm.getReservedSectionsBySessionId(id));
+                    request.setAttribute("closedSection", pm.getClosedSectionsBySessionId(id));
+                }
+                else {
+                    SubEvent event = rm.getSubEventById(id);
+                    request.setAttribute("sessions", sessionManager.getSessionsBySubeventId(id));
+                    request.setAttribute("sections", spm.getAllSectionsInOneProperty(event.getProperty().getId()));
+                }
+               
+                
+                request.getRequestDispatcher("/bookingTickets.jsp").forward(request, response);
+                
+ 
             }
         } catch (Exception ex) {
             ex.printStackTrace();
