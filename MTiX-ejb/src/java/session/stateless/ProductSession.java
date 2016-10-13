@@ -22,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.ejb.Schedule;
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -171,6 +172,21 @@ public class ProductSession implements ProductSessionLocal {
                 list.add(eventEntity.getStart());
                 list.add(eventEntity.getEnd());
                 list.add("event");
+                list.add(eventEntity.getProperty().getPropertyName());
+                list.add(eventEntity.getProperty().getCategory().size());
+
+                String promotions = "";
+                    for (Object obj : eventEntity.getPromotions()) {
+                        Promotion promotion = (Promotion) obj;
+                        promotions += promotion.getName() + " (" + promotion.getDiscountRate() + "%), ";
+                    }
+
+                    if (!promotions.equals("")) {
+                        promotions = promotions.substring(0, promotions.length() - 2);
+                    }
+
+                list.add(promotions);
+
                 eventList.add(list);
             }
         }
@@ -180,12 +196,28 @@ public class ProductSession implements ProductSessionLocal {
 
         for (Object o : q.getResultList()) {
             SubEvent subEventEntity = (SubEvent) o;
+            em.refresh(subEventEntity);
             list = new ArrayList();
             list.add(subEventEntity.getId());
             list.add(subEventEntity.getName());
             list.add(subEventEntity.getStart());
             list.add(subEventEntity.getEnd());
             list.add("subevent");
+            list.add(subEventEntity.getProperty().getPropertyName());
+            list.add(subEventEntity.getProperty().getCategory().size());
+            
+             String promotions = "";
+                    for (Object obj : subEventEntity.getPromotions()) {
+                        Promotion promotion = (Promotion) obj;
+                       promotions += promotion.getName() + " (" + promotion.getDiscountRate() + "%), ";
+                    }
+
+                    if (!promotions.equals("")) {
+                        promotions = promotions.substring(0, promotions.length() - 2);
+                    }
+
+                list.add(promotions);
+                
             eventList.add(list);
         }
         return eventList;
@@ -1000,287 +1032,6 @@ public class ProductSession implements ProductSessionLocal {
     }
 
     @Override
-    public ArrayList<ArrayList<String>> getPromotion() {
-        Query q = em.createQuery("SELECT p FROM Promotion p");
-        ArrayList<ArrayList<String>> promotion = new ArrayList();
-
-        for (Object o : q.getResultList()) {
-            Promotion p = new Promotion();
-            p = (Promotion) o;
-            ArrayList<String> promotionDetails = new ArrayList();
-
-            promotionDetails.add(Long.toString(p.getId()));
-            promotionDetails.add(p.getName());
-            promotionDetails.add(p.getDescriptions());
-            promotionDetails.add(String.valueOf(p.getNumberOfTickets()));
-            promotion.add(promotionDetails);
-        }
-
-        return promotion;
-    }
-
-    @Override
-    public void addTickets(String promotionId, String numOfTics) {
-        Query q = em.createQuery("Select p FROM Promotion p WHERE p.id = " + promotionId);
-        int existingNumber = 0;
-        for (Object o : q.getResultList()) {
-            Promotion p = (Promotion) o;
-            existingNumber = p.getNumberOfTickets();
-        }
-        int newAmount = existingNumber + Integer.parseInt(numOfTics);
-        String newAmount2 = String.valueOf(newAmount);
-        Query q2 = em.createQuery("UPDATE Promotion p SET p.numberOfTickets = " + newAmount2 + " WHERE p.id = " + promotionId);
-        q2.executeUpdate();
-    }
-
-    @Override
-    public void deleteTickets(String promotionId, String numOfTics) {
-        Query q = em.createQuery("Select p FROM Promotion p WHERE p.id = " + promotionId);
-        int existingNumber = 0;
-        for (Object o : q.getResultList()) {
-            Promotion p = (Promotion) o;
-            existingNumber = p.getNumberOfTickets();
-        }
-        // int newAmount = existingNumber-Integer.parseInt(numOfTics);
-        //String newAmount2 = String.valueOf(newAmount);
-        Query q2 = em.createQuery("UPDATE Promotion p SET p.numberOfTickets = 0" + " WHERE p.id = " + promotionId);
-        q2.executeUpdate();
-    }
-
-    @Override
-    public boolean checkTicketAmount(String promotionId, String numOfTics) {
-        Query q = em.createQuery("Select p FROM Promotion p WHERE p.id = " + promotionId);
-        int existingNumber = 0;
-        for (Object o : q.getResultList()) {
-            Promotion p = (Promotion) o;
-            existingNumber = p.getNumberOfTickets();
-        }
-        //int amountToDelete = Integer.parseInt(numOfTics);
-
-        if (existingNumber == 0) {
-            return false;
-        } else {
-            return true;
-        }
-
-    }
-
-    @Override
-    public void editTicketAmount(String promotionId, String ticketAmount) {
-        Query q = em.createQuery("UPDATE Promotion p SET p.numberOfTickets =" + ticketAmount + " WHERE p.id = " + promotionId);
-        q.executeUpdate();
-    }
-
-    @Override
-    public ArrayList<ArrayList<String>> retrieveEvents() {
-        Query q = em.createQuery("SELECT e FROM Event e");
-        ArrayList<ArrayList<String>> events = new ArrayList();
-
-        for (Object o : q.getResultList()) {
-            Event e = new Event();
-            e = (Event) o;
-            ArrayList<String> event = new ArrayList();
-
-            event.add(Long.toString(e.getId()));
-            event.add(e.getName());
-            event.add(e.getDescription());
-            events.add(event);
-        }
-
-        return events;
-    }
-
-    @Override
-    public void addAlert(String percentage, String alertType, String username, String date, String eventId) {
-        try {
-            Alert a = new Alert();
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            Date startDate = formatter.parse(date);
-
-            a.createAlert(alertType, username, startDate, Integer.parseInt(percentage));
-            Query q = em.createQuery("SELECT e FROM Event e WHERE e.id = " + eventId);
-            Event e = new Event();
-
-            for (Object o : q.getResultList()) {
-                e = (Event) o;
-            }
-
-            e.setAlert(a);
-            em.merge(e);
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
-    }
-
-    @Override
-    public void addSubEvent() {
-        Query q = em.createQuery("SELECT e FROM Event e WHERE e.id = 2");
-        Query q2 = em.createQuery("SELECT s FROM SubEvent s WHERE s.id = 1");
-        Query q3 = em.createQuery("SELECT s FROM SubEvent s WHERE s.id = 2");
-        Event e = new Event();
-        SubEvent s1 = new SubEvent();
-        SubEvent s2 = new SubEvent();
-
-        for (Object o : q.getResultList()) {
-            e = (Event) o;
-        }
-        for (Object o : q2.getResultList()) {
-            s1 = (SubEvent) o;
-        }
-        for (Object o : q3.getResultList()) {
-            s2 = (SubEvent) o;
-        }
-        List<SubEvent> subEvents = new ArrayList();
-        s1.setEvent(e);
-        s2.setEvent(e);
-        subEvents.add(s1);
-        subEvents.add(s2);
-        e.setSubEvents(subEvents);
-        em.merge(e);
-    }
-
-    @Override
-    public boolean checkSubEvent(String eventId) {
-        Query q = em.createQuery("SELECT e FROM Event e WHERE e.id = " + eventId);
-        Event e = new Event();
-
-        for (Object o : q.getResultList()) {
-            e = (Event) o;
-
-        }
-
-        if (e.getHasSubEvent()) {
-            return true;
-        } else {
-            return false;
-        }
-
-    }
-
-    @Override
-    public void addSubEventAlert(String percentage, String alertType, String username, String date, String eventId) {
-        try {
-            System.out.println("percentage: " + percentage);
-            System.out.println("Alert Type: " + alertType);
-            System.out.println("person: " + username);
-            System.out.println("date: " + date);
-            System.out.println("eventId: " + eventId);
-            Alert a = new Alert();
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            Date startDate = formatter.parse(date);
-            Query q = em.createQuery("SELECT e FROM Event e WHERE e.id = " + eventId);
-            Event e = new Event();
-            System.out.println("Entered subevent alert 3");
-            for (Object o : q.getResultList()) {
-                e = (Event) o;
-                System.out.println("Entered subevent alert 4");
-            }
-
-            System.out.println("Entered subevent alert 5");
-
-            List<SubEvent> subevents = e.getSubEvents();
-
-            System.out.println("Entered subevent alert 6");
-
-            for (Object o : subevents) {
-                System.out.println("Entered subevent alert 7");
-                SubEvent s = (SubEvent) o;
-                Alert alert = new Alert();
-                alert.createAlert(alertType, username, startDate, Integer.parseInt(percentage));
-                s.setAlert(alert);
-                em.merge(s);
-            }
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
-    }
-
-    @Override
-    public void editAlert(String percentage, String alertType, String username, String date, String eventId) {
-        try {
-            System.out.println("percentage: " + percentage);
-            System.out.println("Alert Type: " + alertType);
-            System.out.println("person: " + username);
-            System.out.println("date: " + date);
-            System.out.println("eventId: " + eventId);
-            Alert a = new Alert();
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            Date startDate = formatter.parse(date);
-            Query q = em.createQuery("SELECT e FROM Event e WHERE e.id = " + eventId);
-            Event e = new Event();
-            System.out.println("Entered subevent alert 3");
-            for (Object o : q.getResultList()) {
-                e = (Event) o;
-                System.out.println("Entered subevent alert 4");
-            }
-
-            System.out.println("Entered subevent alert 5");
-
-            String alertId = Long.toString(e.getAlert().getId());
-            Query q2 = em.createQuery("UPDATE Alert a SET a.percentage =" + percentage + " WHERE a.id = " + alertId);
-            q2.executeUpdate();
-            Query q3 = em.createQuery("UPDATE Alert a SET a.alertType =" + "'" + alertType + "'" + " WHERE a.id = " + alertId);
-            q3.executeUpdate();
-            Query q4 = em.createQuery("UPDATE Alert a SET a.username =" + "'" + username + "'" + " WHERE a.id = " + alertId);
-            q4.executeUpdate();
-            Query q5 = em.createQuery("SELECT a FROM Alert a WHERE a.id = " + alertId);
-            System.out.println("date: " + date);
-
-            for (Object o : q5.getResultList()) {
-                a = (Alert) o;
-            }
-            a.setAlertDate(startDate);
-            em.merge(a);
-
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
-    }
-
-    @Override
-    public void editSubEventAlert(String percentage, String alertType, String username, String date, String eventId) {
-        try {
-            System.out.println("percentage: " + percentage);
-            System.out.println("Alert Type: " + alertType);
-            System.out.println("person: " + username);
-            System.out.println("date: " + date);
-            System.out.println("eventId: " + eventId);
-            Alert a = new Alert();
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            Date startDate = formatter.parse(date);
-            Query q = em.createQuery("SELECT e FROM Event e WHERE e.id = " + eventId);
-            Event e = new Event();
-            System.out.println("Entered subevent edit alert 3");
-            for (Object o : q.getResultList()) {
-                e = (Event) o;
-                System.out.println("Entered subevent edit alert 4");
-            }
-
-            System.out.println("Entered subevent edit alert 5");
-            for (Object o : e.getSubEvents()) {
-                SubEvent s = (SubEvent) o;
-                String alertId = Long.toString(s.getAlert().getId());
-                System.out.println("alert id: " + alertId);
-                Query q2 = em.createQuery("UPDATE Alert a SET a.percentage =" + percentage + " WHERE a.id = " + alertId);
-                q2.executeUpdate();
-                Query q3 = em.createQuery("UPDATE Alert a SET a.alertType =" + "'" + alertType + "'" + " WHERE a.id = " + alertId);
-                q3.executeUpdate();
-                Query q4 = em.createQuery("UPDATE Alert a SET a.username =" + "'" + username + "'" + " WHERE a.id = " + alertId);
-                q4.executeUpdate();
-                Query q5 = em.createQuery("SELECT a FROM Alert a WHERE a.id = " + alertId);
-                for (Object t : q5.getResultList()) {
-                    a = (Alert) t;
-                }
-                a.setAlertDate(startDate);
-                em.merge(a);
-            }
-
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
-    }
-
-    @Override
     public Date getEventStartDate(long id, String type) {
         if (type.equals("event")) {
             Query q = em.createQuery("SELECT a FROM Event a WHERE a.id=:id");
@@ -1292,6 +1043,21 @@ public class ProductSession implements ProductSessionLocal {
             q.setParameter("id", id);
             SubEvent subevent = (SubEvent) q.getSingleResult();
             return subevent.getStart();
+        }
+    }
+
+    @Override
+    public Date getEventEndDate(long id, String type) {
+        if (type.equals("event")) {
+            Query q = em.createQuery("SELECT a FROM Event a WHERE a.id=:id");
+            q.setParameter("id", id);
+            Event event = (Event) q.getSingleResult();
+            return event.getEnd();
+        } else {
+            Query q = em.createQuery("SELECT a FROM SubEvent a WHERE a.id=:id");
+            q.setParameter("id", id);
+            SubEvent subevent = (SubEvent) q.getSingleResult();
+            return subevent.getEnd();
         }
     }
 
@@ -1666,4 +1432,120 @@ public class ProductSession implements ProductSessionLocal {
         return sessionsInventory;
     }
 
+    @Override
+    public void createAlert(String apply, long sessionID, String type, String startDate, String endDate, int sales, String inCharge) {
+        SessionEntity session = em.find(SessionEntity.class, sessionID);
+        if (apply.equals("yes")) {
+            if (session.getEvent() != null) { //If it is a event session
+                Long eventID = session.getEvent().getId();
+                Event eventEntity = em.find(Event.class, eventID);
+                em.refresh(eventEntity);
+                for (Object obj : eventEntity.getSessions()) {
+                    SessionEntity sessionEntity = (SessionEntity) obj;
+                    this.createIndividualAlert(sessionEntity, sales, type, inCharge, startDate, endDate);
+                    em.flush();
+                }
+            } else {
+                Long subEventID = session.getSubEvent().getId(); //If it is a sub event session
+                SubEvent subEvent = em.find(SubEvent.class, subEventID);
+                em.refresh(subEvent);
+                for (Object obj : subEvent.getSessions()) {
+                    SessionEntity sessionEntity = (SessionEntity) obj;
+                    this.createIndividualAlert(sessionEntity, sales, type, inCharge, startDate, endDate);
+                }
+            }
+        } else {
+            this.createIndividualAlert(session, sales, type, inCharge, startDate, endDate);
+        }
+    }
+
+    private void createIndividualAlert(SessionEntity sessionEntity, int percentage, String alertType, String email, String startDate, String endDate) {
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Date start = formatter.parse(startDate);
+            Date end = formatter.parse(endDate);
+            if (alertType.equals("1")) {
+                alertType = "Informative Alert";
+            } else if (alertType.equals("2")) {
+                alertType = "Important Alert";
+            } else {
+                alertType = "Urgent Alert";
+            }
+
+            if (sessionEntity.getAlert() != null) {
+                long alertID = sessionEntity.getAlert().getId();
+                Alert alertEntity = em.find(Alert.class, alertID);
+                alertEntity.createAlert(percentage, alertType, email, start, end);
+
+            } else {
+                Alert alert = new Alert();
+                alert.createAlert(percentage, alertType, email, start, end);
+                alert.setSession(sessionEntity);
+                em.persist(alert);
+                sessionEntity.setAlert(alert);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public List<ArrayList> getAlerts(long id, String type) {
+        List<ArrayList> sessionsAlert = new ArrayList();
+        if (type.equals("event")) {
+            Event event = em.find(Event.class, id);
+
+            for (Object o : event.getSessions()) {
+                SessionEntity session = (SessionEntity) o;
+                em.refresh(session);
+
+                if (session.getAlert() != null) {
+                    ArrayList alert = new ArrayList();
+                    alert.add(session.getId());
+                    alert.add(session.getAlert().getSales());
+                    alert.add(session.getAlert().getAlertType());
+                    alert.add(session.getAlert().getInChargePersonEmail());
+                    alert.add(session.getAlert().getAlertStartDate());
+                    alert.add(session.getAlert().getAlertEndDate());
+                    sessionsAlert.add(alert);
+                }
+            }
+        } else {
+            SubEvent subevent = em.find(SubEvent.class, id);
+
+            for (Object o : subevent.getSessions()) {
+                SessionEntity session = (SessionEntity) o;
+                em.refresh(session);
+
+                if (session.getAlert() != null) {
+                    ArrayList alert = new ArrayList();
+                    alert.add(session.getId());
+                    alert.add(session.getAlert().getSales());
+                    alert.add(session.getAlert().getAlertType());
+                    alert.add(session.getAlert().getInChargePersonEmail());
+                    alert.add(session.getAlert().getAlertStartDate());
+                    alert.add(session.getAlert().getAlertEndDate());
+                    sessionsAlert.add(alert);
+                }
+            }
+        }
+        return sessionsAlert;
+    }
+    
+    @Override
+    public ArrayList getEventOrganizersEmail(){
+        ArrayList userEmail = new ArrayList();
+        Query q = em.createQuery("SELECT a FROM UserEntity a");
+        boolean isEventOrganizer = false;
+        for (Object o: q.getResultList()){
+            UserEntity user = (UserEntity) o;
+             for (int i = 0; i < user.getRoles().size(); i++) {
+                if (user.getRoles().get(i).equals("customer")) {
+                    userEmail.add(user.getUsername());
+                    break;
+                }
+            }
+        }
+        return userEmail;
+    }
 }
