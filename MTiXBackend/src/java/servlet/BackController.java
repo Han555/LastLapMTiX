@@ -423,7 +423,16 @@ public class BackController extends HttpServlet {
                 request.setAttribute("username", currentUser);
                 request.setAttribute("message", message);
                 request.getRequestDispatcher("/readBulletin.jsp").forward(request, response);
-            } else if (action.equals("productMain")) {
+            } /*
+             Product Management System
+            
+            
+            
+            
+            
+            
+            
+             */else if (action.equals("productMain")) {
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
                 request.getRequestDispatcher("/productMain.jsp").forward(request, response);
@@ -437,26 +446,11 @@ public class BackController extends HttpServlet {
                 boolean userFound = productSession.signIn(email);
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
-                
-                if (userFound) {
-                    request.getRequestDispatcher("/sessionMain.jsp").forward(request, response);
-                } else {
-                    request.setAttribute("error", "true");
-                    request.getRequestDispatcher("/productEnterUser.jsp").forward(request, response);
-                }
-            } else if (action.equals("promotionMain")) {
-                 String email = request.getParameter("email");
-                boolean userFound = productSession.signIn(email);
-                
+                request.getRequestDispatcher("/sessionMain.jsp").forward(request, response);
+            } else if (action.equals("promotionMain")) {                
                 request.setAttribute("role", role);
-                request.setAttribute("username", currentUser);
-                  if (userFound) {
-                   request.getRequestDispatcher("/promotionOptions.jsp").forward(request, response);
-                } else {
-                    request.setAttribute("error", "true");
-                    request.getRequestDispatcher("/promotionEnterUser.jsp").forward(request, response);
-                }
-                
+                request.setAttribute("username", currentUser);    
+                request.getRequestDispatcher("/promotionMain.jsp").forward(request, response);
             } else if (action.equals("editPromo")) {
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
@@ -711,13 +705,24 @@ public class BackController extends HttpServlet {
                 request.setAttribute("data", data);
                 request.setAttribute("deleted", true);
                 request.getRequestDispatcher("/deletePromotionMain.jsp").forward(request, response);
-            } else if (action.equals("viewAllProperty")) {
+            } /*
+            End Product Management System part 1
+             
+            
+            
+            
+            
+            
+            
+            Property Management System
+             */ else if (action.equals("viewAllProperty")) {
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
                 request.getRequestDispatcher("/viewAllProperty.jsp").forward(request, response);
             } else if (action.equals("concertHallLayout")) {
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
+                request.setAttribute("sections",spm.getAllSectionsInOneProperty(spm.getPropertyByName("Merlion Concert Hall")));
                 request.getRequestDispatcher("/concertHallLayout.jsp").forward(request, response);
             } else if (action.equals("reservationMain")) {
                 request.setAttribute("role", role);
@@ -822,17 +827,19 @@ public class BackController extends HttpServlet {
                 request.getRequestDispatcher("/subTheaterSelected.jsp").forward(request, response);
             } else if (action.equals("saveNewEvent")) {
                 String daterange = request.getParameter("daterange");
-                String idStr = request.getParameter("propertyId");
+                String pname = request.getParameter("pname");
+                //String idStr = request.getParameter("propertyId");
                 String ename = request.getParameter("eventname");
                 String eDes = request.getParameter("eventdes");
                 String email = request.getParameter("eoemail");
 
                 boolean checkUser = rm.checkUser(email);
+                Long pid = spm.getPropertyByName(pname);
 
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
                 if (checkUser) {
-                    Event event = rm.addNewEvent(ename, eDes, daterange, Long.valueOf(idStr), email);
+                    Event event = rm.addNewEvent(ename, eDes, daterange, pid, email);
                     if (event != null) {
                         request.setAttribute("event", event);
                         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -841,7 +848,7 @@ public class BackController extends HttpServlet {
                         request.getRequestDispatcher("/saveNewEvent.jsp").forward(request, response);
                     } else {
                         request.setAttribute("msg", "error when creating the reservation");
-                        if (idStr.equals("1")) {
+                        if (pname.equals("Merlion Concert Hall")) {
                             request.getRequestDispatcher("/concertHallSelected.jsp").forward(request, response);
                         } else {
                             request.getRequestDispatcher("/theaterSelected.jsp").forward(request, response);
@@ -849,9 +856,15 @@ public class BackController extends HttpServlet {
                     }
                 } else {
                     request.setAttribute("userResult", "Please note: The email you entered is not a valid user. Please enter again.");
-                    if (idStr.equals("1")) {
+                    if (pname.equals("Merlion Concert Hall")) {
+                        request.setAttribute("eventname", ename);
+                        request.setAttribute("eventdes", eDes);
+                        
+                        request.setAttribute("eventdes", eDes);
                         request.getRequestDispatcher("/concertHallSelected.jsp").forward(request, response);
                     } else {
+                        request.setAttribute("eventname", ename);
+                        request.setAttribute("eventdes", eDes);
                         request.getRequestDispatcher("/theaterSelected.jsp").forward(request, response);
                     }
 
@@ -860,28 +873,35 @@ public class BackController extends HttpServlet {
                 // 
             } else if (action.equals("saveNewSubEvent")) {
                 String daterange = request.getParameter("daterange");
-                String idStr = request.getParameter("propertyId");
+                String pname = request.getParameter("pname");
+               // String idStr = request.getParameter("propertyId");
                 String eidStr = request.getParameter("eventid");
                 String ename = request.getParameter("eventname");
                 //String eDes = request.getParameter("eventdes");
                 String email = request.getParameter("eoemail");
-                System.out.println("========Add New Sub Event" + daterange + idStr + eidStr + ename + email);
+                System.out.println("========Add New Sub Event" + daterange + pname + eidStr + ename + email);
                 boolean checkUser = rm.checkUser(email);
+                Long pid = spm.getPropertyByName(pname);
 
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
 
                 if (checkUser) {
-                    SubEvent subevent = rm.addNewSubEvent(ename, daterange, Long.valueOf(idStr), Long.valueOf(eidStr), email);
+                    SubEvent subevent = rm.addNewSubEvent(ename, daterange, pid, Long.valueOf(eidStr), email);
                     if (subevent != null) {
-                        request.setAttribute("subevent", subevent);
-                        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                        request.setAttribute("start", format.format(subevent.getStart()));
-                        request.setAttribute("end", format.format(subevent.getEnd()));
+                        List<SubEvent> subevents = rm.getListOfSubEvent(subevent.getEvent());
+                        request.setAttribute("subevents", subevents);
+                        for (SubEvent e : subevents) {
+                            System.out.println(e.getName());
+                        }
+                        request.setAttribute("eventid", eidStr);
+                        // DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                        //request.setAttribute("start", format.format(subevent.getStart()));
+                        //request.setAttribute("end", format.format(subevent.getEnd()));
                         request.getRequestDispatcher("/saveNewSubEvent.jsp").forward(request, response);
                     } else {
                         request.setAttribute("msg", "error when creating the reservation");
-                        if ((spm.getPropertyById(Long.valueOf(idStr)).getPropertyName()).equals("Merlion Concert Hall")) {
+                        if ((spm.getPropertyById(pid).getPropertyName()).equals("Merlion Concert Hall")) {
                             request.getRequestDispatcher("/subConcertHallSelected.jsp").forward(request, response);
                         } else {
                             request.getRequestDispatcher("/subTheaterSelected.jsp").forward(request, response);
@@ -889,7 +909,7 @@ public class BackController extends HttpServlet {
                     }
                 } else {
                     request.setAttribute("userResult", "Please note: The email you entered is not a valid user. Please enter again.");
-                    if ((spm.getPropertyById(Long.valueOf(idStr)).getPropertyName()).equals("Merlion Concert Hall")) {
+                    if ((spm.getPropertyById(pid).getPropertyName()).equals("Merlion Concert Hall")) {
                         request.getRequestDispatcher("/subConcertHallSelected.jsp").forward(request, response);
                     } else {
                         request.getRequestDispatcher("/subTheaterSelected.jsp").forward(request, response);
@@ -932,6 +952,15 @@ public class BackController extends HttpServlet {
                 request.setAttribute("seid", seid);
                 request.setAttribute("equipments", em.getNonSEquipmentInProperty(pid));
                 request.getRequestDispatcher("/addExtraEquipment.jsp").forward(request, response);
+            } else if (action.equals("addExtra")) {
+
+                String eidStr = request.getParameter("eventid");
+                request.setAttribute("role", role);
+                request.setAttribute("username", currentUser);
+                request.setAttribute("event", rm.getEventById(Long.valueOf(eidStr)));
+                //request.setAttribute("eventid",rm.getSubEventById(Long.valueOf(seid)).getEvent().getId());
+                //request.setAttribute("manpower", mm.getNonSManpowerInProperty(Long.valueOf(pid)));
+                request.getRequestDispatcher("/addExtra.jsp").forward(request, response);
             } else if (action.equals("addExtraManpower")) {
                 HttpSession session = request.getSession();
                 String pid = (String) session.getAttribute("pid");
@@ -947,7 +976,7 @@ public class BackController extends HttpServlet {
             } else if (action.equals("saveExtraEquipment")) {
                 String pidStr = request.getParameter("pid");
                 String seidStr = request.getParameter("seid");
-                String eventStr = request.getParameter("eventid");
+                String eventStr = request.getParameter("eid");
                 String[] eValues = request.getParameterValues("evalue");
 
                 request.setAttribute("role", role);
@@ -975,48 +1004,49 @@ public class BackController extends HttpServlet {
 
                 request.getRequestDispatcher("/saveExtraManpower.jsp").forward(request, response);
             } else if (action.equals("addExtraEquipmentEvent")) {
-                HttpSession session = request.getSession();
-                Long pid = (Long) session.getAttribute("pid");
-                Long eventid = (Long) session.getAttribute("eventid");
+                String pid = request.getParameter("pid");
+                String eventid = request.getParameter("eventid");
 
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
                 request.setAttribute("pid", pid);
                 request.setAttribute("seid", eventid);
-                request.setAttribute("equipments", em.getNonSEquipmentInProperty(pid));
+                request.setAttribute("equipments", em.getNonSEquipmentInProperty(Long.valueOf(pid)));
                 request.getRequestDispatcher("/addExtraEquipmentEvent.jsp").forward(request, response);
             } else if (action.equals("addExtraManpowerEvent")) {
-                HttpSession session = request.getSession();
-                Long pid = (Long) session.getAttribute("pid");
-                Long eventid = (Long) session.getAttribute("eventid");
+                String pid = request.getParameter("pid");
+                String eventid = request.getParameter("eventid");
 
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
                 request.setAttribute("pid", pid);
                 request.setAttribute("eventid", eventid);
-                request.setAttribute("manpower", mm.getNonSManpowerInProperty(pid));
+                request.setAttribute("manpower", mm.getNonSManpowerInProperty(Long.valueOf(pid)));
                 request.getRequestDispatcher("/addExtraManpowerEvent.jsp").forward(request, response);
             } else if (action.equals("saveExtraEquipmentEvent")) {
                 String pidStr = request.getParameter("pid");
                 String eventidStr = request.getParameter("eventid");
                 String[] eValues = request.getParameterValues("evalue");
-
+                Event event = rm.getEventById(Long.valueOf(eventidStr));
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
                 request.setAttribute("pid", pidStr);
                 request.setAttribute("eventid", eventidStr);
+                request.setAttribute("event",event);
                 request.setAttribute("equipment", rm.saveEquipmentEvent(eValues, pidStr, eventidStr));
                 //  request.setAttribute("equipments", em.getNonSEquipmentInProperty(pid));
                 request.getRequestDispatcher("/saveExtraEquipmentEvent.jsp").forward(request, response);
-            } else if (action.equals("addExtraManpowerEvent")) {
+            } else if (action.equals("saveExtraManpowerEvent")) {
                 String pidStr = request.getParameter("pid");
                 String eventidStr = request.getParameter("eventid");
                 String[] eValues = request.getParameterValues("evalue");
 
+                Event event = rm.getEventById(Long.valueOf(eventidStr));
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
                 request.setAttribute("pid", pidStr);
                 request.setAttribute("eventid", eventidStr);
+                request.setAttribute("event",event);
                 request.setAttribute("manpower", rm.saveManpowerEvent(eValues, pidStr, eventidStr));
               //  request.setAttribute("equipments", em.getNonSEquipmentInProperty(pid));
 
@@ -1146,20 +1176,34 @@ public class BackController extends HttpServlet {
                 request.setAttribute("username", currentUser);
                 request.setAttribute("properties", spm.getAllProperties());
                 request.getRequestDispatcher("/createManpower.jsp").forward(request, response);
-            } else if (action.equals("ticketReservation")) {
+            } /* End of Property Management System Part 1
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            Start Product Management System Part 2
+             */else if (action.equals("ticketReservation")) {
                 String email = request.getParameter("email");
                 boolean userFound = productSession.signIn(email);
                 
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
-                if (userFound) {
-                    request.getRequestDispatcher("/ticketReservation.jsp").forward(request, response);
-                } else {
-                    request.setAttribute("error", "true");
-                    request.getRequestDispatcher("/ticketReservationEnterUser.jsp").forward(request, response);
-                }
                 
-                
+                request.getRequestDispatcher("/ticketReservation.jsp").forward(request, response);
             } else if (action.equals("setTickets")) {
                 String info = request.getParameter("id");
                 System.out.println(info);
@@ -1252,10 +1296,19 @@ public class BackController extends HttpServlet {
                 request.setAttribute("success", "true");
                 request.getRequestDispatcher("/displaySeatsMain.jsp").forward(request, response);
             } else if (action.equals("productEnterUser")) {
+                ArrayList email = productSession.getEventOrganizersEmail();
+                request.setAttribute("data", email);
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
                 request.getRequestDispatcher("/productEnterUser.jsp").forward(request, response);
-            } else if (action.equals("manpowerMain")) {
+            } /*
+            End Product Management Part 2
+            
+            
+            
+            
+             Property management System Part 2 Manpower and Outlets
+             */ else if (action.equals("manpowerMain")) {
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
                 request.getRequestDispatcher("/manpowerMain.jsp").forward(request, response);
@@ -1383,7 +1436,13 @@ public class BackController extends HttpServlet {
                 request.setAttribute("properties", spm.getAllProperties());
 
                 request.getRequestDispatcher("/editOutlet.jsp").forward(request, response);
-            } else if (action.equals("reserveTicketsMain")) {
+            } /*
+             End of Property Management System Part 2
+            
+            
+            
+             Start PRoduct Management System Part 3
+             */else if (action.equals("reserveTicketsMain")) {
                 List<ArrayList> data = productSession.getEventList();
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
@@ -1479,13 +1538,7 @@ public class BackController extends HttpServlet {
                 
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
-                
-                if (userFound) {
-                    request.getRequestDispatcher("/alertMain.jsp").forward(request, response);
-                } else {
-                    request.setAttribute("error", "true");
-                    request.getRequestDispatcher("/alertEnterUser.jsp").forward(request, response);
-                }
+                request.getRequestDispatcher("/alertMain.jsp").forward(request, response);
             } else if (action.equals("createAlertMain")) {
                 List<ArrayList> data = productSession.getEventList();
                 request.setAttribute("role", role);
@@ -1545,31 +1598,41 @@ public class BackController extends HttpServlet {
                 String email = request.getParameter("email");
                 boolean userFound = productSession.signIn(email);
                 request.setAttribute("role", role);
-                request.setAttribute("username", currentUser);
-                
-                if (userFound) {
-                    request.getRequestDispatcher("/seatConfiguration.jsp").forward(request, response);
-                } else {
-                    request.setAttribute("error", "true");
-                    request.getRequestDispatcher("/displaySeatsEnterUser.jsp").forward(request, response);
-                }
+                request.setAttribute("username", currentUser);   
+                request.getRequestDispatcher("/seatConfiguration.jsp").forward(request, response);
             } else if (action.equals("displaySeatsEnterUser")){
+                ArrayList email = productSession.getEventOrganizersEmail();
+                request.setAttribute("data", email);
                  request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
                 request.getRequestDispatcher("/displaySeatsEnterUser.jsp").forward(request, response);
             } else if (action.equals("promotionEnterUser")){
+                ArrayList email = productSession.getEventOrganizersEmail();
+                request.setAttribute("data", email);
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
                 request.getRequestDispatcher("/promotionEnterUser.jsp").forward(request, response);
             } else if (action.equals("ticketReservationEnterUser")){
+                ArrayList email = productSession.getEventOrganizersEmail();
+                request.setAttribute("data", email);
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
                 request.getRequestDispatcher("/ticketReservationEnterUser.jsp").forward(request, response);
             } else if (action.equals("alertEnterUser")){
+                ArrayList email = productSession.getEventOrganizersEmail();
+                request.setAttribute("data", email);
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
                 request.getRequestDispatcher("/alertEnterUser.jsp").forward(request, response);
-            }
+            } else if (action.equals("promotionOptions")){
+                String email = request.getParameter("email");
+                boolean userFound = productSession.signIn(email);
+                request.setAttribute("role", role);
+                request.setAttribute("username", currentUser);
+                request.getRequestDispatcher("/promotionOptions.jsp").forward(request, response);
+            }/*
+             End of Product Management Part 3
+             */
         } catch (Exception ex) {
             ex.printStackTrace();
             //request.getRequestDispatcher("/error.jsp").forward(request, response);

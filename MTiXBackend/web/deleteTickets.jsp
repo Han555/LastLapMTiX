@@ -118,7 +118,7 @@
                             <thead>
                                 <tr>
                                     <th data-radio="true"></th>
-                                    <th>Property No.</th>
+                                    <th>Section No.</th>
                                     <th>Purpose</th>
                                     <th>Reserved End Date</th>
                                 </tr>
@@ -152,6 +152,14 @@
                             checkboxes.click(function () {
                                 submitButt.attr("disabled", !checkboxes.is(":checked"));
                             });
+                            
+                              $("form").submit(function (event) {
+                             if (confirm("You are about to delete the reserved sections you have selected. Are you sure about that?")){
+                                 return true;
+                             } else {
+                                 return false;
+                             }
+                        });
                         </script>
                         <%}%>
                     </form> 

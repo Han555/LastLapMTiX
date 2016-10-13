@@ -4,6 +4,7 @@
     Author     : JingYing
 --%>
 
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -14,6 +15,9 @@
 <!-- Main Content -->
 
 <div class="container-fluid">
+    <%
+        ArrayList data = (ArrayList) request.getAttribute("data");
+    %>
     <c:url var="formAction" value="/BackController?action=ticketReservation" />
     <div class="side-body padding-top">
 
@@ -27,7 +31,14 @@
                         <table align="center">
                             <tr>
                                 <td align="right">Event Organizer Email : &nbsp</td>
-                                <td align="left"><input type="email" class="form-control date" required="true" name="email"</td>    
+                                <td align="left">
+                                    <select class="form-control" name="email" class="form-control date" required="true">
+                                        <%
+                                            for (int i = 0; i < data.size(); i++){%>
+                                            <option value="<%=data.get(i) %>"><%=data.get(i) %></option>
+                                           <% }
+                                        %>
+                                    </select></td>  
                             </tr>
                             <tr>
                                 <td>&nbsp</td> 

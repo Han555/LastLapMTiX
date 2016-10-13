@@ -63,7 +63,7 @@
                             for (int j = 0; j < sales.size(); j++) { //Different Sessions
                                 if (sales.get(j).get(1).toString().equals(data.get(i).get(4).toString())
                                         && sales.get(j).get(0).toString().equals(data.get(i).get(0).toString())) {%>
-                        <p><br>Session Name : <%=sales.get(j).get(3)%>  Session ID = <%=sales.get(j).get(2)%><br></p>
+                        <p><b>Session Name : <%=sales.get(j).get(3)%>  Session ID = <%=sales.get(j).get(2)%></b></p>
 
                         <%
                             for (int k = 4; k < sales.get(j).size(); k += 4) {
@@ -77,6 +77,7 @@
                                  aria-valuemin="0" aria-valuemax="100" style="width:<%= sales.get(j).get(k + 2)%>%">
                             </div></div>
                             <%} %>
+                        <br>
                             <%}
                                 }%>
                     </div>

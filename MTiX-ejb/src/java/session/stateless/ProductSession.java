@@ -1531,4 +1531,21 @@ public class ProductSession implements ProductSessionLocal {
         }
         return sessionsAlert;
     }
+    
+    @Override
+    public ArrayList getEventOrganizersEmail(){
+        ArrayList userEmail = new ArrayList();
+        Query q = em.createQuery("SELECT a FROM UserEntity a");
+        boolean isEventOrganizer = false;
+        for (Object o: q.getResultList()){
+            UserEntity user = (UserEntity) o;
+             for (int i = 0; i < user.getRoles().size(); i++) {
+                if (user.getRoles().get(i).equals("customer")) {
+                    userEmail.add(user.getUsername());
+                    break;
+                }
+            }
+        }
+        return userEmail;
+    }
 }

@@ -73,6 +73,14 @@
                             checkboxes.click(function () {
                                 submitButt.attr("disabled", !checkboxes.is(":checked"));
                             });
+                            
+                            $("form").submit(function (event) {
+                             if (confirm("You are about to delete the sessions you have selected. Are you sure about that?")){
+                                 return true;
+                             } else {
+                                 return false;
+                             }
+                        });
                         </script>
                     </form> 
                 </div>
