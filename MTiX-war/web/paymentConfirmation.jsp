@@ -79,7 +79,7 @@
                                             <input type="hidden" name="currency_code" value="SGD">
                                             <INPUT TYPE="hidden" NAME="return" value=<%= address%>>
                                             <!-- Enable override of buyers's address stored with PayPal . -->
-                                            <input type="hidden" name="address_override" value="1">
+                                            <input type="hidden" name="address_override" value="0">
                                             <!-- Set variables that override the address stored with PayPal. -->
                                             <input type="hidden" name="first_name" value="<%= request.getAttribute("username")%>">
                                             <input type="hidden" name="address1" value="<%= request.getAttribute("address")%>">

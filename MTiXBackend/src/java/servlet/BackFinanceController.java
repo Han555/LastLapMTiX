@@ -7,7 +7,9 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,7 +17,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import manager.BookingFeesManager;
+import manager.LicensePaymentManager;
 import session.stateless.BookingFeesSessionLocal;
+import session.stateless.LicensePaymentSessionLocal;
 
 /**
  *
@@ -23,6 +27,9 @@ import session.stateless.BookingFeesSessionLocal;
  */
 @WebServlet(name = "BackFinanceController", urlPatterns = {"/BackFinanceController", "/BackFinanceController?*"})
 public class BackFinanceController extends HttpServlet {
+
+    @EJB
+    private LicensePaymentSessionLocal licensePaymentSession;
     @EJB
     private BookingFeesSessionLocal bookingFeesSession;
 
@@ -44,7 +51,7 @@ public class BackFinanceController extends HttpServlet {
         try {
             String action;
             BookingFeesManager bookingManager = new BookingFeesManager(bookingFeesSession);
-
+            LicensePaymentManager licensePaymentManager = new LicensePaymentManager(licensePaymentSession);
             int page = 1;
             int recordsPerPage = 8;
 
@@ -80,7 +87,7 @@ public class BackFinanceController extends HttpServlet {
                 request.setAttribute("role", role);
                 if (request.getParameter("page") != null) {
                     page = Integer.parseInt(request.getParameter("page"));
-                }                                                   
+                }
                 ArrayList<ArrayList<String>> fees = bookingManager.getBookingFees();
                 int noOfRecords = fees.size();
                 int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
@@ -98,7 +105,7 @@ public class BackFinanceController extends HttpServlet {
                 request.setAttribute("role", role);
                 if (request.getParameter("page") != null) {
                     page = Integer.parseInt(request.getParameter("page"));
-                }                                                   
+                }
                 ArrayList<ArrayList<String>> fees = bookingManager.getBookingFees();
                 int noOfRecords = fees.size();
                 int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
@@ -108,6 +115,71 @@ public class BackFinanceController extends HttpServlet {
                 request.setAttribute("currentPage", page);
                 request.setAttribute("inbox", feesPage);
                 request.getRequestDispatcher("/trackFees.jsp").forward(request, response);
+            } else if (action.equals("createLicensePayment")) {
+                request.setAttribute("username", currentUser);
+                request.setAttribute("role", role);
+                request.getRequestDispatcher("/createLicensePayment.jsp").forward(request, response);
+            } else if (action.equals("makeLicensePayment")) {
+                String company = request.getParameter("company");
+                String email = request.getParameter("email");
+                String amount = request.getParameter("amount");
+                String date = request.getParameter("date");
+                licensePaymentManager.addLicensingPayment(company, email, amount, date, currentUser);
+                request.setAttribute("username", currentUser);
+                request.setAttribute("role", role);
+                request.getRequestDispatcher("/createLicensePayment.jsp").forward(request, response);
+            } else if (action.equals("pasAccounts")) {
+                request.setAttribute("username", currentUser);
+                request.setAttribute("role", role);
+                if (request.getParameter("page") != null) {
+                    page = Integer.parseInt(request.getParameter("page"));
+                }
+                ArrayList<ArrayList<String>> accounts = licensePaymentManager.getLicensingAccounts();
+                int noOfRecords = accounts.size();
+                int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
+                ArrayList<ArrayList<String>> accountPage = licensePaymentManager.accountPage(accounts, (page - 1) * recordsPerPage, recordsPerPage);
+                request.setAttribute("noOfPages", noOfPages);
+                request.setAttribute("recordSize", String.valueOf(accountPage.size()));
+                request.setAttribute("currentPage", page);
+                request.setAttribute("inbox", accountPage);
+                request.getRequestDispatcher("/pasAccounts.jsp").forward(request, response);
+            } else if (action.equals("sendPasInvoice")) {
+                request.setAttribute("username", currentUser);
+                request.setAttribute("role", role);
+                String accountId = request.getParameter("accountid");
+                licensePaymentManager.updatePasInvoiceStatus(accountId);
+                ArrayList<String> accountRecord = licensePaymentManager.getAccRecord(accountId);
+                String timeStamp = new SimpleDateFormat("yyyy/MM/dd").format(Calendar.getInstance().getTime());
+                licensePaymentManager.sendEmail(accountRecord.get(1), "is3102mtix@gmail.com", "Invoice From MTiX\nInvoice date: " + timeStamp + "\nInvoiced to: " + accountRecord.get(0) + "\nItem: MTiX Platform License "  + "\nTotal Amount($): " + accountRecord.get(2) + "\nTransaction Date: " + accountRecord.get(3)+ "\n\nNote: This is a Computer generated invoice and thus requires no signature.", "MTiX Invoice", "smtp.gmail.com");
+                if (request.getParameter("page") != null) {
+                    page = Integer.parseInt(request.getParameter("page"));
+                }
+                ArrayList<ArrayList<String>> accounts = licensePaymentManager.getLicensingAccounts();
+                int noOfRecords = accounts.size();
+                int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
+                ArrayList<ArrayList<String>> accountPage = licensePaymentManager.accountPage(accounts, (page - 1) * recordsPerPage, recordsPerPage);
+                request.setAttribute("noOfPages", noOfPages);
+                request.setAttribute("recordSize", String.valueOf(accountPage.size()));
+                request.setAttribute("currentPage", page);
+                request.setAttribute("inbox", accountPage);
+                request.getRequestDispatcher("/pasAccounts.jsp").forward(request, response);
+            } else if (action.equals("markPaidPas")) {
+                request.setAttribute("username", currentUser);
+                request.setAttribute("role", role);
+                String accountId = request.getParameter("accountid");
+                licensePaymentManager.markAsPaid(accountId);
+                if (request.getParameter("page") != null) {
+                    page = Integer.parseInt(request.getParameter("page"));
+                }
+                ArrayList<ArrayList<String>> accounts = licensePaymentManager.getLicensingAccounts();
+                int noOfRecords = accounts.size();
+                int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
+                ArrayList<ArrayList<String>> accountPage = licensePaymentManager.accountPage(accounts, (page - 1) * recordsPerPage, recordsPerPage);
+                request.setAttribute("noOfPages", noOfPages);
+                request.setAttribute("recordSize", String.valueOf(accountPage.size()));
+                request.setAttribute("currentPage", page);
+                request.setAttribute("inbox", accountPage);
+                request.getRequestDispatcher("/pasAccounts.jsp").forward(request, response);
             }
         } catch (Exception ex) {
             ex.printStackTrace();

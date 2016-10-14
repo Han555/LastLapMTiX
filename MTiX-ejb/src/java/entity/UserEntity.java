@@ -54,7 +54,18 @@ public class UserEntity implements Serializable {
     @OneToMany
     private Collection<BookingFees> bookingfees = new ArrayList<BookingFees> ();
     
+    @OneToMany
+    private Collection<LicensePaymentEntity> licensePayments = new ArrayList<LicensePaymentEntity> ();
+    
     public UserEntity() {
+    }
+
+    public Collection<LicensePaymentEntity> getLicensePayments() {
+        return licensePayments;
+    }
+
+    public void setLicensePayments(Collection<LicensePaymentEntity> licensePayments) {
+        this.licensePayments = licensePayments;
     }
 
     public Collection<BookingFees> getBookingfees() {
