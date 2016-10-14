@@ -5,7 +5,7 @@
  */
 package servlet;
 
-import PropertyManagement.EquipmentBeanLocal;
+import session.stateless.propertymanagement.EquipmentBeanLocal;
 
 import com.google.gson.Gson;
 import java.io.IOException;

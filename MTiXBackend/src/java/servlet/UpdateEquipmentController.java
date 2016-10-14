@@ -5,8 +5,8 @@
  */
 package servlet;
 
-import PropertyManagement.EquipmentBeanLocal;
-import PropertyManagement.MaintenanceBeanLocal;
+import session.stateless.propertymanagement.EquipmentBeanLocal;
+import session.stateless.propertymanagement.MaintenanceBeanLocal;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;

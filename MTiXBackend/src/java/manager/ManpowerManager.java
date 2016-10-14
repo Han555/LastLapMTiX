@@ -5,7 +5,7 @@
  */
 package manager;
 
-import PropertyManagement.ManpowerBeanLocal;
+import session.stateless.propertymanagement.ManpowerBeanLocal;
 import entity.Manpower;
 import java.util.List;
 

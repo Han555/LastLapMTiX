@@ -54,13 +54,53 @@
 
                     </div>
 
-                    <div class="col-sm-12 text-center" style="padding-bottom:50px;" >
-                        <c:url var="addEquipment" value="/BackController?action=addExtraEquipment" />
-                        <a class="btn btn-primary" href="${addEquipment}" role="button">Add Additional Equipment</a>
-                        <c:url var="addEquipment" value="/BackController?action=addExtraManpower" />
-                        <a class="btn btn-primary" href="${addManpower}" role="button">Add Additional Manpower</a>
-                        
-                    </div>
+
+                    <c:url var="addEquipment" value="/BackController?action=addExtraEquipmentEvent" />
+                    <form class="form-inline" id="formSubmit" action="${addEquipment}" method="post">
+                        <div class="form-group">
+
+
+                            <input type="hidden" name="eventid" value="${eventid}">
+
+                        </div>
+                        <div class="form-group">
+
+
+                            <input type="hidden" name="pid" value="${event.property.id}">
+
+
+                        </div>
+
+                        <div class="form-group" >
+                            <div class="col-sm-10">
+                                <button type="submit" class="btn btn-default" value="formSubmit">Create Another Sub Event</button><span>${msg}</span>
+                            </div>
+                        </div>
+                    </form>
+
+                    <c:url var="addManpower" value="/BackController?action=addExtraManpowerEvent" />
+                    <form class="form-inline" id="formSubmit" action="${addManpower}" method="post">
+                        <div class="form-group">
+
+
+                            <input type="hidden" name="eventid" value="${eventid}">
+
+
+                        </div>
+                        <div class="form-group">
+
+
+                            <input type="hidden" name="pid" value="${event.property.id}">
+
+
+                        </div>
+
+                        <div class="form-group" >
+                            <div class="col-sm-10">
+                                <button type="submit" class="btn btn-default" value="formSubmit">No More Sub Event</button><span>${msg}</span>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
 

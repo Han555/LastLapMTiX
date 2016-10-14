@@ -56,7 +56,7 @@
 
                                
                                 <div class="col-sm-6">
-                                    <input type="hidden" name="seid" id="seid" class="form-control" value="${eventid}">
+                                    <input type="hidden" name="eid" id="eid" class="form-control" value="${eventid}">
                                    
 
                                 </div> 

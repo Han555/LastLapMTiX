@@ -80,7 +80,7 @@
                         <img src="assets/img/faces/productmanagement.jpg" alt="theater_main" style="width:300 px;height:300px">
                         <div class="caption">
                             <h3 style="text-align: center">Product Management System</h3>
-                            <p><c:url var="linkHref" value="/BackController?action=productEnterUser" /><a href="${linkHref}" class="btn btn-primary" role="button">Enter</a> </p>
+                            <p><c:url var="linkHref" value="/BackController?action=productMain" /><a href="${linkHref}" class="btn btn-primary" role="button">Enter</a> </p>
                         </div>
                     </div>
                 </div>

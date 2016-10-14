@@ -31,9 +31,9 @@
                             <c:url var="formAction" value="/BackController?action=saveNewSubEvent" />
                             <form class="form-horizontal" id="formSubmit" action="${formAction}" method="post">
                                 <div class="form-group" style="padding-bottom: 20px;" >
-                                    <label for="equipment" class="col-sm-4 control-label">Sub Event Name<span style="color:#FF0000;">*</span></label>
+                                    <label for="eventname" class="col-sm-4 control-label">Sub Event Name<span style="color:#FF0000;">*</span></label>
                                     <div class="col-sm-8">
-                                        <Input type="text" id="eventname" name="eventname" required>
+                                        <Input type="text" id="eventname" name="eventname" value="${eventname}" required>
                                     </div> 
                                 </div>
 
@@ -49,7 +49,7 @@
                                 <div class="form-group" >
 
 
-                                    <input type="hidden" name="propertyId" value="2">
+                                    <input type="hidden" name="pname" value="Merlion Star Theater">
 
                                 </div>
                                     <div class="form-group">

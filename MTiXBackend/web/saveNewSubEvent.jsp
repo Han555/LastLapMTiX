@@ -5,7 +5,8 @@
 --%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<jsp:useBean id="subevent" class="entity.SubEvent" scope="request"/>
+<jsp:useBean id="subevents" class="java.util.List<entity.SubEvent>" scope="request"/>
+
 <jsp:include page="header.jsp" />
 
 <!-- Main Content -->
@@ -29,7 +30,7 @@
                                 <tr>
 
                                     <th>Sub Event Name</th>
-                                   
+                                    <th>Event it under </th>
                                     <th>Start Date</th>
                                     <th>End Date</th>
                                     <th>Property</th>
@@ -38,34 +39,55 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <c:forEach items="${subevents}" var="subevent">
                                 <tr>
 
                                     <td>${subevent.name}</td>
-                                   
+                                    <td>${subevent.event.name}</td>
 
-                                    <td>${start}</td>
-                                    <td>${end}</td>
+                                    <td>${subevent.start}</td>
+                                    <td>${subevent.end}</td>
                                     <td>${subevent.property.propertyName}</td>
                                     <td>${subevent.user.username}</td>
 
                                 </tr>
+                                </c:forEach>
                             </tbody>
                         </table>
 
                     </div>
-<% 
-                                        session.setAttribute("seid", subevent.getId());
-                                        session.setAttribute("pid", subevent.getProperty().getId());
-session.setAttribute("eventid",subevent.getEvent().getId());%>
-                    <div class="col-sm-12 text-center" style="padding-bottom:50px;" >
-                        <c:url var="moreSub" value="/BackController?action=subReservationSearch" />
-                        <a class="btn btn-primary" href="${moreSub}" role="button">Create Another Sub Event</a>
-                        <c:url var="addEquipment" value="/BackController?action=addExtraEquipment" />
-                        <a class="btn btn-primary" href="${addEquipment}" role="button">Add Additional Equipment</a>
-                        <c:url var="addManpower" value="/BackController?action=addExtraManpower" />
-                        <a class="btn btn-primary" href="${addManpower}" role="button">Add Additional Manpower</a>
-                        
-                    </div>
+            <c:url var="formAction" value="/BackController?action=subReservationSearch" />
+                            <form class="form-horizontal" id="formSubmit" action="${formAction}" method="post">
+                                 <div class="form-group">
+
+
+                                    <input type="hidden" name="eventid" value="${eventid}">
+
+                                </div>
+                                    
+                                    <div class="form-group" >
+                                    <div class="col-sm-10">
+                                        <button type="submit" class="btn btn-default" value="formSubmit">Create Another Sub Event</button><span>${msg}</span>
+                                    </div>
+                                </div>
+                                    </form>
+                                    
+                                    <c:url var="formAction" value="/BackController?action=addExtra" />
+                            <form class="form-horizontal" id="formSubmit" action="${formAction}" method="post">
+                                 <div class="form-group">
+
+
+                                    <input type="hidden" name="eventid" value="${eventid}">
+
+                                </div>
+                                    
+                                    <div class="form-group" >
+                                    <div class="col-sm-10">
+                                        <button type="submit" class="btn btn-default" value="formSubmit">No More Sub Event</button><span>${msg}</span>
+                                    </div>
+                                </div>
+                                    </form>
+                    
                 </div>
             </div>
 

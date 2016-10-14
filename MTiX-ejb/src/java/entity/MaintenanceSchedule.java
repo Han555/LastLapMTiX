@@ -7,12 +7,15 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
+import org.hibernate.validator.constraints.Length;
 
 /**
  *
@@ -28,6 +31,8 @@ public class MaintenanceSchedule implements Serializable {
     private Date startDate;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date endDate;
+    @Column(length = 255)
+    private String purpose;
     
     @ManyToOne
     private Property property;
@@ -105,6 +110,20 @@ public class MaintenanceSchedule implements Serializable {
      */
     public void setProperty(Property property) {
         this.property = property;
+    }
+
+    /**
+     * @return the purpose
+     */
+    public String getPurpose() {
+        return purpose;
+    }
+
+    /**
+     * @param purpose the purpose to set
+     */
+    public void setPurpose(String purpose) {
+        this.purpose = purpose;
     }
     
 }

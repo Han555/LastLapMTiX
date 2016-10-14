@@ -45,22 +45,12 @@ public class SubEvent implements Serializable {
     private Collection<Promotion> promotions = new ArrayList<Promotion>();
     @ManyToOne //Owning side, has foreign key!
     private UserEntity user; 
-     @ManyToMany
+    @ManyToMany
     private List<Equipment> equipments = new ArrayList<Equipment>();
     @ManyToMany
     private List<Manpower> manpower = new ArrayList<Manpower>();
     @ManyToOne
     private Property property;
-    @OneToOne
-    private Alert alert;
-
-    public Alert getAlert() {
-        return alert;
-    }
-
-    public void setAlert(Alert alert) {
-        this.alert = alert;
-    }
 
     public List<Equipment> getEquipments() {
         return equipments;

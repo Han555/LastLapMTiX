@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.CascadeType;
+import javax.persistence.Column;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,6 +21,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
+import org.hibernate.validator.constraints.Length;
 
 /**
  *
@@ -33,6 +35,7 @@ public class Event implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    @Column(length = 255)
     private String description;
     
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -55,17 +58,6 @@ public class Event implements Serializable {
 
     @ManyToOne
     private Property property;
-    
-    @OneToOne
-    private Alert alert;
-
-    public Alert getAlert() {
-        return alert;
-    }
-
-    public void setAlert(Alert alert) {
-        this.alert = alert;
-    }
 
     public String getDescription() {
         return description;

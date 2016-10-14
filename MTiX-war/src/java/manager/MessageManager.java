@@ -7,7 +7,7 @@ package manager;
 
 import java.util.ArrayList;
 import javax.persistence.Query;
-import session.stateless.MessageSessionLocal;
+import session.stateless.commoninfrastucture.MessageSessionLocal;
 
 
 

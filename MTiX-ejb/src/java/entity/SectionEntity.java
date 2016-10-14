@@ -9,12 +9,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import org.hibernate.validator.constraints.Length;
 
 /**
  *
@@ -28,6 +30,8 @@ public class SectionEntity implements Serializable {
     private Long id; 
     private Integer numberInProperty;
     private Integer capacity;
+    @Column(length = 1000)
+    private String coords;
     
     
     @ManyToOne
@@ -153,6 +157,20 @@ public class SectionEntity implements Serializable {
      */
     public SectionCategory getCategory() {
         return category;
+    }
+
+    /**
+     * @return the coords
+     */
+    public String getCoords() {
+        return coords;
+    }
+
+    /**
+     * @param coords the coords to set
+     */
+    public void setCoords(String coords) {
+        this.coords = coords;
     }
 
   

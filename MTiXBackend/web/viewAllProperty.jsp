@@ -34,7 +34,7 @@
                     <div class="caption">
                         <h3 style="text-align: center">Merlion Star Theater</h3>
                         <p style="text-align: justify">The Merlion Star Theater is fitted with high-end audio, video and production lighting systems for an exceptional audio-visual experience with a capacity of <span style="font-weight:bold;">2,000</span> spectators. It heightens your enjoyment of a wide range of amplified music and speech events, as well as large-scale musical theater and <span style="font-weight:bold;">dance performances</span>.</p>
-                        <p><a href="img/property/theater_main.jpg" class="btn btn-primary" role="button">View Seating Plan</a> </p>
+                        <p><c:url var="linkHref" value="/BackController?action=theaterLayout" /><a href="${linkHref}" class="btn btn-primary" role="button">View Seating Plan</a> </p>
                     </div>
                 </div>
             </div>

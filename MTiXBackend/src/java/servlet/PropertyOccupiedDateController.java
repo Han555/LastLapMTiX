@@ -5,7 +5,7 @@
  */
 package servlet;
 
-import PropertyManagement.ReservePropertyBeanLocal;
+import session.stateless.propertymanagement.ReservePropertyBeanLocal;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.ejb.EJB;
@@ -14,7 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import PropertyManagement.SeatingPlanManagementBeanLocal;
+import session.stateless.propertymanagement.SeatingPlanManagementBeanLocal;
 import manager.SeatingPlanManager;
 import com.google.gson.*;
 import entity.Event;

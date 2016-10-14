@@ -5,7 +5,7 @@
  */
 package servlet;
 
-import PropertyManagement.ReservePropertyBeanLocal;
+import session.stateless.propertymanagement.ReservePropertyBeanLocal;
 import com.google.gson.Gson;
 import entity.Equipment;
 import entity.Event;

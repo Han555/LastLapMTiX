@@ -27,6 +27,7 @@
 
         <!-- Javascript Libs -->
         <script type="text/javascript" src="lib/js/jquery.min.js"></script>
+        
         <script type="text/javascript" src="lib/js/animatedModal.js"></script>
         <script type="text/javascript" src="lib/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="lib/js/jquery.seat-charts.js"></script>
@@ -46,6 +47,7 @@
         <script type="text/javascript" src="js/moment.min.js"></script>
         <!--   <script type="text/javascript" src="js/modal.js"></script> -->
         <script type="text/javascript" src="js/daterangepicker.js"></script>
+        <script type="text/javascript" src="query.maphilight.min.js"></script>
     </head>
 
     <body class="flat-blue">
@@ -121,11 +123,15 @@
                                         <div id="dropdown-element" class="panel-collapse collapse">
                                             <div class="panel-body">
                                                 <ul class="nav navbar-nav">
-                                                    <li><c:url var="linkHref" value="/BackController?action=promotionMain" /><a href="${linkHref}">Promotion</a>
+                                                     <li><c:url var="linkHref" value="/BackController?action=alertEnterUser" /><a href="${linkHref}">Alert</a>
                                                     </li>
-                                                    <li><c:url var="linkHref" value="/BackController?action=sessionMain" /><a href="${linkHref}">Sessions</a>
+                                                    <li><c:url var="linkHref" value="/BackController?action=promotionEnterUser" /><a href="${linkHref}">Promotion</a>
                                                     </li>
-                                                    <li><c:url var="linkHref" value="/BackController?action=configuration" /><a href="${linkHref}">Seat Configuration</a>
+                                                    <li><c:url var="linkHref" value="/BackController?action=productEnterUser" /><a href="${linkHref}">Session</a>
+                                                    </li>
+                                                    <li><c:url var="linkHref" value="/BackController?action=displaySeatsEnterUser" /><a href="${linkHref}">Seat Configuration</a>
+                                                    </li>
+                                                    <li><c:url var="linkHref" value="/BackController?action=ticketReservationEnterUser" /><a href="${linkHref}">Seats Inventory</a>
                                                     </li>
                                                     
                                                 </ul>
@@ -190,3 +196,5 @@
                         <!-- /.navbar-collapse -->
                     </nav>
                 </div>
+                                        
+                                        
