@@ -96,6 +96,26 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                    <img src="img/web.jpg" alt="theater_main" style="width:300 px;height:300px">
+                    <div class="caption">
+                        <h3 style="text-align: center">Content Management System</h3>
+                        <p><c:url var="linkHref" value="/ContentBackController?action=enterEventOrganizer" /><a href="${linkHref}" class="btn btn-primary" role="button">Enter</a> </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                    <img src="img/web.jpg" alt="theater_main" style="width:300 px;height:300px">
+                    <div class="caption">
+                        <h3 style="text-align: center">Content Management System (Used By Content Manager)</h3>
+                        <p><c:url var="linkHref" value="/ContentBackController?action=contentReviewMain" /><a href="${linkHref}" class="btn btn-primary" role="button">Enter</a> </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div> 
 </div>
 </div>

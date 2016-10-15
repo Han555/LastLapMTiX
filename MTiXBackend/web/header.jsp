@@ -186,6 +186,21 @@
                                 </li>
                                 <!-- Dropdown-->
                                 
+                                <li class="panel panel-default dropdown">
+                                    <a data-toggle="collapse" href="#dropdown-example">
+                                        <span class="icon fa fa-slack"></span><span class="title">Content Management</span>
+                                    </a>
+                                    <!-- Dropdown level 1 -->
+                                    <div id="dropdown-example" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            <ul class="nav navbar-nav">
+                                                <li><c:url var="linkHref" value="/ContentBackController?action=createWebpageMain" /><a href="${linkHref}">Seating Plan Management</a></li>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                                
                                 <li>
                                     <a href="license.html">
                                         <span class="icon fa fa-thumbs-o-up"></span><span class="title">License</span>
