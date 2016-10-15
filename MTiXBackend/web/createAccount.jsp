@@ -55,6 +55,7 @@
                                         <option value="product manager">product manager</option>
                                         <option value="property manager">property manager</option>
                                         <option value="event organizer">event organizer</option>
+                                        <option value="finance manager">finance manager</option>
 
                                     </select>
                                 </div> 

@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 /**
@@ -37,8 +38,76 @@ public class UserEntity implements Serializable {
     
     @OneToMany(mappedBy="user")
     private Collection<Event> events = new ArrayList<Event>();
-
+    
+    @OneToMany
+    private Collection<MessageEntity> messages = new ArrayList<MessageEntity> ();
+    
+    @ManyToMany
+    private Collection<BulletinEntity> bulletins = new ArrayList<BulletinEntity> (); 
+    
+    @ManyToMany
+    private Collection<RightsEntity> rights = new ArrayList<RightsEntity> ();
+    
+    @OneToMany
+    private Collection<PaymentRecord> payments = new ArrayList<PaymentRecord> ();
+    
+    @OneToMany
+    private Collection<BookingFees> bookingfees = new ArrayList<BookingFees> ();
+    
+    @OneToMany
+    private Collection<LicensePaymentEntity> licensePayments = new ArrayList<LicensePaymentEntity> ();
+    
     public UserEntity() {
+    }
+
+    public Collection<LicensePaymentEntity> getLicensePayments() {
+        return licensePayments;
+    }
+
+    public void setLicensePayments(Collection<LicensePaymentEntity> licensePayments) {
+        this.licensePayments = licensePayments;
+    }
+
+    public Collection<BookingFees> getBookingfees() {
+        return bookingfees;
+    }
+
+    public void setBookingfees(Collection<BookingFees> bookingfees) {
+        this.bookingfees = bookingfees;
+    }
+
+    public Collection<PaymentRecord> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(Collection<PaymentRecord> payments) {
+        this.payments = payments;
+    }
+    
+    
+    
+    public Collection<RightsEntity> getRights() {
+        return rights;
+    }
+
+    public void setRights(Collection<RightsEntity> rights) {
+        this.rights = rights;
+    }
+
+    public Collection<MessageEntity> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(Collection<MessageEntity> messages) {
+        this.messages = messages;
+    }
+
+    public Collection<BulletinEntity> getBulletins() {
+        return bulletins;
+    }
+
+    public void setBulletins(Collection<BulletinEntity> bulletins) {
+        this.bulletins = bulletins;
     }
 
     public String getSalt() {
@@ -65,8 +134,15 @@ public class UserEntity implements Serializable {
         this.resetPassword = false;
         this.salt = salt;
         ArrayList<String> roles = new ArrayList();
-        roles.add("customer");
+        roles.add("customer");       
         this.roles = roles;
+        
+        ArrayList<String> dynamic= new ArrayList();
+        dynamic.add("buy tickets");
+        dynamic.add("finances");
+        RightsEntity rights = new RightsEntity();
+        rights.createRight("customer", dynamic);
+        this.rights.add(rights);
     }
 
     public Collection<SubEvent> getSubEvents() {

@@ -65,9 +65,7 @@
                     <c:if test="${change == 'true'}">
                         <font color="red">Account password has been reset. Login with new password.</font><br/>
                     </c:if>
-                    <c:if test="${error == 'true'}">
-                        <font color="red">Session has ended.  Please login.</font><br/>
-                    </c:if>
+                   
 
                     <input  id="userName" name="userName" type="text" placeholder="Username">
                     <input id="password" name="password" type="password" placeholder="Password">
