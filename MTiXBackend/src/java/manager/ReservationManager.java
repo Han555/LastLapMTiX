@@ -7,11 +7,11 @@ package manager;
 
 import session.stateless.propertymanagement.ReservePropertyBeanLocal;
 import session.stateless.propertymanagement.SeatingPlanManagementBeanLocal;
-import entity.Equipment;
+import entity.EquipmentEntity;
 import entity.Event;
-import entity.Manpower;
-import entity.Property;
-import entity.Seat;
+import entity.ManpowerEntity;
+import entity.PropertyEntity;
+import entity.SeatEntity;
 import entity.SectionEntity;
 import entity.SubEvent;
 import java.text.DateFormat;
@@ -66,17 +66,17 @@ public class ReservationManager {
         return rpb.checkUser(email);
     }
 
-    public List<Property> getReservationSearchResult(HttpServletRequest request) throws ParseException {
-        String visual = request.getParameter("radioV");
+    public List<PropertyEntity> getReservationSearchResult(HttpServletRequest request) throws ParseException {
+        String eventcate = request.getParameter("eventcate");
         String eventScale = request.getParameter("eventscale");
         String daterange = request.getParameter("daterange");
         
-        return rpb.getReservationSearchResult(visual,eventScale,daterange);
+        return rpb.getReservationSearchResult(eventcate,eventScale,daterange);
     }
     
-    public List<Property> checkRecommendation(List<Property> properties,HttpServletRequest request){
-        String visual = request.getParameter("radioV");
-        return rpb.checkRecommendation(properties,visual);
+    public List<PropertyEntity> checkRecommendation(List<PropertyEntity> properties,HttpServletRequest request){
+        String eventcate = request.getParameter("eventcate");
+        return rpb.checkRecommendation(properties,eventcate);
     }
     
     public List<Event> getEventReservationByProperty(Long propertyId){
@@ -86,25 +86,25 @@ public class ReservationManager {
         return rpb.getSubEventReservationByProperty(propertyId);
     }
     
-    public List<Equipment> saveEquipmentSub(String[] evalues,String pidStr, String seidStr){
+    public List<EquipmentEntity> saveEquipmentSub(String[] evalues,String pidStr, String seidStr){
         Long pid = Long.valueOf(pidStr);
         Long seid = Long.valueOf(seidStr);
         return rpb.saveEquipmentSub(evalues,pid,seid);
     }
     
-    public List<Manpower> saveManpowerSub(String[] evalues,String pidStr, String seidStr){
+    public List<ManpowerEntity> saveManpowerSub(String[] evalues,String pidStr, String seidStr){
         Long pid = Long.valueOf(pidStr);
         Long seid = Long.valueOf(seidStr);
         return rpb.saveManpowerSub(evalues,pid,seid);
     }
     
-    public List<Equipment> saveEquipmentEvent(String[] evalues,String pidStr, String eidStr){
+    public List<EquipmentEntity> saveEquipmentEvent(String[] evalues,String pidStr, String eidStr){
         Long pid = Long.valueOf(pidStr);
         Long eid = Long.valueOf(eidStr);
         return rpb.saveEquipmentEvent(evalues,pid,eid);
     }
     
-    public List<Manpower> saveManpowerEvent(String[] evalues,String pidStr, String eidStr){
+    public List<ManpowerEntity> saveManpowerEvent(String[] evalues,String pidStr, String eidStr){
         Long pid = Long.valueOf(pidStr);
         Long eid = Long.valueOf(eidStr);
         return rpb.saveManpowerEvent(evalues,pid,eid);

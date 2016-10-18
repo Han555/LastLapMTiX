@@ -6,7 +6,7 @@
 package manager;
 
 import session.stateless.propertymanagement.EquipmentBeanLocal;
-import entity.Equipment;
+import entity.EquipmentEntity;
 import java.util.List;
 
 /**
@@ -21,11 +21,11 @@ public class EquipmentManager {
         this.equipmentBeanLocal = equipmentManagementBeanLocal;
     }
 
-    public List<Equipment> getAllEquipments() {
+    public List<EquipmentEntity> getAllEquipments() {
         return equipmentBeanLocal.getAllEquipments();
     }
 
-    public Equipment createNewEquipment(String ename, String location, Boolean standard, Long propertyId) {
+    public EquipmentEntity createNewEquipment(String ename, String location, Boolean standard, Long propertyId) {
         //Integer eprice = Integer.getInteger("price");
         return equipmentBeanLocal.addEquipment(ename, location, standard, propertyId);
     }
@@ -35,14 +35,14 @@ public class EquipmentManager {
         return equipmentBeanLocal.editEquipment(id, ename,location);
     }
 
-    public Equipment setNoSPrice(Long eId, String price) {
+    public EquipmentEntity setNoSPrice(Long eId, String price) {
         System.out.println("=======BeforeManager" + price);
         Integer eprice = Integer.parseInt(price);
         System.out.println("=======Manager" + price);
         return equipmentBeanLocal.setNoSPrice(eId, eprice);
     }
 
-    public List<Equipment> getNonSEquipmentInProperty(Long propertyId) {
+    public List<EquipmentEntity> getNonSEquipmentInProperty(Long propertyId) {
         return equipmentBeanLocal.getNonSEquipmentInProperty(propertyId);
     }
     

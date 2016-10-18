@@ -7,7 +7,7 @@ package manager;
 
 import session.stateless.propertymanagement.MaintenanceBeanLocal;
 import java.util.List;
-import entity.MaintenanceSchedule;
+import entity.MaintenanceScheduleEntity;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -50,7 +50,7 @@ public class MaintenanceScheduleManager {
         return msb.updateMaintenance(mid, propertyId, startDate, endDate);
     }
     
-    public List<MaintenanceSchedule> getAllScheduleInProperty(long id) {
+    public List<MaintenanceScheduleEntity> getAllScheduleInProperty(long id) {
         return null;
     }
     

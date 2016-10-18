@@ -5,7 +5,9 @@
  */
 package session.stateless.ticketing;
 
+import entity.SectionEntity;
 import entity.SessionEntity;
+import java.util.HashMap;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -16,6 +18,22 @@ import javax.ejb.Local;
 @Local
 public interface BookingSessionLocal {
     
-    public List<SessionEntity> getSessionsByEventId(Long id);
+  
     public List<SessionEntity> getSessionsBySubeventId(Long id);
+
+    public Double getPriceBySessionAndSectionId(Long sessionId, Long sectionId);
+
+    public List<SessionEntity> getSessionsByEventIdSorted(Long id);
+
+    public List<SectionEntity> getReservedSectionsBySessionId(Long id);
+
+    public List<SectionEntity> getClosedSectionsBySessionId(Long id);
+    
+    HashMap<Long, List<Double>> getSessionsPricingByEventId(Long id);
+
+  
+
+    public List<Double> getSessionsPricingBySessionId(Long id, String type);
+
+   
 }

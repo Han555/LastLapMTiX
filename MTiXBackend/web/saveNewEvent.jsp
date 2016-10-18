@@ -73,7 +73,7 @@
 
                         <div class="form-group" >
                             <div class="col-sm-10">
-                                <button type="submit" class="btn btn-default" value="formSubmit">Create Another Sub Event</button><span>${msg}</span>
+                                <button type="submit" class="btn btn-default" value="formSubmit">Add Extra Equipment</button><span>${msg}</span>
                             </div>
                         </div>
                     </form>
@@ -97,7 +97,7 @@
 
                         <div class="form-group" >
                             <div class="col-sm-10">
-                                <button type="submit" class="btn btn-default" value="formSubmit">No More Sub Event</button><span>${msg}</span>
+                                <button type="submit" class="btn btn-default" value="formSubmit">Add Extra Manpower</button><span>${msg}</span>
                             </div>
                         </div>
                     </form>

@@ -11,11 +11,11 @@ import session.stateless.propertymanagement.FoodOutletBeanLocal;
 import session.stateless.propertymanagement.ManpowerBeanLocal;
 import session.stateless.propertymanagement.ReservePropertyBeanLocal;
 import session.stateless.propertymanagement.SeatingPlanManagementBeanLocal;
-import entity.Equipment;
+import entity.EquipmentEntity;
 import entity.Event;
-import entity.FoodOutlet;
-import entity.Manpower;
-import entity.Property;
+import entity.FoodOutletEntity;
+import entity.ManpowerEntity;
+import entity.PropertyEntity;
 import entity.SubEvent;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -748,8 +748,8 @@ public class BackController extends HttpServlet {
                     Long eventid = (Long) session.getAttribute("eventid");
                     System.out.println("=======session get eventid" + eventid);
                     request.setAttribute("eventid", eventid);
-                    List<Property> properties = rm.getReservationSearchResult(request);
-                    List<Property> pRList = rm.checkRecommendation(properties, request);
+                    List<PropertyEntity> properties = rm.getReservationSearchResult(request);
+                    List<PropertyEntity> pRList = rm.checkRecommendation(properties, request);
                     String daterange = request.getParameter("daterange");
                     if (properties.isEmpty()) {
                         request.setAttribute("errormsg", " Please note: The date range you entered conflicts with an exsiting reservation or a maintenance shedule  ");
@@ -773,8 +773,8 @@ public class BackController extends HttpServlet {
                     Long eventid = (Long) session.getAttribute("eventid");
                     System.out.println("=======session get eventid" + eventid);
                     request.setAttribute("eventid", eventid);
-                    List<Property> properties = rm.getReservationSearchResult(request);
-                    List<Property> pRList = rm.checkRecommendation(properties, request);
+                    List<PropertyEntity> properties = rm.getReservationSearchResult(request);
+                    List<PropertyEntity> pRList = rm.checkRecommendation(properties, request);
                     String daterange = request.getParameter("daterange");
                     if (properties.isEmpty()) {
                         request.setAttribute("errormsg", " Please note: The date range you entered conflicts with an exsiting reservation or a maintenance shedule  ");
@@ -1128,7 +1128,7 @@ public class BackController extends HttpServlet {
                     standard = Boolean.TRUE;
                 }
                 System.out.print(standard);
-                Equipment equipment = em.createNewEquipment(ename, location, standard, ePropertyId);
+                EquipmentEntity equipment = em.createNewEquipment(ename, location, standard, ePropertyId);
                 if (equipment != null) {
                     request.setAttribute("equipment", equipment);
                     if (!standard) {
@@ -1145,7 +1145,7 @@ public class BackController extends HttpServlet {
                 Long eid = Long.valueOf(idStr);
                 System.out.println("==========test price" + eid + "  " + eprice);
 
-                Equipment e = em.setNoSPrice(eid, eprice);
+                EquipmentEntity e = em.setNoSPrice(eid, eprice);
 
                 request.setAttribute("equipment", e);
                 request.setAttribute("role", role);
@@ -1345,7 +1345,7 @@ public class BackController extends HttpServlet {
                 }
                 System.out.print(standard);
                 Integer mintnumber = Integer.valueOf(mnumber);
-                Manpower manpower = mm.createNewManpower(mrole, mintnumber, standard, ePropertyId);
+                ManpowerEntity manpower = mm.createNewManpower(mrole, mintnumber, standard, ePropertyId);
                 if (manpower != null) {
                     request.setAttribute("manpower", manpower);
                     if (!standard) {
@@ -1362,7 +1362,7 @@ public class BackController extends HttpServlet {
                 Long mid = Long.valueOf(midStr);
                 System.out.println("==========test price" + mid + "  " + mprice);
 
-                Manpower m = mm.mSetNoSPrice(mid, mprice);
+                ManpowerEntity m = mm.mSetNoSPrice(mid, mprice);
 
                 request.setAttribute("manpower", m);
                 request.setAttribute("role", role);
@@ -1396,7 +1396,7 @@ public class BackController extends HttpServlet {
                 System.out.println(otype);
                 System.out.println(description);
 
-                FoodOutlet foodoutlet = fom.createNewFoodOutlet(oname, otype, description, ePropertyId);
+                FoodOutletEntity foodoutlet = fom.createNewFoodOutlet(oname, otype, description, ePropertyId);
                 if (foodoutlet != null) {
                     request.setAttribute("outlet", foodoutlet);
                     request.getRequestDispatcher("/outletCreated.jsp").forward(request, response);
@@ -1424,7 +1424,7 @@ public class BackController extends HttpServlet {
                 System.out.println(otype);
                 System.out.println(description);
 
-                FoodOutlet foodoutlet = fom.createNewFoodOutlet(oname, otype, description, ePropertyId);
+                FoodOutletEntity foodoutlet = fom.createNewFoodOutlet(oname, otype, description, ePropertyId);
                 if (foodoutlet != null) {
                     request.setAttribute("outlet", foodoutlet);
                     request.getRequestDispatcher("/outletCreated.jsp").forward(request, response);

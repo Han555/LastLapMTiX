@@ -7,7 +7,7 @@ package servlet;
 
 import session.stateless.propertymanagement.FoodOutletBeanLocal;
 import com.google.gson.Gson;
-import entity.FoodOutlet;
+import entity.FoodOutletEntity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,11 +43,11 @@ public class OutletListController extends HttpServlet {
         String idStr = request.getParameter("id");
         Long id = Long.valueOf(idStr);
         
-        List<FoodOutlet> fol = ob.getFoodOutletInProperty(id);
+        List<FoodOutletEntity> fol = ob.getFoodOutletInProperty(id);
         List<FoodOutletModel> oList = new ArrayList<FoodOutletModel>();
                 
         for (int i =0; i< fol.size();i++) {
-            FoodOutlet fo = fol.get(i);
+            FoodOutletEntity fo = fol.get(i);
              System.out.println("ID: " + fo.getId());
             FoodOutletModel fom = new FoodOutletModel();
             fom.setId(fo.getId());

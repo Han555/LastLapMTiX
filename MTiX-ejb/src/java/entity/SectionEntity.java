@@ -32,16 +32,17 @@ public class SectionEntity implements Serializable {
     private Integer capacity;
     @Column(length = 1000)
     private String coords;
-    
+    //@Column(length = 1000)
+    //private String seatMap;
     
     @ManyToOne
-    private Property property;
+    private PropertyEntity property;
     
     @OneToMany(cascade={CascadeType.ALL},mappedBy="section")
-    private List<Seat> seats = new ArrayList<Seat>();
+    private List<SeatEntity> seats = new ArrayList<SeatEntity>();
     
     @ManyToOne
-    private SectionCategory category;
+    private SectionCategoryEntity category;
     
     public void createSection(Integer numberInProperty, Integer cpapacity){
         this.setCapacity(capacity);
@@ -88,28 +89,28 @@ public class SectionEntity implements Serializable {
     /**
      * @return the property
      */
-    public Property getProperty() {
+    public PropertyEntity getProperty() {
         return property;
     }
 
     /**
      * @param property the property to set
      */
-    public void setProperty(Property property) {
+    public void setProperty(PropertyEntity property) {
         this.property = property;
     }
 
     /**
      * @return the seats
      */
-    public List<Seat> getSeats() {
+    public List<SeatEntity> getSeats() {
         return seats;
     }
 
     /**
      * @param seats the seats to set
      */
-    public void setSeats(List<Seat> seats) {
+    public void setSeats(List<SeatEntity> seats) {
         this.seats = seats;
     }
 
@@ -148,14 +149,14 @@ public class SectionEntity implements Serializable {
     /**
      * @param category the category to set
      */
-    public void setCategory(SectionCategory category) {
+    public void setCategory(SectionCategoryEntity category) {
         this.category = category;
     }
 
     /**
      * @return the category
      */
-    public SectionCategory getCategory() {
+    public SectionCategoryEntity getCategory() {
         return category;
     }
 

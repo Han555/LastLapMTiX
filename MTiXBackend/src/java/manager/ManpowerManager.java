@@ -6,7 +6,7 @@
 package manager;
 
 import session.stateless.propertymanagement.ManpowerBeanLocal;
-import entity.Manpower;
+import entity.ManpowerEntity;
 import java.util.List;
 
 /**
@@ -21,11 +21,11 @@ private final ManpowerBeanLocal manpowerBeanLocal;
         this.manpowerBeanLocal = manpowerManagementBeanLocal;
     }
 
-    public List<Manpower> getAllManpower() {
+    public List<ManpowerEntity> getAllManpower() {
         return manpowerBeanLocal.getAllManpower();
     }
 
-    public Manpower createNewManpower(String mrole, Integer mintnumber, Boolean standard, Long propertyId) {
+    public ManpowerEntity createNewManpower(String mrole, Integer mintnumber, Boolean standard, Long propertyId) {
         //Integer eprice = Integer.getInteger("price");
         return manpowerBeanLocal.addManpower(mrole, mintnumber, standard, propertyId);
     }
@@ -35,14 +35,14 @@ private final ManpowerBeanLocal manpowerBeanLocal;
         return manpowerBeanLocal.editManpower(id, mrole,number);
     }
 
-    public Manpower mSetNoSPrice(Long eId, String price) {
+    public ManpowerEntity mSetNoSPrice(Long eId, String price) {
         System.out.println("=======BeforeManager" + price);
         Integer eprice = Integer.parseInt(price);
         System.out.println("=======Manager" + price);
         return manpowerBeanLocal.mSetNoSPrice(eId, eprice);
     }
 
-    public List<Manpower> getAllNonStandardEquipments() {
+    public List<ManpowerEntity> getAllNonStandardEquipments() {
         return manpowerBeanLocal.getAllNonStandardManpowers();
     }
     
@@ -50,7 +50,7 @@ private final ManpowerBeanLocal manpowerBeanLocal;
         return manpowerBeanLocal.deleteManpowerById(id);
     }
     
-    public List<Manpower> getNonSManpowerInProperty(Long propertyId){
+    public List<ManpowerEntity> getNonSManpowerInProperty(Long propertyId){
         return manpowerBeanLocal.getNonSManpowerInProperty(propertyId);
     }
 

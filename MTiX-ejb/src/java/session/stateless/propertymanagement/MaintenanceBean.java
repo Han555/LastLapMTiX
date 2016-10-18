@@ -6,8 +6,8 @@
 package session.stateless.propertymanagement;
 
 import java.util.Date;
-import entity.MaintenanceSchedule;
-import entity.Property;
+import entity.MaintenanceScheduleEntity;
+import entity.PropertyEntity;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -26,8 +26,8 @@ public class MaintenanceBean implements MaintenanceBeanLocal {
     SeatingPlanManagementBeanLocal spm;
 
     @Override
-    public MaintenanceSchedule getMaintenanceScheduleById(Long id) {
-        return (MaintenanceSchedule) em.find(MaintenanceSchedule.class, id);
+    public MaintenanceScheduleEntity getMaintenanceScheduleById(Long id) {
+        return (MaintenanceScheduleEntity) em.find(MaintenanceScheduleEntity.class, id);
     }
 
     private List getPropertyConflictList(Date startDate, Date endDate, Long propertyId) {
@@ -62,10 +62,10 @@ public class MaintenanceBean implements MaintenanceBeanLocal {
 
     }
     
-    private List<MaintenanceSchedule> getMaintenanceConflictList (Date startDate, Date endDate, Long propertyId) {
-        List<MaintenanceSchedule> conflict = new ArrayList<MaintenanceSchedule>();
-        List<MaintenanceSchedule> ms = spm.getPropertyById(propertyId).getMaintenanceSchedule();
-        for (MaintenanceSchedule m : ms) {
+    private List<MaintenanceScheduleEntity> getMaintenanceConflictList (Date startDate, Date endDate, Long propertyId) {
+        List<MaintenanceScheduleEntity> conflict = new ArrayList<MaintenanceScheduleEntity>();
+        List<MaintenanceScheduleEntity> ms = spm.getPropertyById(propertyId).getMaintenanceSchedule();
+        for (MaintenanceScheduleEntity m : ms) {
             if (endDate.getTime() >= m.getStartDate().getTime()) {
                 if (startDate.getTime() <= m.getEndDate().getTime()) {
                     conflict.add(m);
@@ -84,8 +84,8 @@ public class MaintenanceBean implements MaintenanceBeanLocal {
             if (!checkMaintenanceConflict(start, end, propertyId)) {
                 if (!checkPropertyConflict(start, end, propertyId)) {
                     System.out.println("=====================no conflict");
-                    Property property = spm.getPropertyById(propertyId);
-                    MaintenanceSchedule ms = new MaintenanceSchedule();
+                    PropertyEntity property = spm.getPropertyById(propertyId);
+                    MaintenanceScheduleEntity ms = new MaintenanceScheduleEntity();
                     ms.setEndDate(end);
                     ms.setStartDate(start);
                     ms.setProperty(spm.getPropertyById(propertyId));
@@ -125,9 +125,9 @@ public class MaintenanceBean implements MaintenanceBeanLocal {
         Boolean result = false;
         try {
             
-            List<MaintenanceSchedule> conflicts = getMaintenanceConflictList(start, end, propertyId);
+            List<MaintenanceScheduleEntity> conflicts = getMaintenanceConflictList(start, end, propertyId);
             if (conflicts.size() == 0 || (conflicts.size() == 1 && conflicts.get(0).getId() == mid)) {
-                MaintenanceSchedule ms = getMaintenanceScheduleById(mid);
+                MaintenanceScheduleEntity ms = getMaintenanceScheduleById(mid);
                 ms.setEndDate(end);
                 ms.setStartDate(start);
 
@@ -144,11 +144,11 @@ public class MaintenanceBean implements MaintenanceBeanLocal {
     }
 
     @Override
-    public List<MaintenanceSchedule> getMaintenanceInProperty(Long propertyId) {
-        Property property = spm.getPropertyById(propertyId);
+    public List<MaintenanceScheduleEntity> getMaintenanceInProperty(Long propertyId) {
+        PropertyEntity property = spm.getPropertyById(propertyId);
         Query query = em.createQuery("SELECT ms FROM MaintenanceSchedule ms where ms.property=:inProperty");
         query.setParameter("inProperty", property);
-        List<MaintenanceSchedule> res = query.getResultList();
+        List<MaintenanceScheduleEntity> res = query.getResultList();
         System.out.println("===============" + res.size());
         return res;
     }

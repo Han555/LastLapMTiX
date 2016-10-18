@@ -10,8 +10,8 @@ import javax.ejb.Stateless;
 import entity.Event;
 import entity.Promotion;
 import entity.PromotionType;
-import entity.Property;
-import entity.SectionCategory;
+import entity.PropertyEntity;
+import entity.SectionCategoryEntity;
 import entity.SectionEntity;
 import entity.SessionCategoryPrice;
 import entity.SessionEntity;
@@ -56,7 +56,7 @@ public class ProductSession implements ProductSessionLocal {
         user = new UserEntity();
 
         for (int i = 1; i <= 3; i++) {
-            SectionCategory section = new SectionCategory();
+            SectionCategoryEntity section = new SectionCategoryEntity();
             section.createSectionCategory("CAT" + i, i);
             em.persist(section);
             em.flush();
@@ -656,7 +656,7 @@ public class ProductSession implements ProductSessionLocal {
                 Query q = em.createQuery("SELECT a FROM SectionCategory a WHERE a.categoryNum=:cat AND a.property.id=:id");
                 q.setParameter("cat", i);
                 q.setParameter("id", propertyID);
-                SectionCategory section = (SectionCategory) q.getSingleResult();
+                SectionCategoryEntity section = (SectionCategoryEntity) q.getSingleResult();
 
                 SessionCategoryPrice price = new SessionCategoryPrice();
                 price.setPrice(cat.get(i - 1));
@@ -1242,25 +1242,7 @@ public class ProductSession implements ProductSessionLocal {
         }
         return sessionsInventory;
     }
-    @Override
-    public List<SectionEntity> getReservedSectionsBySessionId(long id) {
-        SessionEntity sessionE = em.find(SessionEntity.class, id);
-        
-
-        Query q = em.createQuery("SELECT s.sectionEntity FROM SessionSeatsInventory s WHERE s.session=:session AND s.reserveTickets=TRUE");
-        q.setParameter("session", sessionE);
-        return q.getResultList();
-    }
-    
-    @Override
-    public List<SectionEntity> getClosedSectionsBySessionId(long id) {
-        SessionEntity sessionE = em.find(SessionEntity.class, id);
-       
-
-        Query q = em.createQuery("SELECT s.sectionEntity FROM SessionSeatsInventory s WHERE s.session=:session AND s.stopTicketsSales=TRUE");
-        q.setParameter("session", sessionE);
-        return q.getResultList();
-    }
+   
 
     public long getPropertyID(long id) { //sessionID
         SessionEntity session = em.find(SessionEntity.class, id);

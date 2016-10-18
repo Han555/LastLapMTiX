@@ -15,36 +15,34 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
-
 /**
  *
  * @author catherinexiong
  */
 @Entity
-public class Manpower implements Serializable {
+public class EquipmentEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String staffRole;
-    private Integer number;
+    private String equipmentName;
+    private String location;
     private Boolean standard;
     private Integer price;
-    
     @ManyToOne
-    private Property property;
+    private PropertyEntity property;
     @ManyToMany
     private List<Event> events = new ArrayList<Event>();
     @ManyToMany
     private List<SubEvent> subEvents = new ArrayList<SubEvent>();
     
-    public void createManpower(String staffRole, Integer number, Boolean standard, Integer price){
-        this.setStaffRole(staffRole);
-        this.setNumber(number);
+    public void createEquipment(String quipmentName, String location, Boolean standard, Integer price){
+        this.setEquipmentName(equipmentName);
+        this.setLocation(location);
         this.setStandard(standard);
         this.setPrice(price);
     }
-
+    
     public Long getId() {
         return id;
     }
@@ -63,10 +61,10 @@ public class Manpower implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Manpower)) {
+        if (!(object instanceof EquipmentEntity)) {
             return false;
         }
-        Manpower other = (Manpower) object;
+        EquipmentEntity other = (EquipmentEntity) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -75,23 +73,35 @@ public class Manpower implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Manpower[ id=" + id + " ]";
-    }
-
-  
-
-    /**
-     * @return the number
-     */
-    public Integer getNumber() {
-        return number;
+        return "entity.Equipment[ id=" + id + " ]";
     }
 
     /**
-     * @param number the number to set
+     * @return the equipmentName
      */
-    public void setNumber(Integer number) {
-        this.number = number;
+    public String getEquipmentName() {
+        return equipmentName;
+    }
+
+    /**
+     * @param equipmentName the equipmentName to set
+     */
+    public void setEquipmentName(String equipmentName) {
+        this.equipmentName = equipmentName;
+    }
+
+    /**
+     * @return the location
+     */
+    public String getLocation() {
+        return location;
+    }
+
+    /**
+     * @param location the location to set
+     */
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     /**
@@ -109,6 +119,22 @@ public class Manpower implements Serializable {
     }
 
     /**
+     * @return the property
+     */
+    public PropertyEntity getProperty() {
+        return property;
+    }
+
+    /**
+     * @param property the property to set
+     */
+    public void setProperty(PropertyEntity property) {
+        this.property = property;
+    }
+
+
+
+    /**
      * @return the price
      */
     public Integer getPrice() {
@@ -120,36 +146,6 @@ public class Manpower implements Serializable {
      */
     public void setPrice(Integer price) {
         this.price = price;
-    }
-
-    /**
-     * @return the property
-     */
-    public Property getProperty() {
-        return property;
-    }
-
-    /**
-     * @param property the property to set
-     */
-    public void setProperty(Property property) {
-        this.property = property;
-    }
-
- 
-
-    /**
-     * @return the staffRole
-     */
-    public String getStaffRole() {
-        return staffRole;
-    }
-
-    /**
-     * @param staffRole the staffRole to set
-     */
-    public void setStaffRole(String staffRole) {
-        this.staffRole = staffRole;
     }
 
     /**

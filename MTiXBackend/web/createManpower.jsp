@@ -34,9 +34,9 @@
                                 </div> 
                             </div>
                             <div class="form-group" style="padding-bottom: 20px;" >
-                                <label for="ename" class="col-sm-2 control-label">Number of the Staff<span style="color:#FF0000">*</span></label>
+                                <label for="mnumber" class="col-sm-2 control-label">Number of the Staff<span style="color:#FF0000">*</span></label>
                                 <div class="col-sm-4">
-                                    <input type="text" name="mnumber" id="mnumber" class="form-control" value="" required = "true"> 
+                                    <input type="number" name="mnumber" id="mnumber" class="form-control" value="" required = "true"> 
                                 </div> 
                             </div>
                             <div class="form-group" style="padding-bottom: 20px;" >
@@ -106,5 +106,24 @@
 
 
 </script>      -->
+
+
+<script>
+ var num = 1;
+$(function() { 
+    $('#mstandard').change(function() {
+        if($(this).val()=='ns'){
+         $('#mnumber').val(num);
+         document.getElementById('mnumber').disabled = true;
+     } else {
+         $('#mnumber').removeAttr('disabled');
+     }
+    }) 
+});
+
+
+
+
+</script>  
 
 <jsp:include page="footer.jsp" />

@@ -8,8 +8,8 @@ package servlet;
 import session.stateless.propertymanagement.EquipmentBeanLocal;
 import session.stateless.propertymanagement.ManpowerBeanLocal;
 import com.google.gson.Gson;
-import entity.Equipment;
-import entity.Manpower;
+import entity.EquipmentEntity;
+import entity.ManpowerEntity;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -48,11 +48,11 @@ public class ManpowerListController extends HttpServlet {
         String idStr = request.getParameter("id");
         Long id = Long.valueOf(idStr);
         
-        List<Manpower> mp = mb.getManpowerInProperty(id);
+        List<ManpowerEntity> mp = mb.getManpowerInProperty(id);
         List<ManpowerModel> mList = new ArrayList<ManpowerModel>();
                 
         for (int i =0; i< mp.size();i++) {
-            Manpower m = mp.get(i);
+            ManpowerEntity m = mp.get(i);
              System.out.println("ID: " + m.getId());
             ManpowerModel mpm = new ManpowerModel();
             mpm.setId(m.getId());

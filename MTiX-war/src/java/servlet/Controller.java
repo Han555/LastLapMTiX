@@ -390,8 +390,14 @@ public class Controller extends HttpServlet {
                 request.setAttribute("board", board);
                 request.setAttribute("username", currentUser);
                 request.getRequestDispatcher("/testTable.jsp").forward(request, response);
-            } else if (action.equals("bookTicket")) {
-                HttpSession session = request.getSession();
+            } /*
+            
+            
+            Start of Ticketing System
+            */ 
+            
+            else if (action.equals("bookTicket")) {
+                //HttpSession session = request.getSession();
                 //String type = session.getAttribute("type");
                 //Long id = (Long) session.getAttribute("id");
 
@@ -400,15 +406,18 @@ public class Controller extends HttpServlet {
                 
                 if (type.equals("event")) { 
                     Event event = rm.getEventById(id);
-                    request.setAttribute("sessions", sessionManager.getSessionsByEventId(id));
+                    request.setAttribute("sessions", sessionManager.getSessionsByEventIdSorted(id));
                     request.setAttribute("sections", spm.getAllSectionsInOneProperty(event.getProperty().getId()));
-                    request.setAttribute("reservedSection", pm.getReservedSectionsBySessionId(id));
-                    request.setAttribute("closedSection", pm.getClosedSectionsBySessionId(id));
+                    request.setAttribute("type","event");
+                    //request.setAttribute("priceHashMap", sessionManager.getSessionsPricingByEventId(id));
+                    //request.setAttribute("reservedSection", pm.getReservedSectionsBySessionId(id));
+                    //request.setAttribute("closedSection", pm.getClosedSectionsBySessionId(id));
                 }
                 else {
                     SubEvent event = rm.getSubEventById(id);
                     request.setAttribute("sessions", sessionManager.getSessionsBySubeventId(id));
                     request.setAttribute("sections", spm.getAllSectionsInOneProperty(event.getProperty().getId()));
+                    request.setAttribute("type","subevent");
                 }
                
                 
