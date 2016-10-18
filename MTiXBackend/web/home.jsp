@@ -64,7 +64,7 @@
         </div>
         <div class="row">
             <c:if test="${(role == 'super administrator' || role == 'property manager')}">
-                <div class="col-sm-6 col-md-4">
+                <div class="col-sm-6 col-md-3">
                     <div class="thumbnail">
                         <img src="assets/img/faces/propertymanagement.jpg" style="width:300 px;height:300px">
                         <div class="caption">
@@ -75,7 +75,7 @@
                 </div>
             </c:if>
             <c:if test="${(role == 'super administrator' || role == 'product manager')}">
-                <div class="col-sm-6 col-md-4">
+                <div class="col-sm-6 col-md-3">
                     <div class="thumbnail">
                         <img src="assets/img/faces/productmanagement.jpg" alt="theater_main" style="width:300 px;height:300px">
                         <div class="caption">
@@ -86,15 +86,43 @@
                 </div>
             </c:if>   
 
-            <div class="col-sm-6 col-md-4">
-                <div class="thumbnail">
-                    <img src="assets/img/faces/finances.jpg" alt="theater_main" style="width:300 px;height:300px">
-                    <div class="caption">
-                        <h3 style="text-align: center">Finances</h3>
-                        <p><c:url var="linkHref" value="/BackController?action=addingSub" /><a href="${linkHref}" class="btn btn-primary" role="button">Enter</a> </p>
+            <c:if test="${(role == 'super administrator' || role == 'event organizer')}">
+                <div class="col-sm-6 col-md-3">
+                    <div class="thumbnail">
+                        <img src="assets/img/faces/events.jpg" alt="theater_main" style="width:300 px;height:300px">
+                        <div class="caption">
+                            <h3 style="text-align: center">Event Management System</h3>
+                            <c:url var="formAction" value="/EventController?action=viewEvents" />
+                            <form id="verifyForm" name="verifyForm" action="${formAction}" method="post">
+                                <c:url var="formAction" value="/EventController?action=viewEvents" />
+                                <input type="hidden" name="username" value=<%= request.getAttribute("username")%> readonly="readonly" />
+
+                                <c:url var="formAction" value="/EventController" />
+                                <input type="submit" class="btn btn-primary" value="Enter" /> 
+                            </form>                       
+                        </div>
                     </div>
                 </div>
-            </div>
+            </c:if>   
+
+            <c:if test="${(role == 'super administrator' || role == 'finance manager')}">
+                <div class="col-sm-6 col-md-3">
+                    <div class="thumbnail">
+                        <img src="assets/img/faces/finances.jpg" alt="theater_main" style="width:300 px;height:300px">
+                        <div class="caption">
+                            <h3 style="text-align: center">Finance Management System</h3>
+                            <c:url var="formAction" value="/BackFinanceController?action=finances" />
+                            <form id="verifyForm" name="verifyForm" action="${formAction}" method="post">
+                                <c:url var="formAction" value="/BackFinanceController?action=finances" />
+                                <input type="hidden" name="username" value=<%= request.getAttribute("username")%> readonly="readonly" />
+                                <input type="hidden" name="role" value=<%= request.getAttribute("role")%> readonly="readonly" />
+                                <c:url var="formAction" value="/BackFinanceController" />
+                                <input type="submit" class="btn btn-primary" value="Enter" /> 
+                            </form>                        
+                        </div>
+                    </div>
+                </div>
+            </c:if>
         </div>
     </div> 
 </div>

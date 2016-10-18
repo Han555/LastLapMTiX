@@ -126,7 +126,7 @@ public class Controller extends HttpServlet {
                 }
             }
 
-            System.out.println("Action = " + action);
+            System.out.println("Finance Action = " + action);
 
             if (action.equals("register")) {
                 request.getRequestDispatcher("/register.jsp").forward(request, response);
@@ -365,7 +365,9 @@ public class Controller extends HttpServlet {
                 request.setAttribute("inbox", inboxPage);
                 request.getRequestDispatcher("/message.jsp").forward(request, response);           
             } else if (action.equals("buyTickets")) {
-                registerManager.createAdministrator();
+                //registerManager.createAdministrator();
+                request.setAttribute("username", currentUser);
+                request.getRequestDispatcher("/testBuy.jsp").forward(request, response); 
             } else if (action.equals("bulletinBoard")) {
                 if (request.getParameter("page") != null) {
                     page = Integer.parseInt(request.getParameter("page"));
@@ -424,6 +426,11 @@ public class Controller extends HttpServlet {
                 request.getRequestDispatcher("/bookingTickets.jsp").forward(request, response);
                 
  
+            } else if (action.equals("finances")) {
+                request.setAttribute("username", currentUser);
+                request.getRequestDispatcher("/finances.jsp").forward(request, response);
+            } else if (action.equals("createAdmin")) {
+                registerManager.createAdministrator();
             }
         } catch (Exception ex) {
             ex.printStackTrace();
