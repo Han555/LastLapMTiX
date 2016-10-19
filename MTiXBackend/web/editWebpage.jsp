@@ -35,7 +35,7 @@
                             </tr>
                             <tr><h5><b>Event Image</b></h5> </tr>
                             <tr>
-                            <img id="previewHolder" src="contentImageController?id=<%=data.get(6) %>" width="250px" height="250px"/>
+                            <img id="previewHolder" src="/MTiXBackend/contentImageController?id=<%=data.get(6) %>" width="250px" height="250px"/>
                             <input type="file" name="filePhoto" value="" id="filePhoto" required="true">
                             </tr>
                         </table>
@@ -53,19 +53,19 @@
                             </tr><br>
                             <tr>
                             <label>Synopsis : </label>
-                            <textarea class="form-control" name="synopsis" cols="1" rows="7" ><%=data.get(5)%></textarea>              
+                            <textarea class="form-control" required="true" name="synopsis" cols="1" rows="7" ><%=data.get(5)%></textarea>              
                             </tr><br>
                             <tr>
                             <label>Program Details : </label>
-                            <textarea class="form-control" name="programDetails" cols="1" rows="7"><%=data.get(9)%></textarea>              
+                            <textarea class="form-control" required="true" name="programDetails" cols="1" rows="7"><%=data.get(9)%></textarea>              
                             </tr><br>
                             <tr>
                             <label>Admission Rules : </label>
-                            <textarea class="form-control" name="rules" cols="1" rows="7"><%=data.get(8)%></textarea>              
+                            <textarea class="form-control" required="true" name="rules" cols="1" rows="7"><%=data.get(8)%></textarea>              
                             </tr><br>
                             <tr>
                             <label>Other Details : </label>
-                            <textarea class="form-control" name="details" cols="1" rows="7"><%=data.get(7)%></textarea>              
+                            <textarea class="form-control" required="true" name="details" cols="1" rows="7"><%=data.get(7)%></textarea>              
                         </tr><br><tr><td align="right">Start Publish Date : &nbsp</td>
                             <td align="left"><input type="text" class="form-control startdate" id="start" value="<%=data.get(10)%>" required="true" name="date"</td>    
                     <font color="red">From now till <%=data.get(2)%></font><br/>

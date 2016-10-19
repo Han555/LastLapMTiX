@@ -21,8 +21,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author JingYing
  */
-@WebServlet(name = "contentImageController", urlPatterns = {"/contentImageController"})
-public class contentImageController extends HttpServlet {
+@WebServlet(name = "ImageController", urlPatterns = {"/contentImageController"})
+public class ImageController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -55,6 +55,7 @@ public class contentImageController extends HttpServlet {
             response.getOutputStream().write(imageInByte);
             baos.close();
         } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
 
     }

@@ -199,6 +199,23 @@ public class ContentBackController extends HttpServlet {
             request.setAttribute("username", "CurrentUser");
             request.setAttribute("success", "true");
             request.getRequestDispatcher("/contentReviewSelect.jsp").forward(request, response);
+        } else if (action.equals("createCompanyContent")){
+            request.setAttribute("role", "role");
+            request.setAttribute("username", "CurrentUser");
+            request.getRequestDispatcher("/createCompanyContent.jsp").forward(request, response);
+        } else if (action.equals("companyInfoCreated")){
+            Part filePart = request.getPart("filePhoto");
+            String mission = request.getParameter("mission");
+            String vision = request.getParameter("vision");
+            String aboutUs = request.getParameter("aboutUs");
+            String contactDetails = request.getParameter("contactDetails");
+            String career = request.getParameter("career");
+            String otherDetails = request.getParameter("others");
+            String ext = request.getParameter("ext");                    
+            
+            request.setAttribute("role", "role");
+            request.setAttribute("username", "CurrentUser");
+            request.getRequestDispatcher("/createCompanyContent.jsp").forward(request, response);
         }
     }
 
