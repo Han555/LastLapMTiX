@@ -41,7 +41,7 @@ public class SectionEntity implements Serializable {
     private List<Seat> seats = new ArrayList<Seat>();
     
     @ManyToOne
-    private SectionCategory category;
+    private SectionCategoryEntity category;
     
     public void createSection(Integer numberInProperty, Integer cpapacity){
         this.setCapacity(capacity);
@@ -148,14 +148,14 @@ public class SectionEntity implements Serializable {
     /**
      * @param category the category to set
      */
-    public void setCategory(SectionCategory category) {
+    public void setCategory(SectionCategoryEntity category) {
         this.category = category;
     }
 
     /**
      * @return the category
      */
-    public SectionCategory getCategory() {
+    public SectionCategoryEntity getCategory() {
         return category;
     }
 

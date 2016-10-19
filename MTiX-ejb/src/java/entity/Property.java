@@ -43,7 +43,7 @@ public class Property implements Serializable {
     private List<FoodOutlet> foodOutlets = new ArrayList<FoodOutlet>();
     
     @OneToMany(orphanRemoval = true,mappedBy="property")
-    private List<SectionCategory> category = new ArrayList<SectionCategory>();
+    private List<SectionCategoryEntity> category = new ArrayList<SectionCategoryEntity>();
     
     @OneToMany(orphanRemoval = true,mappedBy="property")
     private List<MaintenanceSchedule> maintenanceSchedule = new ArrayList<MaintenanceSchedule>();
@@ -240,14 +240,14 @@ public class Property implements Serializable {
     /**
      * @return the category
      */
-    public List<SectionCategory> getCategory() {
+    public List<SectionCategoryEntity> getCategory() {
         return category;
     }
 
     /**
      * @param category the category to set
      */
-    public void setCategory(List<SectionCategory> category) {
+    public void setCategory(List<SectionCategoryEntity> category) {
         this.category = category;
     }
 

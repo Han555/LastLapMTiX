@@ -5,6 +5,7 @@
  */
 package session.stateless.contentmanagement;
 
+import entity.CompanyProfile;
 import entity.Event;
 import entity.Promotion;
 import entity.SessionEntity;
@@ -415,11 +416,12 @@ public class WebContentBean implements WebContentBeanLocal {
         return webPageList;
     }
 
+    @Override
     public ArrayList reviewWebpageInfo(String id) {
         ArrayList data = new ArrayList();
         WebContentEntity content = em.find(WebContentEntity.class, Long.valueOf(id));
         em.refresh(content);
-        
+
         data.add(content.getId());//0
 
         data.add(content.getEventTitle()); //1
@@ -433,38 +435,38 @@ public class WebContentBean implements WebContentBeanLocal {
 
         return data;
     }
-    
+
     @Override
-        public void webpageReviewed(String id, String review, String apply) {
+    public void webpageReviewed(String id, String review, String apply) {
         ArrayList data = new ArrayList();
         WebContentEntity content = em.find(WebContentEntity.class, Long.valueOf(id));
         em.refresh(content);
         String result = "Rejected";
-        
+
         content.setReviewComment(review);
         content.setReviewWebsite(true);
-        if (apply.equals("yes")){
+        if (apply.equals("yes")) {
             content.setApproved(true);
             result = "Approved";
         }
-        
+
         String email;
-        if (content.getEvent()!= null){
+        if (content.getEvent() != null) {
             email = content.getEvent().getUser().getUsername();
         } else {
             email = content.getSubevent().getUser().getUsername();
         }
-        
+
         this.sendMail(email, "is3012mtix@gmail.com", "Dear Sir/Mdm\n\n"
-                            + "Your webpage has been " + result + ".\n\n"
-                            + "Website Title : " + content.getEventTitle() + ".\n"
-                            + "Website Expected Published Date : " + content.getStart() + ".\n"
-                            + "Content Manager Comment : " + review + ".\n\n"
-                            + " To edit your Event Webpage, Please login to http://localhost:8080/MTiXBackend/. \n\n"
-                            + "With regards\nMTIX Content Management Team", "Your Webpage Has Been " + result, "smtp.gmail.com");
+                + "Your webpage has been " + result + ".\n\n"
+                + "Website Title : " + content.getEventTitle() + ".\n"
+                + "Website Expected Published Date : " + content.getStart() + ".\n"
+                + "Content Manager Comment : " + review + ".\n\n"
+                + " To edit your Event Webpage, Please login to http://localhost:8080/MTiXBackend/. \n\n"
+                + "With regards\nMTIX Content Management Team", "Your Webpage Has Been " + result, "smtp.gmail.com");
     }
-        
-        private class SMTPAuthenticator extends javax.mail.Authenticator {
+
+    private class SMTPAuthenticator extends javax.mail.Authenticator {
 
         @Override
         public PasswordAuthentication getPasswordAuthentication() {
@@ -473,8 +475,8 @@ public class WebContentBean implements WebContentBeanLocal {
             return new PasswordAuthentication(username, password);
         }
     }
-        
-        public int sendMail(String to, String from, String message, String subject, String smtpServ) {
+
+    public int sendMail(String to, String from, String message, String subject, String smtpServ) {
         try {
             Properties props = System.getProperties();
             props.put("mail.transport.protocol", "smtp");
@@ -506,6 +508,44 @@ public class WebContentBean implements WebContentBeanLocal {
             ex.printStackTrace();
             System.out.println("Exception " + ex);
             return -1;
+        }
+    }
+
+    public void createCompanyWebpage(Part filePart, String mission, String vision, String aboutUs, String contactDetails, String career, String otherDetails, String ext) {
+        try {
+            CompanyProfile profile = new CompanyProfile();
+            
+            String fileName = "company"; //Need to plus user*
+            
+            //Store the file into system
+            OutputStream out = null;
+            InputStream filecontent = null;
+            
+            out = new FileOutputStream(new File("C:/Users/Yong Jing Ying/Desktop/contentManagement" + File.separator
+                    + fileName + "." + ext));
+            filecontent = filePart.getInputStream();
+            
+            int read = 0;
+            final byte[] bytes = new byte[1024];
+            
+            while ((read = filecontent.read(bytes)) != -1) {
+                out.write(bytes, 0, read);
+            }
+
+            out.close();
+            filecontent.close();
+            
+            profile.setAboutUs(aboutUs);
+            profile.setCareer(career);
+            profile.setContactDetails(contactDetails);
+            profile.setFileName(fileName);
+            profile.setMission(mission);
+            profile.setOtherDetails(otherDetails);
+            profile.setVision(vision);
+            
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 

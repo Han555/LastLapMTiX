@@ -11,7 +11,7 @@ import entity.Event;
 import entity.Promotion;
 import entity.PromotionType;
 import entity.Property;
-import entity.SectionCategory;
+import entity.SectionCategoryEntity;
 import entity.SectionEntity;
 import entity.SessionCategoryPrice;
 import entity.SessionEntity;
@@ -56,7 +56,7 @@ public class ProductSession implements ProductSessionLocal {
         user = new UserEntity();
 
         for (int i = 1; i <= 3; i++) {
-            SectionCategory section = new SectionCategory();
+            SectionCategoryEntity section = new SectionCategoryEntity();
             section.createSectionCategory("CAT" + i, i);
             em.persist(section);
             em.flush();
@@ -653,10 +653,10 @@ public class ProductSession implements ProductSessionLocal {
     private void setIndividualPricing(SessionEntity session, ArrayList<Double> cat, int no, Long propertyID) {
         if (session.getPrice().isEmpty()) { //Never set price at all
             for (int i = 1; i <= no; i++) {
-                Query q = em.createQuery("SELECT a FROM SectionCategory a WHERE a.categoryNum=:cat AND a.property.id=:id");
+                Query q = em.createQuery("SELECT a FROM SectionCategoryEntity a WHERE a.categoryNum=:cat AND a.property.id=:id");
                 q.setParameter("cat", i);
                 q.setParameter("id", propertyID);
-                SectionCategory section = (SectionCategory) q.getSingleResult();
+                SectionCategoryEntity section = (SectionCategoryEntity) q.getSingleResult();
 
                 SessionCategoryPrice price = new SessionCategoryPrice();
                 price.setPrice(cat.get(i - 1));

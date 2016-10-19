@@ -4,6 +4,8 @@
     Author     : Student-ID
 --%>
 
+<%@page import="java.util.List"%>
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -11,122 +13,111 @@
 
 <!doctype html>
 <jsp:include page="header.jsp" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+    .carousel-inner > .item > img,
+    .carousel-inner > .item > a > img {
+        width: 300px;
+        margin: auto;
+        height: 225px;
+        max-height: 225px;
+    }
+</style>
+
 <!-- Main Content -->
-<!-- Main Content -->
-<div class="arriv">
-	<div class="container">
-		<div class="arriv-top">
-			<div class="col-md-6 arriv-left">
-				<img src="images/1.jpg" class="img-responsive" alt="">
-				<div class="arriv-info">
-					<h3>NEW ARRIVALS</h3>
-					<p>REVIVE YOUR WARDROBE WITH CHIC KNITS</p>
-					<div class="crt-btn">
-						<a href="details.html">TAKE A LOOK</a>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-6 arriv-right">
-				<img src="images/2.jpg" class="img-responsive" alt="">
-				<div class="arriv-info">
-					<h3>TUXEDO</h3>
-					<p>REVIVE YOUR WARDROBE WITH CHIC KNITS</p>
-					<div class="crt-btn">
-						<a href="details.html">SHOP NOW</a>
-					</div>
-				</div>
-			</div>
-			<div class="clearfix"> </div>
-		</div>
-		<div class="arriv-bottm">
-			<div class="col-md-8 arriv-left1">
-				<img src="images/3.jpg" class="img-responsive" alt="">
-				<div class="arriv-info1">
-					<h3>SWEATER</h3>
-					<p>REVIVE YOUR WARDROBE WITH CHIC KNITS</p>
-					<div class="crt-btn">
-						<a href="details.html">SHOP NOW</a>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-4 arriv-right1">
-				<img src="images/4.jpg" class="img-responsive" alt="">
-				<div class="arriv-info2">
-					<a href="details.html"><h3>Trekking Shoes<i class="ars"></i></h3></a>
-				</div>
-			</div>
-			<div class="clearfix"> </div>
-		</div>
-		<div class="arriv-las">
-			<div class="col-md-4 arriv-left2">
-				<img src="images/5.jpg" class="img-responsive" alt="">
-				<div class="arriv-info2">
-					<a href="details.html"><h3>Casual Glasses<i class="ars"></i></h3></a>
-				</div>
-			</div>
-			<div class="col-md-4 arriv-middle">
-				<img src="images/6.jpg" class="img-responsive" alt="">
-				<div class="arriv-info3">
-					<h3>FRESH LOOK T-SHIRT</h3>
-					<div class="crt-btn">
-						<a href="details.html">SHOP NOW</a>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-4 arriv-right2">
-				<img src="images/7.jpg" class="img-responsive" alt="">
-				<div class="arriv-info2">
-					<a href="details.html"><h3>Elegant Watches<i class="ars"></i></h3></a>
-				</div>
-			</div>
-			<div class="clearfix"> </div>
-		</div>
-	</div>
+<div class="container">
+    <%
+        List<ArrayList> data = (List<ArrayList>) request.getAttribute("data");
+    %>
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                <!-- Indicators -->
+                <ol class="carousel-indicators">
+                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                        <% for (int i = 1; i <= data.size(); i++) {%>
+                    <li data-target="#myCarousel" data-slide-to="<%=i%>" class="active"></li>
+                        <%}%>
+                </ol>
+
+                <!-- Wrapper for slides -->
+                <div class="carousel-inner" role="listbox">
+                    <div class="item active">
+                        <img src="images/Content/MTiXWeb.png" width="300px" alt="Flower" height="300px">
+                    </div>
+
+                    <% for (int i = 1; i <= data.size(); i++) {%>
+                    <div class="item">
+                        <a href="ContentController?action=viewEventWebpage&id=<%=data.get(i - 1).get(0)%>"><img src="ContentImageController?id=<%=data.get(i - 1).get(2)%>" width="150px" height="150px"></a>
+                        <div class="carousel-caption">
+                            <h3><%=data.get(i - 1).get(1)%></h3>
+                        </div>
+                    </div>
+
+                    <%}%>
+                </div>
+
+                <!-- Left and right controls -->
+                <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <table>
+            <tr>
+                <td>&nbsp; &nbsp;</td>
+                <td>&nbsp; &nbsp;</td>
+            </tr>
+            <tr>
+                <td>&nbsp; &nbsp;</td>
+                <td>&nbsp; &nbsp;</td>
+            </tr>
+        </table>
+    </div>
+    <div class="row">
+        <div class="col-md-3 ">
+            <div class="header">
+                <h5 class="title">Promotions</h5> 
+            </div>
+            <div class="image">
+                <a href="ContentController?action=creditCardPromotion"><img src="images/Content/creditcards.jpg" width="150px" height="150px"></a>
+                <h6>Credit Card Promotion</h6></div>
+            <div class="image">
+                <a href="ContentController?action=volumeDiscountPromotion"><img src="images/Content/volume_discount.png" width="150px" height="150px"></a>
+                <h6>Volume Discount Promotion</h6></div>   
+        </div>
+        <div class="col-md-6 ">
+            <div class="card">
+                <div class="header">
+                    <h5 class="title">Events</h5> 
+                </div><div class="card-body ">
+                    <% int no = 3;
+                        for (int i = 1; i <= data.size(); i++) {
+                    %>
+                    <div class="col-md-4 ">
+                        <div class="image">
+                            <a href="ContentController?action=viewEventWebpage&id=<%=data.get(i - 1).get(0)%>"><img src="ContentImageController?id=<%=data.get(i - 1).get(2)%>" width="150px" height="150px"></a>
+                            <h6><%=data.get(i - 1).get(1)%></h6></div>
+                        &nbsp;
+                    </div>
+                    <%if (i % no == 0) {%>
+                </div><div class="card-body ">
+                    <%}
+                        }%>
+                </div>
+            </div>
+            <div class="col-md-3 "></div>
+        </div>
+    </div>
 </div>
-<div class="special">
-	<div class="container">
-		<h3>Special Offers</h3>
-		<div class="specia-top">
-			<ul class="grid_2">
-		<li>
-				<a href="details.html"><img src="images/8.jpg" class="img-responsive" alt=""></a>
-				<div class="special-info grid_1 simpleCart_shelfItem">
-					<h5>Lorem ipsum dolor</h5>
-					<div class="item_add"><span class="item_price"><h6>ONLY $40.00</h6></span></div>
-					<div class="item_add"><span class="item_price"><a href="#">add to cart</a></span></div>
-				</div>
-		</li>
-		<li>
-				<a href="details.html"><img src="images/9.jpg" class="img-responsive" alt=""></a>
-				<div class="special-info grid_1 simpleCart_shelfItem">
-					<h5>Consectetur adipis</h5>
-					<div class="item_add"><span class="item_price"><h6>ONLY $60.00</h6></span></div>
-					<div class="item_add"><span class="item_price"><a href="#">add to cart</a></span></div>
-			</div>
-		</li>
-		<li>
-				<a href="details.html"><img src="images/10.jpg" class="img-responsive" alt=""></a>
-				<div class="special-info grid_1 simpleCart_shelfItem">
-					<h5>Commodo consequat</h5>
-					<div class="item_add"><span class="item_price"><h6>ONLY $14.00</h6></span></div>
-					<div class="item_add"><span class="item_price"><a href="#">add to cart</a></span></div>
-			</div>
-		</li>
-		<li>
-				<a href="details.html"><img src="images/11.jpg" class="img-responsive" alt=""></a>
-				<div class="special-info grid_1 simpleCart_shelfItem">
-					<h5>Voluptate velit</h5>
-					<div class="item_add"><span class="item_price"><h6>ONLY $37.00</h6></span></div>
-					<div class="item_add"><span class="item_price"><a href="#">add to cart</a></span></div>
-				</div>
-		</li>
-		<div class="clearfix"> </div>
-	</ul>
-		</div>
-	</div>
-</div>
-
-
-
-
 <jsp:include page="footer.jsp" />

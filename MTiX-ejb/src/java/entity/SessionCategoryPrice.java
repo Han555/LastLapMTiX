@@ -27,7 +27,7 @@ public class SessionCategoryPrice implements Serializable {
     @ManyToOne
     private SessionEntity session; 
     @ManyToOne
-    private SectionCategory category;
+    private SectionCategoryEntity category;
     
     public Long getId() {
         return id;
@@ -53,11 +53,11 @@ public class SessionCategoryPrice implements Serializable {
         this.session = session;
     }
 
-    public SectionCategory getCategory() {
+    public SectionCategoryEntity getCategory() {
         return category;
     }
 
-    public void setCategory(SectionCategory category) {
+    public void setCategory(SectionCategoryEntity category) {
         this.category = category;
     }
     
