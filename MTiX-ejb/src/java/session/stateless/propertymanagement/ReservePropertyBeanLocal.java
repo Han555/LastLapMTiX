@@ -30,7 +30,7 @@ public interface ReservePropertyBeanLocal {
     
 
   
-    public List<PropertyEntity> getReservationSearchResult(String visual, String eventScale, String daterange) throws ParseException;
+    //public List<PropertyEntity> getReservationSearchResult(String visual, String eventScale, String daterange) throws ParseException;
 
     public List<PropertyEntity> checkRecommendation(List<PropertyEntity> properties, String visual);
 
@@ -44,9 +44,9 @@ public interface ReservePropertyBeanLocal {
 
     public List<SubEvent> getSubEventReservationByProperty(Long propertyId);
 
-    public Event addNewEvent(String eventName, String eventDescription, Date startDateTime, Date endDateTime, Long propertyId, String email);
+    //public Event addNewEvent(String eventName, String eventDescription, Date startDateTime, Date endDateTime, Long propertyId, String email);
 
-    public SubEvent addNewSubEvent(String eventName, Date start, Date end, Long propertyId, Long eId, String email);
+    //public SubEvent addNewSubEvent(String eventName, Date start, Date end, Long propertyId, Long eId, String email);
 
     public Event getEventById(Long id);
 
@@ -69,6 +69,16 @@ public interface ReservePropertyBeanLocal {
     public SubEvent getSubEventById(Long id);
 
     public List<SubEvent> getListOfSubEvent(Event event);
+
+    public List<PropertyEntity> getAvailableProperties(String eventcate, String eventScale, String daterange) throws ParseException;
+
+    public List<PropertyEntity> getReservationSearchResult(List<PropertyEntity> properties, String eventcate, String eventScale) throws ParseException;
+
+    public Event addNewEvent(String eventName, String eventDescription, Date startDateTime, Date endDateTime, Long propertyId, String email, String type);
+
+    //public SubEvent addNewSubEvent(String eventName, Date start, Date end, Long propertyId, Long eId, String email);
+
+    public SubEvent addNewSubEvent(String eventName, Date start, Date end, Long propertyId, Long eId, String email, String type);
 
 
     

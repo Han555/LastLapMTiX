@@ -33,7 +33,7 @@ public class EquipmentBean implements EquipmentBeanLocal {
     public List<EquipmentEntity> getEquipmentInProperty(Long propertyId) {
 
         PropertyEntity property = spm.getPropertyById(propertyId);
-        Query query = em.createQuery("SELECT eq FROM Equipment eq where eq.property=:inProperty");
+        Query query = em.createQuery("SELECT eq FROM EquipmentEntity eq where eq.property=:inProperty");
         query.setParameter("inProperty", property);
         return query.getResultList();
 
@@ -43,7 +43,7 @@ public class EquipmentBean implements EquipmentBeanLocal {
     public List<EquipmentEntity> getNonSEquipmentInProperty(Long propertyId) {
 
         PropertyEntity property = spm.getPropertyById(propertyId);
-        Query query = em.createQuery("SELECT eq FROM Equipment eq where eq.property=:inProperty AND eq.standard=:standard");
+        Query query = em.createQuery("SELECT eq FROM EquipmentEntity eq where eq.property=:inProperty AND eq.standard=:standard");
         query.setParameter("inProperty", property);
         query.setParameter("standard", Boolean.FALSE);
         return query.getResultList();
@@ -132,7 +132,7 @@ public class EquipmentBean implements EquipmentBeanLocal {
     @Override
     public List<EquipmentEntity> getAllEquipments() {
 
-        Query q = em.createQuery("SELECT e FROM Equipment e");
+        Query q = em.createQuery("SELECT e FROM EquipmentEntity e");
         return q.getResultList();
 
     }
@@ -150,7 +150,7 @@ public class EquipmentBean implements EquipmentBeanLocal {
 
     @Override
     public List<EquipmentEntity> getAllNonStandardEquipments() {
-        Query q = em.createQuery("SELECT * FROM Equipment e WHERE e.standard = FALSE");
+        Query q = em.createQuery("SELECT * FROM EquipmentEntity e WHERE e.standard = FALSE");
         return q.getResultList();
     }
     

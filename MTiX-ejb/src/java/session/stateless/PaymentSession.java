@@ -5,7 +5,7 @@
  */
 package session.stateless;
 
-import entity.PaymentRecord;
+import entity.ShopCartRecordEntity;
 import entity.UserEntity;
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,7 +36,7 @@ public class PaymentSession implements PaymentSessionLocal {
 
     @Override
     public void createPayment(String payer, String receiver, String eventName, String ticketQuantity, String amount, String promotion) {
-        PaymentRecord paymentRecord = new PaymentRecord();
+        ShopCartRecordEntity paymentRecord = new ShopCartRecordEntity();
         paymentRecord.createRecord(payer, receiver, eventName, ticketQuantity, amount, promotion);
 
         Query q = entityManager.createQuery("SELECT u FROM UserEntity u WHERE u.username = " + "'" + payer + "'");
@@ -57,7 +57,7 @@ public class PaymentSession implements PaymentSessionLocal {
             return records;
         } else {
             for (Object o : q.getResultList()) {
-                PaymentRecord p = (PaymentRecord) o;
+                ShopCartRecordEntity p = (ShopCartRecordEntity) o;
 
                 ArrayList<String> record = new ArrayList();
                 record.add(Long.toString(p.getId()));
@@ -78,8 +78,8 @@ public class PaymentSession implements PaymentSessionLocal {
         String name = "";
         
         for(Object o: q.getResultList()) {
-            PaymentRecord record = new PaymentRecord();
-            record = (PaymentRecord) o;
+            ShopCartRecordEntity record = new ShopCartRecordEntity();
+            record = (ShopCartRecordEntity) o;
             name = record.getEventName();
         }
         return name;
@@ -169,8 +169,8 @@ public class PaymentSession implements PaymentSessionLocal {
         Query q = entityManager.createQuery("SELECT i FROM PaymentRecord i WHERE i.id = " + paymentId);
         
         for(Object o: q.getResultList()) {
-            PaymentRecord p = new PaymentRecord();
-            p = (PaymentRecord) o;
+            ShopCartRecordEntity p = new ShopCartRecordEntity();
+            p = (ShopCartRecordEntity) o;
             address.add(p.getAddress());
             address.add(p.getCountry());
             address.add(p.getCity());
@@ -188,8 +188,8 @@ public class PaymentSession implements PaymentSessionLocal {
         ArrayList<String> events = new ArrayList();
         System.out.println("receiver: "+receiver);
         for(Object o: q.getResultList()) {
-            PaymentRecord p = new PaymentRecord();
-            p = (PaymentRecord) o;
+            ShopCartRecordEntity p = new ShopCartRecordEntity();
+            p = (ShopCartRecordEntity) o;
             System.out.println("event name: "+p.getEventName());
             events.add(p.getEventName());
         }
@@ -210,8 +210,8 @@ public class PaymentSession implements PaymentSessionLocal {
         ArrayList<ArrayList<String>> records = new ArrayList();
         
         for(Object o: q.getResultList()) {
-            PaymentRecord p = new PaymentRecord();
-            p = (PaymentRecord) o;
+            ShopCartRecordEntity p = new ShopCartRecordEntity();
+            p = (ShopCartRecordEntity) o;
             ArrayList<String> record = new ArrayList();
             record.add(p.getPayer());
             record.add(p.getTicketQuantity());

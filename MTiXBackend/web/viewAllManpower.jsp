@@ -8,7 +8,7 @@
 
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<jsp:useBean id="mList" class="java.util.List<entity.Manpower>" scope="request"/>
+<jsp:useBean id="mList" class="java.util.List<entity.ManpowerEntity>" scope="request"/>
 <jsp:include page="header.jsp" />
 <div class="side-body">
     <div class="page-title">

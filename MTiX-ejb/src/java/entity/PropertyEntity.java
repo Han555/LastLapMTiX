@@ -51,7 +51,7 @@ public class PropertyEntity implements Serializable {
     @OneToMany(orphanRemoval = true,mappedBy="property")
     private List<EquipmentEntity> equipments = new ArrayList<EquipmentEntity>();
     
-    private List<String> types = new ArrayList<String>();
+    private String types;
     
     private String recommend;
     
@@ -269,19 +269,15 @@ public class PropertyEntity implements Serializable {
         this.equipments = equipment;
     }
 
-    /**
-     * @return the types
-     */
-    public List<String> getTypes() {
+    public String getTypes() {
         return types;
     }
 
-    /**
-     * @param types the types to set
-     */
-    public void setTypes(List<String> types) {
+    public void setTypes(String types) {
         this.types = types;
     }
+
+ 
 
     /**
      * @return the recommend

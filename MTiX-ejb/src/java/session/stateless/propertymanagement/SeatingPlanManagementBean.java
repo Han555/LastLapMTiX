@@ -99,14 +99,14 @@ public class SeatingPlanManagementBean implements SeatingPlanManagementBeanLocal
     @Override
     public List<PropertyEntity> getAllProperties() {
 
-        Query query = em.createQuery("SELECT p FROM Property p");
+        Query query = em.createQuery("SELECT p FROM PropertyEntity p");
         return query.getResultList();
     }
     
     @Override
     public List<SectionCategoryEntity> getAllCategories() {
 
-        Query query = em.createQuery("SELECT sc FROM SectionCategory sc");
+        Query query = em.createQuery("SELECT sc FROM SectionCategoryEntity sc");
         return query.getResultList();
     }
     /*
@@ -122,7 +122,7 @@ public class SeatingPlanManagementBean implements SeatingPlanManagementBeanLocal
     @Override
     public List<SeatEntity> getAllSeatsInOneSection(Long sectionId) {
         SectionEntity section = getSectionById(sectionId);
-        Query query = em.createQuery("SELECT s FROM Seat s WHERE s.section = :inSection");
+        Query query = em.createQuery("SELECT s FROM SeatEntity s WHERE s.section = :inSection");
         query.setParameter("inSection", section);
         return query.getResultList();
     }
@@ -138,7 +138,7 @@ public class SeatingPlanManagementBean implements SeatingPlanManagementBeanLocal
     @Override
     public List<SectionCategoryEntity> getAllCategoryInOneProperty(Long propertyId) {
         PropertyEntity property = getPropertyById(propertyId);
-        Query query = em.createQuery("SELECT sc FROM SectionCategory sc WHERE sc.property = :inProperty");
+        Query query = em.createQuery("SELECT sc FROM SectionCategoryEntity sc WHERE sc.property = :inProperty");
         query.setParameter("inProperty", property);
         return query.getResultList();
     }
@@ -246,7 +246,7 @@ public class SeatingPlanManagementBean implements SeatingPlanManagementBeanLocal
     
     @Override
     public Long getPropertyByName(String name){
-        Query query = em.createQuery("SELECT p FROM Property p WHERE p.propertyName = :inName");
+        Query query = em.createQuery("SELECT p FROM PropertyEntity p WHERE p.propertyName = :inName");
         query.setParameter("inName", name);
         if(query.getSingleResult() != null){
         PropertyEntity property = (PropertyEntity) query.getSingleResult();

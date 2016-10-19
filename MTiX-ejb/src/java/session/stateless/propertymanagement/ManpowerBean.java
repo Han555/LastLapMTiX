@@ -33,7 +33,7 @@ public class ManpowerBean implements ManpowerBeanLocal {
     public List<ManpowerEntity> getManpowerInProperty(Long propertyId) {
 
         PropertyEntity property = spm.getPropertyById(propertyId);
-        Query query = em.createQuery("SELECT m FROM Manpower m where m.property=:inProperty");
+        Query query = em.createQuery("SELECT m FROM ManpowerEntity m where m.property=:inProperty");
         query.setParameter("inProperty", property);
         return query.getResultList();
 
@@ -43,7 +43,7 @@ public class ManpowerBean implements ManpowerBeanLocal {
     public List<ManpowerEntity> getNonSManpowerInProperty(Long propertyId) {
 
         PropertyEntity property = spm.getPropertyById(propertyId);
-        Query query = em.createQuery("SELECT m FROM Manpower m where m.property=:inProperty");
+        Query query = em.createQuery("SELECT m FROM ManpowerEntity m where m.property=:inProperty");
         query.setParameter("inProperty", property);
         return query.getResultList();
 
@@ -127,7 +127,7 @@ public class ManpowerBean implements ManpowerBeanLocal {
     }
 
     public List<ManpowerEntity> getAllManpower() {
-        Query q = em.createQuery("SELECT m FROM Manpower m");
+        Query q = em.createQuery("SELECT m FROM ManpowerEntity m");
         return q.getResultList();
     }
 
@@ -143,7 +143,7 @@ public class ManpowerBean implements ManpowerBeanLocal {
 
     @Override
     public List<ManpowerEntity> getAllNonStandardManpowers() {
-        Query q = em.createQuery("SELECT * FROM Manpower m WHERE m.standard = FALSE");
+        Query q = em.createQuery("SELECT * FROM ManpowerEntity m WHERE m.standard = FALSE");
         return q.getResultList();
     }
 }

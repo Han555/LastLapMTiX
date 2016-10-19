@@ -33,7 +33,7 @@ public class FoodOutletBean implements FoodOutletBeanLocal {
     public List<FoodOutletEntity> getFoodOutletInProperty(Long propertyId) {
 
         PropertyEntity property = spm.getPropertyById(propertyId);
-        Query query = em.createQuery("SELECT fo FROM FoodOutlet fo where fo.property=:inProperty");
+        Query query = em.createQuery("SELECT fo FROM FoodOutletEntity fo where fo.property=:inProperty");
         query.setParameter("inProperty", property);
         return query.getResultList();
 
@@ -121,7 +121,7 @@ public class FoodOutletBean implements FoodOutletBeanLocal {
     @Override
     public List<FoodOutletEntity> getAllFoodOutlet() {
 
-        Query q = em.createQuery("SELECT fo FROM FoodOutlet fo");
+        Query q = em.createQuery("SELECT fo FROM FoodOutletEntity fo");
         return q.getResultList();
 
     }

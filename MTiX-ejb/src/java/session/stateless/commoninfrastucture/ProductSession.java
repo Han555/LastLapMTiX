@@ -653,7 +653,7 @@ public class ProductSession implements ProductSessionLocal {
     private void setIndividualPricing(SessionEntity session, ArrayList<Double> cat, int no, Long propertyID) {
         if (session.getPrice().isEmpty()) { //Never set price at all
             for (int i = 1; i <= no; i++) {
-                Query q = em.createQuery("SELECT a FROM SectionCategory a WHERE a.categoryNum=:cat AND a.property.id=:id");
+                Query q = em.createQuery("SELECT a FROM SectionCategoryEntity a WHERE a.categoryNum=:cat AND a.property.id=:id");
                 q.setParameter("cat", i);
                 q.setParameter("id", propertyID);
                 SectionCategoryEntity section = (SectionCategoryEntity) q.getSingleResult();

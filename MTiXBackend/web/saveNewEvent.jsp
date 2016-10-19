@@ -30,6 +30,7 @@
 
                                     <th>Event Name</th>
                                     <th>Event Description</th>
+                                    <th>Event Type</th>
                                     <th>Start Date</th>
                                     <th>End Date</th>
                                     <th>Property</th>
@@ -42,7 +43,7 @@
 
                                     <td>${event.name}</td>
                                     <td>${event.description}</td>
-
+                                    <td>${event.type}</td>
                                     <td>${start}</td>
                                     <td>${end}</td>
                                     <td>${event.property.propertyName}</td>

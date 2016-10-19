@@ -146,7 +146,7 @@ public class MaintenanceBean implements MaintenanceBeanLocal {
     @Override
     public List<MaintenanceScheduleEntity> getMaintenanceInProperty(Long propertyId) {
         PropertyEntity property = spm.getPropertyById(propertyId);
-        Query query = em.createQuery("SELECT ms FROM MaintenanceSchedule ms where ms.property=:inProperty");
+        Query query = em.createQuery("SELECT ms FROM MaintenanceScheduleEntity ms where ms.property=:inProperty");
         query.setParameter("inProperty", property);
         List<MaintenanceScheduleEntity> res = query.getResultList();
         System.out.println("===============" + res.size());

@@ -36,25 +36,25 @@ public class ReservationManager {
         this.rpb = rpb;
     }
 
-    public Event addNewEvent(String eventName, String eventDescription, String daterange, Long propertyId, String email) throws ParseException {
+    public Event addNewEvent(String eventName, String eventDescription, String daterange, Long propertyId, String email,String type) throws ParseException {
 
         String[] parts = daterange.split(" - ");
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
         Date startDate = df.parse(parts[0].trim());
         Date endDate = df.parse(parts[1].trim());
 
-        return rpb.addNewEvent(eventName, eventDescription, startDate, endDate, propertyId,email);
+        return rpb.addNewEvent(eventName, eventDescription, startDate, endDate, propertyId,email,type);
 
     }
     
-    public SubEvent addNewSubEvent(String name,  String daterange, Long propertyId, Long eId, String email) throws ParseException {
+    public SubEvent addNewSubEvent(String name,  String daterange, Long propertyId, Long eId, String email,String type) throws ParseException {
 
         String[] parts = daterange.split(" - ");
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
         Date startDate = df.parse(parts[0].trim());
         Date endDate = df.parse(parts[1].trim());
         System.out.println("=====Manager "+eId);
-        return rpb.addNewSubEvent(name,startDate, endDate, propertyId,eId,email);
+        return rpb.addNewSubEvent(name,startDate, endDate, propertyId,eId,email,type);
 
     }
     
@@ -65,18 +65,26 @@ public class ReservationManager {
     public boolean checkUser(String email){
         return rpb.checkUser(email);
     }
-
-    public List<PropertyEntity> getReservationSearchResult(HttpServletRequest request) throws ParseException {
-        String visual = request.getParameter("radioV");
+    public List<PropertyEntity> getAvailableProperties(HttpServletRequest request) throws ParseException {
+        String eventcate = request.getParameter("eventcate");
         String eventScale = request.getParameter("eventscale");
         String daterange = request.getParameter("daterange");
         
-        return rpb.getReservationSearchResult(visual,eventScale,daterange);
+        return rpb.getAvailableProperties(eventcate,eventScale,daterange);
+    }
+    
+
+    public List<PropertyEntity> getReservationSearchResult(List<PropertyEntity> properties,HttpServletRequest request) throws ParseException {
+        String eventcate = request.getParameter("eventcate");
+        String eventScale = request.getParameter("eventscale");
+        
+        
+        return rpb.getReservationSearchResult(properties,eventcate,eventScale);
     }
     
     public List<PropertyEntity> checkRecommendation(List<PropertyEntity> properties,HttpServletRequest request){
-        String visual = request.getParameter("radioV");
-        return rpb.checkRecommendation(properties,visual);
+        String eventcate = request.getParameter("eventcate");
+        return rpb.checkRecommendation(properties,eventcate);
     }
     
     public List<Event> getEventReservationByProperty(Long propertyId){

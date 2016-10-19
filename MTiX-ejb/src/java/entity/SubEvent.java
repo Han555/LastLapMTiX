@@ -51,6 +51,18 @@ public class SubEvent implements Serializable {
     private List<ManpowerEntity> manpower = new ArrayList<ManpowerEntity>();
     @ManyToOne
     private PropertyEntity property;
+    
+    private String type;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+    
+    
 
     public List<EquipmentEntity> getEquipments() {
         return equipments;

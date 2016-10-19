@@ -131,7 +131,7 @@ public class ReservePropertyBean implements ReservePropertyBeanLocal {
     }
 
     @Override
-    public Event addNewEvent(String eventName, String eventDescription, Date startDateTime, Date endDateTime, Long propertyId, String email) {
+    public Event addNewEvent(String eventName, String eventDescription, Date startDateTime, Date endDateTime, Long propertyId, String email,String type) {
         if (!checkPropertyConflict(startDateTime, endDateTime, propertyId) && !checkMaintenanceConflict(startDateTime, endDateTime, propertyId)) {
             UserEntity user = getUserByEmail(email);
             Event event = new Event();
@@ -140,6 +140,7 @@ public class ReservePropertyBean implements ReservePropertyBeanLocal {
             event.setStart(startDateTime);
             event.setEnd(endDateTime);
             event.setHasSubEvent(false);
+            event.setType(type);
             event.setProperty(spm.getPropertyById(propertyId));
             event.setUser(user);
             //  event.setStatus("Pending");
@@ -154,7 +155,7 @@ public class ReservePropertyBean implements ReservePropertyBeanLocal {
     }
 
     @Override
-    public SubEvent addNewSubEvent(String eventName, Date start, Date end, Long propertyId, Long eId, String email) {
+    public SubEvent addNewSubEvent(String eventName, Date start, Date end, Long propertyId, Long eId, String email,String type) {
         if (!checkPropertyConflict(start, end, propertyId) && !checkMaintenanceConflict(start, end, propertyId)) {
             UserEntity user = getUserByEmail(email);
             Event event = getEventById(eId);
@@ -164,6 +165,7 @@ public class ReservePropertyBean implements ReservePropertyBeanLocal {
             // event.setDescription(eventDescription);
             subevent.setStart(start);
             subevent.setEnd(end);
+            subevent.setType(type);
             //event.setHasSubEvent(false);
             subevent.setProperty(spm.getPropertyById(propertyId));
             subevent.setUser(user);
@@ -198,10 +200,8 @@ public class ReservePropertyBean implements ReservePropertyBeanLocal {
         em.merge(user);
         return event;
     }
-
     @Override
-    public List<PropertyEntity> getReservationSearchResult(String eventcate, String eventScale, String daterange) throws ParseException {
-
+    public List<PropertyEntity> getAvailableProperties(String eventcate, String eventScale, String daterange) throws ParseException {
         String[] parts = daterange.split("-");
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
         Date startDate = df.parse(parts[0]);
@@ -209,52 +209,67 @@ public class ReservePropertyBean implements ReservePropertyBeanLocal {
 
         List<PropertyEntity> pList = spm.getAllProperties();
         List<PropertyEntity> aList = new ArrayList();
-        List<PropertyEntity> aListFinal = new ArrayList();
         for (PropertyEntity p : pList) {
             if ((!checkPropertyConflict(startDate, endDate, p.getId())) && (!checkMaintenanceConflict(startDate, endDate, p.getId()))) {
                 aList.add(p);
 
             }
         }
-        if (eventScale.equalsIgnoreCase("SS")) {
-            for (PropertyEntity pa : aList) {
-                if (pa.getCapacity() <= 3000) {
-                    for (String type : pa.getTypes()) {
-                        if (type.equals(eventcate)) {
+        return aList;
+    }
 
-                            aListFinal.add(pa);
+    @Override
+    public List<PropertyEntity> getReservationSearchResult(List<PropertyEntity> properties,String eventcate, String eventScale) throws ParseException {
+
+        List<PropertyEntity> scaleList = new ArrayList();
+        if (eventScale.equalsIgnoreCase("SS")) {
+            for (PropertyEntity pa : properties) {
+                if (pa.getCapacity() <= 3000) {
+                    String[] types = pa.getTypes().split(",");
+                    for(int i=0;i<types.length;i++){
+                        if (eventcate.equals(types[i])) {
+                            scaleList.add(pa);
+                    }
+                    
+
+                            
                         }
                     }
                 }
-            }
+          
 
         } else if (eventScale.equalsIgnoreCase("MS")) {
-            for (PropertyEntity pa : aList) {
-                if (pa.getCapacity() <= 7000) {
-                    for (String type : pa.getTypes()) {
-                        if (type.equals(eventcate)) {
+            for (PropertyEntity pa : scaleList) {
+                if (pa.getCapacity()>3000 && pa.getCapacity() <= 7000) {
+                    String[] types = pa.getTypes().split(",");
+                    for(int i=0;i<types.length;i++){
+                        if (eventcate.equals(types[i])) {
+                            scaleList.add(pa);
+                    }
+                    
 
-                            aListFinal.add(pa);
+                            
                         }
                     }
-
                 }
-            }
         } else {
-            for (PropertyEntity pa : aList) {
+            for (PropertyEntity pa : scaleList) {
                 if (pa.getCapacity() > 7000) {
-                    for (String type : pa.getTypes()) {
-                        if (type.equals(eventcate)) {
+                    String[] types = pa.getTypes().split(",");
+                    for(int i=0;i<types.length;i++){
+                        if (eventcate.equals(types[i])) {
+                    scaleList.add(pa);
+                        }
+                    
 
-                            aListFinal.add(pa);
+                            
                         }
                     }
                 }
-            }
         }
+        return scaleList;
 
-        return aListFinal;
-
+    
     }
 
     @Override

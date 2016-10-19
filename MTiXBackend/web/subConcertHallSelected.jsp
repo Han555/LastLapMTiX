@@ -64,6 +64,12 @@
                                     <input type="hidden" name="daterange" value="${daterange}">
                                
                             </div>
+                                     <div class="form-group" >
+                                 
+                                    
+                                    <input type="hidden" name="type" value="${type}">
+                               
+                            </div>
                             <div class="form-group" >
                                 <div class="col-sm-10">
                                     <button type="submit" class="btn btn-default" value="formSubmit">Reserve Venue</button><span>${msg}</span>

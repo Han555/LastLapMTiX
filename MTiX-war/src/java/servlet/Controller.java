@@ -404,7 +404,7 @@ public class Controller extends HttpServlet {
                 //Long id = (Long) session.getAttribute("id");
 
                 String type="event";
-                Long id = Long.valueOf("1");
+                Long id = Long.valueOf("2");
                 
                 if (type.equals("event")) { 
                     Event event = rm.getEventById(id);

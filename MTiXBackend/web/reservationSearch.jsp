@@ -46,7 +46,7 @@
                                 <div class="col-sm-6">
                                     <select class="js-example-basic-single js-states" style="width: 100%" name="eventscale" id="eventscale">
                                         <option value="SS">Expect Audience smaller than 3000</option>
-                                        <option value="SS">Expect Audience between (3000,7000)</option>
+                                        <option value="MS">Expect Audience between (3000,7000)</option>
                                         <option value="LS">Expect Audience larger than 7000</option>
 
                                     </select>
