@@ -49,7 +49,9 @@ public class SubEvent implements Serializable {
     @ManyToMany
     private List<ManpowerEntity> manpower = new ArrayList<ManpowerEntity>();
     @ManyToOne
-    private Property property;
+    private PropertyEntity property;
+    
+    private String type;
     
     @OneToOne(orphanRemoval= true, mappedBy = "subevent")
     private WebContentEntity content;

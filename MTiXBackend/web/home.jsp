@@ -129,7 +129,7 @@
                 <div class="thumbnail">
                     <img src="img/web.jpg" alt="theater_main" style="width:300 px;height:300px">
                     <div class="caption">
-                        <h3 style="text-align: center">Content Management System</h3>
+                        <h3 style="text-align: center">Webpage Details</h3>
                         <p><c:url var="linkHref" value="/ContentBackController?action=enterEventOrganizer" /><a href="${linkHref}" class="btn btn-primary" role="button">Enter</a> </p>
                     </div>
                 </div>

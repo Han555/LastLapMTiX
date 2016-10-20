@@ -63,6 +63,7 @@ public class ReservationManager {
     }
     
     public boolean checkUser(String email){
+        System.out.println("Entered reservation manager");
         return rpb.checkUser(email);
     }
 

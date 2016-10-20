@@ -7,7 +7,7 @@ package manager;
 
 import java.util.List;
 import java.util.Vector;
-import session.stateless.commoninfrastucture.RegisterSessionLocal;
+import session.stateless.RegisterSessionLocal;
 
 /**
  *

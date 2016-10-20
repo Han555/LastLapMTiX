@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package session.stateless.commoninfrastucture;
+package session.stateless;
 
 import entity.BulletinEntity;
+import entity.UserEntity;
 import java.util.ArrayList;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -26,9 +27,20 @@ public class BulletinSession implements BulletinSessionLocal {
 
     @Override
     public void broadcast(String message, String subject) {
+        /*BulletinEntity b = new BulletinEntity();
+         b.createBulletin(message, subject);
+         entityManager.persist(b);*/
+
         BulletinEntity b = new BulletinEntity();
         b.createBulletin(message, subject);
-        entityManager.persist(b);
+        Query q = entityManager.createQuery("SELECT u FROM UserEntity u");
+        
+        for(Object o: q.getResultList()) {
+            UserEntity u = new UserEntity();
+            u = (UserEntity) o;
+            u.getBulletins().add(b);
+            entityManager.merge(u);
+        }
     }
 
     @Override
@@ -49,16 +61,16 @@ public class BulletinSession implements BulletinSessionLocal {
 
     @Override
     public ArrayList<String> getMessage(String id) {
-        Query q = entityManager.createQuery("SELECT b FROM BulletinEntity b WHERE b.id =" +id);
+        Query q = entityManager.createQuery("SELECT b FROM BulletinEntity b WHERE b.id =" + id);
         ArrayList<String> message = new ArrayList();
-        
-        for(Object o: q.getResultList()) {
+
+        for (Object o : q.getResultList()) {
             BulletinEntity b = (BulletinEntity) o;
-            
+
             message.add(b.getSubject());
             message.add(b.getMessage());
         }
-        
+
         return message;
     }
 

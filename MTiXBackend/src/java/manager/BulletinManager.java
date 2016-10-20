@@ -6,7 +6,7 @@
 package manager;
 
 import java.util.ArrayList;
-import session.stateless.commoninfrastucture.BulletinSessionLocal;
+import session.stateless.BulletinSessionLocal;
 
 /**
  *

@@ -58,7 +58,9 @@ public class Event implements Serializable {
     private List<Promotion> promotions = new ArrayList<Promotion>();
 
     @ManyToOne
-    private Property property;
+    private PropertyEntity property;
+    
+    private String type;
     
     @OneToOne(orphanRemoval= true, mappedBy = "event")
     private WebContentEntity content;

@@ -30,11 +30,8 @@ import manager.ResetPasswordManager;
 import manager.SeatingPlanManager;
 import manager.SessionManager;
 import manager.UnlockManager;
-import session.stateless.commoninfrastucture.BulletinSessionLocal;
 import session.stateless.commoninfrastucture.LockAccountSessionLocal;
 import session.stateless.commoninfrastucture.LoginSessionLocal;
-import session.stateless.commoninfrastucture.MessageSessionLocal;
-import session.stateless.commoninfrastucture.RegisterSessionLocal;
 import session.stateless.commoninfrastucture.ResetPasswordSessionLocal;
 import session.stateless.commoninfrastucture.UnlockAccountSessionLocal;
 import session.stateless.propertymanagement.SeatingPlanManagementBeanLocal;
@@ -43,6 +40,9 @@ import entity.SubEvent;
 import manager.ProductManager;
 import manager.ReservationManager;
 import session.stateless.commoninfrastucture.ProductSessionLocal;
+import session.stateless.RegisterSessionLocal;
+import session.stateless.MessageSessionLocal;
+import session.stateless.BulletinSessionLocal;
 
 
 /**
@@ -54,9 +54,12 @@ public class Controller extends HttpServlet {
 
     @EJB
     private BulletinSessionLocal bulletinSession;
-
+    
     @EJB
     private MessageSessionLocal messageSession;
+
+   @EJB
+    private RegisterSessionLocal registerSession;
 
     @EJB
     private ResetPasswordSessionLocal resetPasswordSession;
@@ -75,8 +78,7 @@ public class Controller extends HttpServlet {
 
     @EJB
     private LoginSessionLocal loginSession;
-    @EJB
-    private RegisterSessionLocal registerSession;
+    
     
     @EJB
     private SeatingPlanManagementBeanLocal spmbl;
@@ -424,7 +426,7 @@ public class Controller extends HttpServlet {
                
                 
                 request.getRequestDispatcher("/bookingTickets.jsp").forward(request, response);
-                
+        
  
             } else if (action.equals("finances")) {
                 request.setAttribute("username", currentUser);

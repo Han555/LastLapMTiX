@@ -97,7 +97,7 @@ public class ProductSession implements ProductSessionLocal {
             q.setParameter("name", name);
             user = (UserEntity) q.getSingleResult(); //The user will be point to the real user here
             for (int i = 0; i < user.getRoles().size(); i++) {
-                if (user.getRoles().get(i).equals("customer")) {
+                if (user.getRoles().get(i).equals("event organizer")) {
                     return true;
                 } else {
                     return false;
@@ -1541,7 +1541,7 @@ public class ProductSession implements ProductSessionLocal {
         for (Object o: q.getResultList()){
             UserEntity user = (UserEntity) o;
              for (int i = 0; i < user.getRoles().size(); i++) {
-                if (user.getRoles().get(i).equals("customer")) {
+                if (user.getRoles().get(i).equals("event organizer")) {
                     userEmail.add(user.getUsername());
                     break;
                 }

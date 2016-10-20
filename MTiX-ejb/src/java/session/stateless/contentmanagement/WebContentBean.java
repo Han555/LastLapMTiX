@@ -54,7 +54,7 @@ public class WebContentBean implements WebContentBeanLocal {
 
             em.refresh(user);
             for (int i = 0; i < user.getRoles().size(); i++) {
-                if (user.getRoles().get(i).equals("customer")) {
+                if (user.getRoles().get(i).equals("event organizer")) { 
                     return true;
                 } else {
                     return false;
