@@ -116,8 +116,40 @@
                         }%>
                 </div>
             </div>
-            <div class="col-md-3 "></div>
         </div>
+                <div class="col-md-3 ">
+                    <table>
+                        <tr>
+                            <td align="right">Event Type : &nbsp</td>
+                            <td><select class="form-control" onchange="myFunction()" required="true" id="eventType" name="eventType">
+                                    <option value="All">All</option>
+                                    <option value="Concert">Concert</option>
+                                    <option value="Dance">Dance</option>
+                                    <option value="Sports">Sports</option>
+                                </select></td>
+                        </tr>
+                    </table>
+                </div>
+                <script>function myFunction() {
+                    var x = document.getElementById(eventType).value;
+                            $.ajax({
+                                url: "ContentEventTypeController?type=" + x,
+                                success: function (result) {
+                                    $("#sectionData").val(result);
+                                    $('#seat_1').mapster('deselect');
+                                    $('#seat_2').mapster('deselect');
+                                    $('#seat_3').mapster('deselect');
+                                    $('#seat_4').mapster('deselect');
+                                    $('#seat_5').mapster('deselect');
+                                    $('#seat_6').mapster('deselect');
+                                    $('#seat_7').mapster('deselect');
+                                    $('#seat_8').mapster('deselect');
+                                    $('#seat_9').mapster('deselect');
+                                }
+                            });
+                        }
+                        ;</script>
+
     </div>
 </div>
 <jsp:include page="footer.jsp" />
