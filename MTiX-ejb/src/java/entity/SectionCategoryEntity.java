@@ -28,14 +28,14 @@ public class SectionCategoryEntity implements Serializable {
     private String categoryName;
     private Integer categoryNum;
     @ManyToOne
-    Property property;
+    PropertyEntity property;
     
 
-    public Property getProperty() {
+    public PropertyEntity getProperty() {
         return property;
     }
 
-    public void setProperty(Property property) {
+    public void setProperty(PropertyEntity property) {
         this.property = property;
     }
      public void createSectionCategory(String categoryName, Integer categoryNum){

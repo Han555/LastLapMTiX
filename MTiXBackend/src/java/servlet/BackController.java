@@ -11,11 +11,11 @@ import session.stateless.propertymanagement.FoodOutletBeanLocal;
 import session.stateless.propertymanagement.ManpowerBeanLocal;
 import session.stateless.propertymanagement.ReservePropertyBeanLocal;
 import session.stateless.propertymanagement.SeatingPlanManagementBeanLocal;
-import entity.Equipment;
+import entity.EquipmentEntity;
 import entity.Event;
-import entity.FoodOutlet;
-import entity.Manpower;
-import entity.Property;
+import entity.FoodOutletEntity;
+import entity.ManpowerEntity;
+import entity.PropertyEntity;
 import entity.SubEvent;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -95,7 +95,7 @@ public class BackController extends HttpServlet {
     private ManpowerBeanLocal manpowerBeanLocal;
     @EJB
     private FoodOutletBeanLocal foodoutletBeanLocal;
-    
+
     @EJB
     private GetAllProductDetailsLocal getAllProductDetailsLocal;
 
@@ -433,11 +433,11 @@ public class BackController extends HttpServlet {
             
             
             
-             */else if (action.equals("productMain")) {
+             */ else if (action.equals("productMain")) {
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
                 request.getRequestDispatcher("/productMain.jsp").forward(request, response);
-                
+
             } else if (action.equals("propertyMain")) {
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
@@ -448,9 +448,9 @@ public class BackController extends HttpServlet {
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
                 request.getRequestDispatcher("/sessionMain.jsp").forward(request, response);
-            } else if (action.equals("promotionMain")) {                
+            } else if (action.equals("promotionMain")) {
                 request.setAttribute("role", role);
-                request.setAttribute("username", currentUser);    
+                request.setAttribute("username", currentUser);
                 request.getRequestDispatcher("/promotionMain.jsp").forward(request, response);
             } else if (action.equals("editPromo")) {
                 request.setAttribute("role", role);
@@ -715,16 +715,16 @@ public class BackController extends HttpServlet {
             } else if (action.equals("concertHallLayout")) {
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
-                request.setAttribute("sections",spm.getAllSectionsInOneProperty(spm.getPropertyByName("Merlion Concert Hall")));
+                request.setAttribute("sections", spm.getAllSectionsInOneProperty(spm.getPropertyByName("Merlion Concert Hall")));
                 request.getRequestDispatcher("/concertHallLayout.jsp").forward(request, response);
-                
+
             } else if (action.equals("theaterLayout")) {
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
-                request.setAttribute("sections",spm.getAllSectionsInOneProperty(spm.getPropertyByName("Merlion Star Theater")));
+                request.setAttribute("sections", spm.getAllSectionsInOneProperty(spm.getPropertyByName("Merlion Star Theater")));
                 request.getRequestDispatcher("/theaterLayout.jsp").forward(request, response);
-                
-            }else if (action.equals("reservationMain")) {
+
+            } else if (action.equals("reservationMain")) {
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
                 request.getRequestDispatcher("/reservationMain.jsp").forward(request, response);
@@ -744,23 +744,35 @@ public class BackController extends HttpServlet {
             } else if (action.equals("reservationSearchResult")) {
 
                 try {
-                    HttpSession session = request.getSession();
-                    Long eventid = (Long) session.getAttribute("eventid");
-                    System.out.println("=======session get eventid" + eventid);
-                    request.setAttribute("eventid", eventid);
-                    List<Property> properties = rm.getReservationSearchResult(request);
-                    List<Property> pRList = rm.checkRecommendation(properties, request);
-                    String daterange = request.getParameter("daterange");
-                    if (properties.isEmpty()) {
+//                    HttpSession session = request.getSession();
+//                    Long eventid = (Long) session.getAttribute("eventid");
+                    String type = request.getParameter("eventcate");
+//                    System.out.println("=======session get eventid" + eventid);
+//                    request.setAttribute("eventid", eventid);
+                    List<PropertyEntity> aProperties = rm.getAvailableProperties(request);
+                    if (aProperties.isEmpty()) {
                         request.setAttribute("errormsg", " Please note: The date range you entered conflicts with an exsiting reservation or a maintenance shedule  ");
-                        request.getRequestDispatcher("/reservationSearch.jsp").forward(request, response);
-                    } else {
-                        request.setAttribute("pList", properties);
-                        request.setAttribute("pRList", pRList);
-                        request.setAttribute("daterange", daterange);
                         request.setAttribute("role", role);
                         request.setAttribute("username", currentUser);
-                        request.getRequestDispatcher("/reservationSearchResult.jsp").forward(request, response);
+                        request.getRequestDispatcher("/reservationSearch.jsp").forward(request, response);
+                    } else {
+                        List<PropertyEntity> properties = rm.getReservationSearchResult(aProperties, request);
+                        List<PropertyEntity> pRList = rm.checkRecommendation(properties, request);
+                        String daterange = request.getParameter("daterange");
+                        if (properties.isEmpty()) {
+                            request.setAttribute("errormsg", " Please note: There are no suitable venues matching the number of your expected auidence and type of event  ");
+                            request.setAttribute("role", role);
+                            request.setAttribute("username", currentUser);
+                            request.getRequestDispatcher("/reservationSearch.jsp").forward(request, response);
+                        } else {
+                            request.setAttribute("pList", properties);
+                            request.setAttribute("pRList", pRList);
+                            request.setAttribute("daterange", daterange);
+                            request.setAttribute("type", type);
+                            request.setAttribute("role", role);
+                            request.setAttribute("username", currentUser);
+                            request.getRequestDispatcher("/reservationSearchResult.jsp").forward(request, response);
+                        }
                     }
                 } catch (ParseException ex) {
                     Logger.getLogger(BackController.class.getName()).log(Level.SEVERE, null, ex);
@@ -771,21 +783,33 @@ public class BackController extends HttpServlet {
                 try {
                     HttpSession session = request.getSession();
                     Long eventid = (Long) session.getAttribute("eventid");
+                    String type = request.getParameter("eventcate");
                     System.out.println("=======session get eventid" + eventid);
                     request.setAttribute("eventid", eventid);
-                    List<Property> properties = rm.getReservationSearchResult(request);
-                    List<Property> pRList = rm.checkRecommendation(properties, request);
-                    String daterange = request.getParameter("daterange");
-                    if (properties.isEmpty()) {
+                    List<PropertyEntity> aProperties = rm.getAvailableProperties(request);
+                    if (aProperties.isEmpty()) {
                         request.setAttribute("errormsg", " Please note: The date range you entered conflicts with an exsiting reservation or a maintenance shedule  ");
-                        request.getRequestDispatcher("/subReservationSearch.jsp").forward(request, response);
-                    } else {
-                        request.setAttribute("pList", properties);
-                        request.setAttribute("pRList", pRList);
-                        request.setAttribute("daterange", daterange);
                         request.setAttribute("role", role);
                         request.setAttribute("username", currentUser);
-                        request.getRequestDispatcher("/subReservationSearchResult.jsp").forward(request, response);
+                        request.getRequestDispatcher("/subReservationSearch.jsp").forward(request, response);
+                    } else {
+                        List<PropertyEntity> properties = rm.getReservationSearchResult(aProperties, request);
+                        List<PropertyEntity> pRList = rm.checkRecommendation(properties, request);
+                        String daterange = request.getParameter("daterange");
+                        if (properties.isEmpty()) {
+                            request.setAttribute("errormsg", " Please note: There are no suitable venues matching the number of your expected auidence and type of event  ");
+                            request.setAttribute("role", role);
+                            request.setAttribute("username", currentUser);
+                            request.getRequestDispatcher("/subReservationSearch.jsp").forward(request, response);
+                        } else {
+                            request.setAttribute("pList", properties);
+                            request.setAttribute("pRList", pRList);
+                            request.setAttribute("daterange", daterange);
+                            request.setAttribute("type",type);
+                            request.setAttribute("role", role);
+                            request.setAttribute("username", currentUser);
+                            request.getRequestDispatcher("/subReservationSearchResult.jsp").forward(request, response);
+                        }
                     }
                 } catch (ParseException ex) {
                     Logger.getLogger(BackController.class.getName()).log(Level.SEVERE, null, ex);
@@ -794,6 +818,8 @@ public class BackController extends HttpServlet {
             } else if (action.equals("concertHallSelected")) {
                 HttpSession session = request.getSession();
                 String daterange = (String) session.getAttribute("daterange");
+                String type = (String) session.getAttribute("type");
+                request.setAttribute("type", type);
                 request.setAttribute("daterange", daterange);
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
@@ -801,6 +827,8 @@ public class BackController extends HttpServlet {
             } else if (action.equals("theaterSelected")) {
                 HttpSession session = request.getSession();
                 String daterange = (String) session.getAttribute("daterange");
+                String type = (String) session.getAttribute("type");
+                request.setAttribute("type", type);
                 request.setAttribute("daterange", daterange);
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
@@ -809,6 +837,8 @@ public class BackController extends HttpServlet {
                 HttpSession session = request.getSession();
                 String daterange = (String) session.getAttribute("daterange");
                 Long eventid = (Long) session.getAttribute("eventid");
+                String type = (String) session.getAttribute("type");
+                request.setAttribute("type", type);
                 System.out.println("=======session get eventid" + eventid);
                 request.setAttribute("eventid", eventid);
                 request.setAttribute("daterange", daterange);
@@ -820,6 +850,8 @@ public class BackController extends HttpServlet {
                 String daterange = (String) session.getAttribute("daterange");
                 Long eventid = (Long) session.getAttribute("eventid");
                 System.out.println("=======session get eventid" + eventid);
+                String type = (String) session.getAttribute("type");
+                request.setAttribute("type", type);
                 request.setAttribute("eventid", eventid);
                 request.setAttribute("daterange", daterange);
                 request.setAttribute("role", role);
@@ -832,6 +864,7 @@ public class BackController extends HttpServlet {
                 String ename = request.getParameter("eventname");
                 String eDes = request.getParameter("eventdes");
                 String email = request.getParameter("eoemail");
+                String type = request.getParameter("type");
 
                 boolean checkUser = rm.checkUser(email);
                 Long pid = spm.getPropertyByName(pname);
@@ -839,7 +872,7 @@ public class BackController extends HttpServlet {
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
                 if (checkUser) {
-                    Event event = rm.addNewEvent(ename, eDes, daterange, pid, email);
+                    Event event = rm.addNewEvent(ename, eDes, daterange, pid, email,type);
                     if (event != null) {
                         request.setAttribute("event", event);
                         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -859,7 +892,7 @@ public class BackController extends HttpServlet {
                     if (pname.equals("Merlion Concert Hall")) {
                         request.setAttribute("eventname", ename);
                         request.setAttribute("eventdes", eDes);
-                        
+
                         request.setAttribute("eventdes", eDes);
                         request.getRequestDispatcher("/concertHallSelected.jsp").forward(request, response);
                     } else {
@@ -874,12 +907,13 @@ public class BackController extends HttpServlet {
             } else if (action.equals("saveNewSubEvent")) {
                 String daterange = request.getParameter("daterange");
                 String pname = request.getParameter("pname");
-               // String idStr = request.getParameter("propertyId");
+                // String idStr = request.getParameter("propertyId");
                 String eidStr = request.getParameter("eventid");
                 String ename = request.getParameter("eventname");
                 //String eDes = request.getParameter("eventdes");
                 String email = request.getParameter("eoemail");
-                System.out.println("========Add New Sub Event" + daterange + pname + eidStr + ename + email);
+                String type = request.getParameter("type");
+                System.out.println("========Add New Sub Event" + daterange + pname + eidStr + ename + email+type);
                 boolean checkUser = rm.checkUser(email);
                 Long pid = spm.getPropertyByName(pname);
 
@@ -887,7 +921,7 @@ public class BackController extends HttpServlet {
                 request.setAttribute("username", currentUser);
 
                 if (checkUser) {
-                    SubEvent subevent = rm.addNewSubEvent(ename, daterange, pid, Long.valueOf(eidStr), email);
+                    SubEvent subevent = rm.addNewSubEvent(ename, daterange, pid, Long.valueOf(eidStr), email,type);
                     if (subevent != null) {
                         List<SubEvent> subevents = rm.getListOfSubEvent(subevent.getEvent());
                         request.setAttribute("subevents", subevents);
@@ -1000,7 +1034,7 @@ public class BackController extends HttpServlet {
                 request.setAttribute("eventid", eventStr);
 
                 request.setAttribute("manpower", rm.saveManpowerSub(eValues, pidStr, seidStr));
-              //  request.setAttribute("equipments", em.getNonSEquipmentInProperty(pid));
+                //  request.setAttribute("equipments", em.getNonSEquipmentInProperty(pid));
 
                 request.getRequestDispatcher("/saveExtraManpower.jsp").forward(request, response);
             } else if (action.equals("addExtraEquipmentEvent")) {
@@ -1032,7 +1066,7 @@ public class BackController extends HttpServlet {
                 request.setAttribute("username", currentUser);
                 request.setAttribute("pid", pidStr);
                 request.setAttribute("eventid", eventidStr);
-                request.setAttribute("event",event);
+                request.setAttribute("event", event);
                 request.setAttribute("equipment", rm.saveEquipmentEvent(eValues, pidStr, eventidStr));
                 //  request.setAttribute("equipments", em.getNonSEquipmentInProperty(pid));
                 request.getRequestDispatcher("/saveExtraEquipmentEvent.jsp").forward(request, response);
@@ -1046,9 +1080,9 @@ public class BackController extends HttpServlet {
                 request.setAttribute("username", currentUser);
                 request.setAttribute("pid", pidStr);
                 request.setAttribute("eventid", eventidStr);
-                request.setAttribute("event",event);
+                request.setAttribute("event", event);
                 request.setAttribute("manpower", rm.saveManpowerEvent(eValues, pidStr, eventidStr));
-              //  request.setAttribute("equipments", em.getNonSEquipmentInProperty(pid));
+                //  request.setAttribute("equipments", em.getNonSEquipmentInProperty(pid));
 
                 request.getRequestDispatcher("/saveExtraManpowerEvent.jsp").forward(request, response);
             } else if (action.equals("maintenance")) {
@@ -1128,7 +1162,7 @@ public class BackController extends HttpServlet {
                     standard = Boolean.TRUE;
                 }
                 System.out.print(standard);
-                Equipment equipment = em.createNewEquipment(ename, location, standard, ePropertyId);
+                EquipmentEntity equipment = em.createNewEquipment(ename, location, standard, ePropertyId);
                 if (equipment != null) {
                     request.setAttribute("equipment", equipment);
                     if (!standard) {
@@ -1145,7 +1179,7 @@ public class BackController extends HttpServlet {
                 Long eid = Long.valueOf(idStr);
                 System.out.println("==========test price" + eid + "  " + eprice);
 
-                Equipment e = em.setNoSPrice(eid, eprice);
+                EquipmentEntity e = em.setNoSPrice(eid, eprice);
 
                 request.setAttribute("equipment", e);
                 request.setAttribute("role", role);
@@ -1197,14 +1231,14 @@ public class BackController extends HttpServlet {
             
             
             
-            Start Product Management System Part 2
-             */else if (action.equals("ticketReservation")) {
+             Start Product Management System Part 2
+             */ else if (action.equals("ticketReservation")) {
                 String email = request.getParameter("email");
                 boolean userFound = productSession.signIn(email);
-                
+
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
-                
+
                 request.getRequestDispatcher("/ticketReservation.jsp").forward(request, response);
             } else if (action.equals("setTickets")) {
                 String info = request.getParameter("id");
@@ -1304,7 +1338,7 @@ public class BackController extends HttpServlet {
                 request.setAttribute("username", currentUser);
                 request.getRequestDispatcher("/productEnterUser.jsp").forward(request, response);
             } /*
-            End Product Management Part 2
+             End Product Management Part 2
             
             
             
@@ -1345,7 +1379,7 @@ public class BackController extends HttpServlet {
                 }
                 System.out.print(standard);
                 Integer mintnumber = Integer.valueOf(mnumber);
-                Manpower manpower = mm.createNewManpower(mrole, mintnumber, standard, ePropertyId);
+                ManpowerEntity manpower = mm.createNewManpower(mrole, mintnumber, standard, ePropertyId);
                 if (manpower != null) {
                     request.setAttribute("manpower", manpower);
                     if (!standard) {
@@ -1362,7 +1396,7 @@ public class BackController extends HttpServlet {
                 Long mid = Long.valueOf(midStr);
                 System.out.println("==========test price" + mid + "  " + mprice);
 
-                Manpower m = mm.mSetNoSPrice(mid, mprice);
+                ManpowerEntity m = mm.mSetNoSPrice(mid, mprice);
 
                 request.setAttribute("manpower", m);
                 request.setAttribute("role", role);
@@ -1396,7 +1430,7 @@ public class BackController extends HttpServlet {
                 System.out.println(otype);
                 System.out.println(description);
 
-                FoodOutlet foodoutlet = fom.createNewFoodOutlet(oname, otype, description, ePropertyId);
+                FoodOutletEntity foodoutlet = fom.createNewFoodOutlet(oname, otype, description, ePropertyId);
                 if (foodoutlet != null) {
                     request.setAttribute("outlet", foodoutlet);
                     request.getRequestDispatcher("/outletCreated.jsp").forward(request, response);
@@ -1424,7 +1458,7 @@ public class BackController extends HttpServlet {
                 System.out.println(otype);
                 System.out.println(description);
 
-                FoodOutlet foodoutlet = fom.createNewFoodOutlet(oname, otype, description, ePropertyId);
+                FoodOutletEntity foodoutlet = fom.createNewFoodOutlet(oname, otype, description, ePropertyId);
                 if (foodoutlet != null) {
                     request.setAttribute("outlet", foodoutlet);
                     request.getRequestDispatcher("/outletCreated.jsp").forward(request, response);
@@ -1444,7 +1478,7 @@ public class BackController extends HttpServlet {
             
             
              Start PRoduct Management System Part 3
-             */else if (action.equals("reserveTicketsMain")) {
+             */ else if (action.equals("reserveTicketsMain")) {
                 List<ArrayList> data = productSession.getEventList();
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
@@ -1537,7 +1571,7 @@ public class BackController extends HttpServlet {
             } else if (action.equals("alertMain")) {
                 String email = request.getParameter("email");
                 boolean userFound = productSession.signIn(email);
-                
+
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
                 request.getRequestDispatcher("/alertMain.jsp").forward(request, response);
@@ -1596,37 +1630,37 @@ public class BackController extends HttpServlet {
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
                 request.getRequestDispatcher("/viewProgress.jsp").forward(request, response);
-            } else if (action.equals("seatConfiguration")){
+            } else if (action.equals("seatConfiguration")) {
                 String email = request.getParameter("email");
                 boolean userFound = productSession.signIn(email);
                 request.setAttribute("role", role);
-                request.setAttribute("username", currentUser);   
+                request.setAttribute("username", currentUser);
                 request.getRequestDispatcher("/seatConfiguration.jsp").forward(request, response);
-            } else if (action.equals("displaySeatsEnterUser")){
+            } else if (action.equals("displaySeatsEnterUser")) {
                 ArrayList email = productSession.getEventOrganizersEmail();
                 request.setAttribute("data", email);
-                 request.setAttribute("role", role);
+                request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
                 request.getRequestDispatcher("/displaySeatsEnterUser.jsp").forward(request, response);
-            } else if (action.equals("promotionEnterUser")){
+            } else if (action.equals("promotionEnterUser")) {
                 ArrayList email = productSession.getEventOrganizersEmail();
                 request.setAttribute("data", email);
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
                 request.getRequestDispatcher("/promotionEnterUser.jsp").forward(request, response);
-            } else if (action.equals("ticketReservationEnterUser")){
+            } else if (action.equals("ticketReservationEnterUser")) {
                 ArrayList email = productSession.getEventOrganizersEmail();
                 request.setAttribute("data", email);
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
                 request.getRequestDispatcher("/ticketReservationEnterUser.jsp").forward(request, response);
-            } else if (action.equals("alertEnterUser")){
+            } else if (action.equals("alertEnterUser")) {
                 ArrayList email = productSession.getEventOrganizersEmail();
                 request.setAttribute("data", email);
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
                 request.getRequestDispatcher("/alertEnterUser.jsp").forward(request, response);
-            } else if (action.equals("promotionOptions")){
+            } else if (action.equals("promotionOptions")) {
                 String email = request.getParameter("email");
                 boolean userFound = productSession.signIn(email);
                 request.setAttribute("role", role);
@@ -1635,6 +1669,7 @@ public class BackController extends HttpServlet {
             }/*
              End of Product Management Part 3
              */
+
         } catch (Exception ex) {
             ex.printStackTrace();
             //request.getRequestDispatcher("/error.jsp").forward(request, response);

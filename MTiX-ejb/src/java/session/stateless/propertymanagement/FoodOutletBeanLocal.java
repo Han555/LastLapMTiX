@@ -5,9 +5,9 @@
  */
 package session.stateless.propertymanagement;
 
-import entity.FoodOutlet;
-import entity.Manpower;
-import entity.Property;
+import entity.FoodOutletEntity;
+import entity.ManpowerEntity;
+import entity.PropertyEntity;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -18,18 +18,18 @@ import javax.ejb.Local;
 @Local
 public interface FoodOutletBeanLocal {
 
-    public List<FoodOutlet> getFoodOutletInProperty(Long propertyId);
+    public List<FoodOutletEntity> getFoodOutletInProperty(Long propertyId);
 
-    public FoodOutlet getFoodOutletById(Long id);
+    public FoodOutletEntity getFoodOutletById(Long id);
 
-    public Property getPropertyById(Long id);
+    public PropertyEntity getPropertyById(Long id);
 
-    public FoodOutlet addFoodOutlet(String name, String type, String description, Long propertyId);
+    public FoodOutletEntity addFoodOutlet(String name, String type, String description, Long propertyId);
 
     public boolean editFoodOutlet(String name, String type, String description, Long outletId);
 
     public Boolean deleteFoodOutletById(Long outletId);
 
-    public List<FoodOutlet> getAllFoodOutlet();
+    public List<FoodOutletEntity> getAllFoodOutlet();
 
 }

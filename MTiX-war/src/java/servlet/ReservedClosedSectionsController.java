@@ -7,8 +7,9 @@ package servlet;
 
 import session.stateless.propertymanagement.ReservePropertyBeanLocal;
 import com.google.gson.Gson;
-import entity.Equipment;
+import entity.EquipmentEntity;
 import entity.Event;
+import entity.SectionEntity;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
@@ -22,7 +23,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import manager.ProductManager;
+import manager.SessionManager;
 import session.stateless.commoninfrastucture.ProductSessionLocal;
+import session.stateless.ticketing.BookingSessionLocal;
 
 /**
  *
@@ -32,6 +35,8 @@ import session.stateless.commoninfrastucture.ProductSessionLocal;
 public class ReservedClosedSectionsController extends HttpServlet {
 @EJB 
    private ProductSessionLocal psbl;
+@EJB 
+   private BookingSessionLocal bsl;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -45,20 +50,26 @@ public class ReservedClosedSectionsController extends HttpServlet {
             throws ServletException, IOException {
         
         ProductManager pm = new ProductManager(psbl);
+        SessionManager bm = new SessionManager (bsl);
         String idStr = request.getParameter("id");
         Long sessionId = Long.valueOf(idStr);
         
         String type = request.getParameter("type");
         
-        List resultList = new ArrayList();
-        if (type.equals("resserved")) {
-            resultList = pm.getReservedSectionsBySessionId(sessionId);
+        List<SectionEntity> resultList = new ArrayList();
+        List<Integer> resultIdStringList = new ArrayList<Integer>();
+        if (type.equals("reserved")) {
+            resultList = bm.getReservedSectionsBySessionId(sessionId);
         } else {
-            resultList = pm.getClosedSectionsBySessionId(sessionId);
+            resultList = bm.getClosedSectionsBySessionId(sessionId);
+        }
+        
+        for (SectionEntity s: resultList) {
+            resultIdStringList.add(s.getNumberInProperty());
         }
         Gson gson = new Gson();
         response.setContentType("application/json");
-        response.getWriter().write(gson.toJson(resultList));
+        response.getWriter().write(gson.toJson(resultIdStringList));
         
         
     }

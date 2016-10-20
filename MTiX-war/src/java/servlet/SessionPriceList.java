@@ -5,10 +5,11 @@
  */
 package servlet;
 
-import session.stateless.propertymanagement.EquipmentBeanLocal;
+import session.stateless.propertymanagement.ReservePropertyBeanLocal;
 import com.google.gson.Gson;
 import entity.EquipmentEntity;
-import entity.MaintenanceScheduleEntity;
+import entity.Event;
+import entity.SectionEntity;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
@@ -21,19 +22,21 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.EquipmentModel;
-
+import manager.ProductManager;
+import manager.SessionManager;
+import session.stateless.commoninfrastucture.ProductSessionLocal;
+import session.stateless.ticketing.BookingSessionLocal;
 
 /**
  *
  * @author catherinexiong
  */
-@WebServlet(name = "EquipmentListController", urlPatterns = {"/equipmentList"})
-public class EquipmentListController extends HttpServlet {
-    
-    @EJB
-    private EquipmentBeanLocal eb;
-
+@WebServlet(name = "SessionPriceListController", urlPatterns = {"/sessionPriceList"})
+public class SessionPriceList extends HttpServlet {
+@EJB 
+   private ProductSessionLocal psbl;
+@EJB 
+   private BookingSessionLocal bsl;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -45,31 +48,27 @@ public class EquipmentListController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        ProductManager pm = new ProductManager(psbl);
+        SessionManager bm = new SessionManager (bsl);
+        
+        
+                
         String idStr = request.getParameter("id");
-        Long id = Long.valueOf(idStr);
+        String type = request.getParameter("type");
         
-        List<EquipmentEntity> eq = eb.getEquipmentInProperty(id);
-        List<EquipmentModel> eList = new ArrayList<EquipmentModel>();
+        Long sessionId = Long.valueOf(idStr);
+        List<Double> prices = bm.getSessionsPricingBySessionId(sessionId,type);
         
-        DateFormat format = new SimpleDateFormat("MM/dd/yyyy");
         
-        for (int i =0; i< eq.size();i++) {
-            EquipmentEntity e = eq.get(i);
-             System.out.println("ID: " + e.getId());
-            EquipmentModel eqm = new EquipmentModel();
-            eqm.setId(e.getId());
-            eqm.setPrice(e.getPrice());
-            eqm.setName(e.getEquipmentName());
-            eqm.setLocation(e.getLocation());
-            eqm.setStandard(e.getStandard());
-            eList.add(eqm);
-        }
+        
+       
         Gson gson = new Gson();
         response.setContentType("application/json");
-        response.getWriter().write(gson.toJson(eList));
+        response.getWriter().write(gson.toJson(prices));
+        
         
     }
-   
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

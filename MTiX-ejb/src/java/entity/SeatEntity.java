@@ -18,7 +18,7 @@ import javax.persistence.ManyToOne;
  * @author catherinexiong
  */
 @Entity
-public class Seat implements Serializable {
+public class SeatEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,10 +51,10 @@ public class Seat implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Seat)) {
+        if (!(object instanceof SeatEntity)) {
             return false;
         }
-        Seat other = (Seat) object;
+        SeatEntity other = (SeatEntity) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }

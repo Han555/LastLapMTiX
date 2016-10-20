@@ -45,9 +45,9 @@ public class SubEvent implements Serializable {
     @ManyToOne //Owning side, has foreign key!
     private UserEntity user; 
     @ManyToMany
-    private List<Equipment> equipments = new ArrayList<Equipment>();
+    private List<EquipmentEntity> equipments = new ArrayList<EquipmentEntity>();
     @ManyToMany
-    private List<Manpower> manpower = new ArrayList<Manpower>();
+    private List<ManpowerEntity> manpower = new ArrayList<ManpowerEntity>();
     @ManyToOne
     private Property property;
     
@@ -55,27 +55,37 @@ public class SubEvent implements Serializable {
     private WebContentEntity content;
 
 
-    public List<Equipment> getEquipments() {
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+    
+    
+
+    public List<EquipmentEntity> getEquipments() {
         return equipments;
     }
 
-    public void setEquipments(List<Equipment> equipments) {
+    public void setEquipments(List<EquipmentEntity> equipments) {
         this.equipments = equipments;
     }
 
-    public List<Manpower> getManpower() {
+    public List<ManpowerEntity> getManpower() {
         return manpower;
     }
 
-    public void setManpower(List<Manpower> manpower) {
+    public void setManpower(List<ManpowerEntity> manpower) {
         this.manpower = manpower;
     }
 
-    public Property getProperty() {
+    public PropertyEntity getProperty() {
         return property;
     }
 
-    public void setProperty(Property property) {
+    public void setProperty(PropertyEntity property) {
         this.property = property;
     }
     

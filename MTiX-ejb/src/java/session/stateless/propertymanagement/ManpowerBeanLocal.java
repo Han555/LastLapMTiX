@@ -5,8 +5,8 @@
  */
 package session.stateless.propertymanagement;
 
-import entity.Manpower;
-import entity.Property;
+import entity.ManpowerEntity;
+import entity.PropertyEntity;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -17,24 +17,24 @@ import javax.ejb.Local;
 @Local
 public interface ManpowerBeanLocal {
 
-    public Manpower getManpowerById(Long manpowerId);
+    public ManpowerEntity getManpowerById(Long manpowerId);
 
-    public Property getPropertyById(Long id);
+    public PropertyEntity getPropertyById(Long id);
 
     public Boolean deleteManpowerById(Long manpowerId);
 
-    public List<Manpower> getAllManpower();
+    public List<ManpowerEntity> getAllManpower();
 
-    public List<Manpower> getAllNonStandardManpowers();
+    public List<ManpowerEntity> getAllNonStandardManpowers();
 
-    public List<Manpower> getManpowerInProperty(Long propertyId);
+    public List<ManpowerEntity> getManpowerInProperty(Long propertyId);
 
-    public List<Manpower> getNonSManpowerInProperty(Long propertyId);
+    public List<ManpowerEntity> getNonSManpowerInProperty(Long propertyId);
 
-    public Manpower addManpower(String role, Integer number, Boolean standard, Long propertyId);
+    public ManpowerEntity addManpower(String role, Integer number, Boolean standard, Long propertyId);
 
     public Boolean editManpower(Long manpowerId, String role, Integer number);
 
-    public Manpower mSetNoSPrice(Long mid, Integer price);
+    public ManpowerEntity mSetNoSPrice(Long mid, Integer price);
 
 }

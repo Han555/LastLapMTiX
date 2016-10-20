@@ -1,7 +1,7 @@
 
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<jsp:useBean id="outlet" class="entity.FoodOutlet" scope="request"/>
+<jsp:useBean id="outlet" class="entity.FoodOutletEntity" scope="request"/>
 <jsp:include page="header.jsp" />
 
 <!-- Main Content -->

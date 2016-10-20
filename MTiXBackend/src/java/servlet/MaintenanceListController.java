@@ -8,8 +8,8 @@ package servlet;
 import session.stateless.propertymanagement.MaintenanceBeanLocal;
 import session.stateless.propertymanagement.SeatingPlanManagementBeanLocal;
 import com.google.gson.Gson;
-import entity.MaintenanceSchedule;
-import entity.Property;
+import entity.MaintenanceScheduleEntity;
+import entity.PropertyEntity;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
@@ -50,12 +50,12 @@ public class MaintenanceListController extends HttpServlet {
         String idStr = request.getParameter("id");
         Long id = Long.valueOf(idStr);
         
-        List<MaintenanceSchedule> ms = mb.getMaintenanceInProperty(id);
+        List<MaintenanceScheduleEntity> ms = mb.getMaintenanceInProperty(id);
         List<Maintenance> mlist = new ArrayList<Maintenance>();
         
         DateFormat format = new SimpleDateFormat("MM/dd/yyyy");
         for (int i = 0; i < ms.size(); i++) {
-            MaintenanceSchedule m = ms.get(i);
+            MaintenanceScheduleEntity m = ms.get(i);
             System.out.println("ID: " + m.getId());
             Maintenance ma = new Maintenance();
             ma.setId(m.getId());

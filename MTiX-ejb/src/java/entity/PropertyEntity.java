@@ -16,7 +16,7 @@ import javax.persistence.OneToMany;
  * @author catherinexiong
  */
 @Entity
-public class Property implements Serializable {
+public class PropertyEntity implements Serializable {
     private static final long serialVersionUID = 1L;
   
     @Id
@@ -37,19 +37,23 @@ public class Property implements Serializable {
     private List<SectionEntity> sections = new ArrayList<SectionEntity>();
     
     @OneToMany(orphanRemoval = true,mappedBy="property")
-    private List<Manpower> manpower = new ArrayList<Manpower>();
+    private List<ManpowerEntity> manpower = new ArrayList<ManpowerEntity>();
     
     @OneToMany(orphanRemoval = true,mappedBy="property")
-    private List<FoodOutlet> foodOutlets = new ArrayList<FoodOutlet>();
+    private List<FoodOutletEntity> foodOutlets = new ArrayList<FoodOutletEntity>();
     
     @OneToMany(orphanRemoval = true,mappedBy="property")
     private List<SectionCategoryEntity> category = new ArrayList<SectionCategoryEntity>();
     
     @OneToMany(orphanRemoval = true,mappedBy="property")
-    private List<MaintenanceSchedule> maintenanceSchedule = new ArrayList<MaintenanceSchedule>();
+    private List<MaintenanceScheduleEntity> maintenanceSchedule = new ArrayList<MaintenanceScheduleEntity>();
     
     @OneToMany(orphanRemoval = true,mappedBy="property")
-    private List<Equipment> equipments = new ArrayList<Equipment>();
+    private List<EquipmentEntity> equipments = new ArrayList<EquipmentEntity>();
+    
+    private String types;
+    
+    private String recommend;
     
     public void createProperty(String propertyName, Integer propertyNo, Integer capacity){
         this.setPropertyName(propertyName);
@@ -70,10 +74,10 @@ public class Property implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Property)) {
+        if (!(object instanceof PropertyEntity)) {
             return false;
         }
-        Property other = (Property) object;
+        PropertyEntity other = (PropertyEntity) object;
         if ((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -156,14 +160,14 @@ public class Property implements Serializable {
     /**
      * @return the manpower
      */
-    public List<Manpower> getManpower() {
+    public List<ManpowerEntity> getManpower() {
         return manpower;
     }
 
     /**
      * @param manpower the manpower to set
      */
-    public void setManpower(List<Manpower> manpower) {
+    public void setManpower(List<ManpowerEntity> manpower) {
         this.manpower = manpower;
     }
 
@@ -184,14 +188,14 @@ public class Property implements Serializable {
     /**
      * @return the foodOutlets
      */
-    public List<FoodOutlet> getFoodOutlets() {
+    public List<FoodOutletEntity> getFoodOutlets() {
         return foodOutlets;
     }
 
     /**
      * @param foodOutlets the foodOutlets to set
      */
-    public void setFoodOutlets(List<FoodOutlet> foodOutlets) {
+    public void setFoodOutlets(List<FoodOutletEntity> foodOutlets) {
         this.foodOutlets = foodOutlets;
     }
 
@@ -212,14 +216,14 @@ public class Property implements Serializable {
     /**
      * @return the maintenanceSchedule
      */
-    public List<MaintenanceSchedule> getMaintenanceSchedule() {
+    public List<MaintenanceScheduleEntity> getMaintenanceSchedule() {
         return maintenanceSchedule;
     }
 
     /**
      * @param maintenanceSchedule the maintenanceSchedule to set
      */
-    public void setMaintenanceSchedule(List<MaintenanceSchedule> maintenanceSchedule) {
+    public void setMaintenanceSchedule(List<MaintenanceScheduleEntity> maintenanceSchedule) {
         this.maintenanceSchedule = maintenanceSchedule;
     }
 
@@ -254,15 +258,39 @@ public class Property implements Serializable {
     /**
      * @return the equipment
      */
-    public List<Equipment> getEquipments() {
+    public List<EquipmentEntity> getEquipments() {
         return equipments;
     }
 
     /**
      * @param equipment the equipment to set
      */
-    public void setEquipments(List<Equipment> equipment) {
+    public void setEquipments(List<EquipmentEntity> equipment) {
         this.equipments = equipment;
+    }
+
+    public String getTypes() {
+        return types;
+    }
+
+    public void setTypes(String types) {
+        this.types = types;
+    }
+
+ 
+
+    /**
+     * @return the recommend
+     */
+    public String getRecommend() {
+        return recommend;
+    }
+
+    /**
+     * @param recommend the recommend to set
+     */
+    public void setRecommend(String recommend) {
+        this.recommend = recommend;
     }
 
    

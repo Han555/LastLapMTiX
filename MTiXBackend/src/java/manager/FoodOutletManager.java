@@ -6,7 +6,7 @@
 package manager;
 
 import session.stateless.propertymanagement.FoodOutletBeanLocal;
-import entity.FoodOutlet;
+import entity.FoodOutletEntity;
 import java.util.List;
 
 /**
@@ -21,11 +21,11 @@ private final FoodOutletBeanLocal foodoutletBeanLocal;
         this.foodoutletBeanLocal = fboutletManagementBeanLocal;
     }
 
-    public List<FoodOutlet> getAllFoodOutlet() {
+    public List<FoodOutletEntity> getAllFoodOutlet() {
         return foodoutletBeanLocal.getAllFoodOutlet();
     }
 
-    public FoodOutlet createNewFoodOutlet(String oname, String otype, String odes, Long propertyId) {
+    public FoodOutletEntity createNewFoodOutlet(String oname, String otype, String odes, Long propertyId) {
         //Integer eprice = Integer.getInteger("price");
         return foodoutletBeanLocal.addFoodOutlet(oname, otype, odes, propertyId);
     }

@@ -4,8 +4,10 @@
  * and open the template in the editor.
  */
 package manager;
+import entity.SectionEntity;
 import entity.SessionEntity;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import session.stateless.ticketing.BookingSessionLocal;
@@ -21,12 +23,32 @@ public class SessionManager {
         this.bsbl= bsbl;
     }
     
-    public List<SessionEntity> getSessionsByEventId(Long id) {
-        return bsbl.getSessionsByEventId(id);
+    public List<SessionEntity> getSessionsByEventIdSorted(Long id) {
+        return bsbl.getSessionsByEventIdSorted(id);
     }
     
     public List<SessionEntity> getSessionsBySubeventId(Long id) {
         return bsbl.getSessionsBySubeventId(id);
+    }
+    public Double getPriceBySessionAndSectionId(Long sessionId, Long sectionId){
+        return bsbl.getPriceBySessionAndSectionId(sessionId, sectionId);
+    }
+    
+    public List<SectionEntity> getReservedSectionsBySessionId (Long id){
+        return bsbl.getReservedSectionsBySessionId(id);
+    }
+    public List<SectionEntity> getClosedSectionsBySessionId (Long id) {
+    return bsbl.getClosedSectionsBySessionId(id);
+}
+    
+    public HashMap<Long, List<Double>> getSessionsPricingByEventId(Long id) {
+        return bsbl.getSessionsPricingByEventId(id);
+        
+    }
+    
+    public List<Double> getSessionsPricingBySessionId(Long id,String type) {
+        return bsbl.getSessionsPricingBySessionId(id,type);
+        
     }
     
 }

@@ -31,6 +31,7 @@
 
                                     <th>Sub Event Name</th>
                                     <th>Event it under </th>
+                                    <th>Sub Event Type</th>
                                     <th>Start Date</th>
                                     <th>End Date</th>
                                     <th>Property</th>
@@ -40,54 +41,54 @@
                             </thead>
                             <tbody>
                                 <c:forEach items="${subevents}" var="subevent">
-                                <tr>
+                                    <tr>
 
-                                    <td>${subevent.name}</td>
-                                    <td>${subevent.event.name}</td>
+                                        <td>${subevent.name}</td>
+                                        <td>${subevent.event.name}</td>
+                                        <td>${subevent.type}</td>
+                                        <td>${subevent.start}</td>
+                                        <td>${subevent.end}</td>
+                                        <td>${subevent.property.propertyName}</td>
+                                        <td>${subevent.user.username}</td>
 
-                                    <td>${subevent.start}</td>
-                                    <td>${subevent.end}</td>
-                                    <td>${subevent.property.propertyName}</td>
-                                    <td>${subevent.user.username}</td>
-
-                                </tr>
+                                    </tr>
                                 </c:forEach>
                             </tbody>
                         </table>
 
                     </div>
-            <c:url var="formAction" value="/BackController?action=subReservationSearch" />
-                            <form class="form-horizontal" id="formSubmit" action="${formAction}" method="post">
-                                 <div class="form-group">
+                    <c:url var="formAction" value="/BackController?action=subReservationSearch" />
+                    <form class="form-horizontal" id="formSubmit" action="${formAction}" method="post">
+                        <div class="form-group">
 
 
-                                    <input type="hidden" name="eventid" value="${eventid}">
+                            <input type="hidden" name="eventid" value="${eventid}">
 
-                                </div>
-                                    
-                                    <div class="form-group" >
-                                    <div class="col-sm-10">
-                                        <button type="submit" class="btn btn-default" value="formSubmit">Create Another Sub Event</button><span>${msg}</span>
-                                    </div>
-                                </div>
-                                    </form>
-                                    
-                                    <c:url var="formAction" value="/BackController?action=addExtra" />
-                            <form class="form-horizontal" id="formSubmit" action="${formAction}" method="post">
-                                 <div class="form-group">
+                        </div>
+
+                        <div class="form-group" >
+                            <div class="col-sm-10">
+                                <button type="submit" class="btn btn-default" value="formSubmit">Create Another Sub Event</button><span>${msg}</span>
+                            </div>
+                        </div>
+                    </form>
+
+                    <c:url var="formAction" value="/BackController?action=addExtra" />
+                    <form class="form-horizontal" id="formSubmit" action="${formAction}" method="post">
+                        <div class="form-group">
 
 
-                                    <input type="hidden" name="eventid" value="${eventid}">
+                            <input type="hidden" name="eventid" value="${eventid}">
 
-                                </div>
-                                    
-                                    <div class="form-group" >
-                                    <div class="col-sm-10">
-                                        <button type="submit" class="btn btn-default" value="formSubmit">No More Sub Event</button><span>${msg}</span>
-                                    </div>
-                                </div>
-                                    </form>
-                    
+                        </div>
+
+                        <div class="form-group" >
+                            <div class="col-sm-10">
+                                <button type="submit" class="btn btn-default" value="formSubmit">No More Sub Event</button><span>${msg}</span>
+                            </div>
+                        </div>
+                    </form>
+
                 </div>
             </div>
 

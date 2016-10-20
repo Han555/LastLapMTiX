@@ -20,7 +20,7 @@ import org.hibernate.validator.constraints.Length;
  * @author catherinexiong
  */
 @Entity
-public class FoodOutlet implements Serializable {
+public class FoodOutletEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +32,7 @@ public class FoodOutlet implements Serializable {
     @Column(length = 255)
     private String outletDescription;
     @ManyToOne
-    private Property property;
+    private PropertyEntity property;
     
     public void createFoodOutlets(String outletId, String outletName, String outletType,String outletDescription){
         this.setOutletId(outletId);
@@ -66,10 +66,10 @@ public class FoodOutlet implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof FoodOutlet)) {
+        if (!(object instanceof FoodOutletEntity)) {
             return false;
         }
-        FoodOutlet other = (FoodOutlet) object;
+        FoodOutletEntity other = (FoodOutletEntity) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -126,14 +126,14 @@ public class FoodOutlet implements Serializable {
     /**
      * @return the property
      */
-    public Property getProperty() {
+    public PropertyEntity getProperty() {
         return property;
     }
 
     /**
      * @param property the property to set
      */
-    public void setProperty(Property property) {
+    public void setProperty(PropertyEntity property) {
         this.property = property;
     }
 

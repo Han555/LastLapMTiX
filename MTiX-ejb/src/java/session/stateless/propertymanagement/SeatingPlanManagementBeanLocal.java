@@ -5,8 +5,8 @@
  */
 package session.stateless.propertymanagement;
 
-import entity.Property;
-import entity.Seat;
+import entity.PropertyEntity;
+import entity.SeatEntity;
 import entity.SectionCategoryEntity;
 import entity.SectionEntity;
 import java.util.List;
@@ -24,13 +24,13 @@ public interface SeatingPlanManagementBeanLocal {
      */
     public void CreateProperty();
     
-    public List<Property> getAllProperties();
+    public List<PropertyEntity> getAllProperties();
     
    // public List<SectionEntity> getAllSections(Long propertyId);
 
-    public List<Seat> getAllSeatsInOneSection(Long sectionId);
+    public List<SeatEntity> getAllSeatsInOneSection(Long sectionId);
 
-    public Property getPropertyById(Long propertyId);
+    public PropertyEntity getPropertyById(Long propertyId);
 
    
 
@@ -38,7 +38,7 @@ public interface SeatingPlanManagementBeanLocal {
 
     public Boolean linkSeatsToSection();
 
-    public List<Seat> getSeatsBySectionId(Long sectionId);
+    public List<SeatEntity> getSeatsBySectionId(Long sectionId);
 
     public Boolean linkSectionsToProperty();
 

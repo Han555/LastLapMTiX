@@ -5,8 +5,8 @@
  */
 package session.stateless.propertymanagement;
 
-import entity.Manpower;
-import entity.Property;
+import entity.ManpowerEntity;
+import entity.PropertyEntity;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -30,44 +30,44 @@ public class ManpowerBean implements ManpowerBeanLocal {
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
     @Override
-    public List<Manpower> getManpowerInProperty(Long propertyId) {
+    public List<ManpowerEntity> getManpowerInProperty(Long propertyId) {
 
-        Property property = spm.getPropertyById(propertyId);
-        Query query = em.createQuery("SELECT m FROM Manpower m where m.property=:inProperty");
+        PropertyEntity property = spm.getPropertyById(propertyId);
+        Query query = em.createQuery("SELECT m FROM ManpowerEntity m where m.property=:inProperty");
         query.setParameter("inProperty", property);
         return query.getResultList();
 
     }
 
     @Override
-    public List<Manpower> getNonSManpowerInProperty(Long propertyId) {
+    public List<ManpowerEntity> getNonSManpowerInProperty(Long propertyId) {
 
-        Property property = spm.getPropertyById(propertyId);
-        Query query = em.createQuery("SELECT m FROM Manpower m where m.property=:inProperty");
+        PropertyEntity property = spm.getPropertyById(propertyId);
+        Query query = em.createQuery("SELECT m FROM ManpowerEntity m where m.property=:inProperty");
         query.setParameter("inProperty", property);
         return query.getResultList();
 
     }
 
-    public Property getPropertyById(Long id) {
-        Property property = em.find(Property.class, id);
+    public PropertyEntity getPropertyById(Long id) {
+        PropertyEntity property = em.find(PropertyEntity.class, id);
         return property;
     }
 
     @Override
-    public Manpower getManpowerById(Long manpowerId) {
-        Manpower manpower = em.find(Manpower.class, manpowerId);
+    public ManpowerEntity getManpowerById(Long manpowerId) {
+        ManpowerEntity manpower = em.find(ManpowerEntity.class, manpowerId);
         return manpower;
 
     }
 
-    public Manpower addManpower(String role, Integer number, Boolean standard, Long propertyId) {
+    public ManpowerEntity addManpower(String role, Integer number, Boolean standard, Long propertyId) {
 
         //System.out.println("addManpower() called with manpower ID:" + manpowerId);
         try {
-            Property property = getPropertyById(propertyId);
+            PropertyEntity property = getPropertyById(propertyId);
             //Manpower manpower = getManpowerById(manpowerId);
-            Manpower manpower = new Manpower();
+            ManpowerEntity manpower = new ManpowerEntity();
             manpower.setStaffRole(role);
             manpower.setNumber(number);
             manpower.setStandard(standard);
@@ -90,7 +90,7 @@ public class ManpowerBean implements ManpowerBeanLocal {
         System.out.println("editManpower() called with manpower ID:" + manpowerId);
         try {
 //            Property property = getPropertyById(id);
-            Manpower manpower = em.getReference(Manpower.class, manpowerId);
+            ManpowerEntity manpower = em.getReference(ManpowerEntity.class, manpowerId);
             if (manpower == null) {
                 System.out.println("The staff" + manpowerId + "is not found");
                 return false;
@@ -116,7 +116,7 @@ public class ManpowerBean implements ManpowerBeanLocal {
         System.out.println("deleteManpowerById" + manpowerId);
         try {
 //            Manpower manpower = em.find(Manpower.class, manpowerId);
-            Manpower manpower = getManpowerById(manpowerId);
+            ManpowerEntity manpower = getManpowerById(manpowerId);
             em.remove(manpower);
             System.out.println("The Staff" + manpowerId + "is deleted successfully.");
             return true;
@@ -126,14 +126,14 @@ public class ManpowerBean implements ManpowerBeanLocal {
         }
     }
 
-    public List<Manpower> getAllManpower() {
-        Query q = em.createQuery("SELECT m FROM Manpower m");
+    public List<ManpowerEntity> getAllManpower() {
+        Query q = em.createQuery("SELECT m FROM ManpowerEntity m");
         return q.getResultList();
     }
 
     @Override
-    public Manpower mSetNoSPrice(Long mid, Integer price) {
-        Manpower m = getManpowerById(mid);
+    public ManpowerEntity mSetNoSPrice(Long mid, Integer price) {
+        ManpowerEntity m = getManpowerById(mid);
         System.out.println("=======Bean" + price);
         m.setPrice(price);
         em.merge(m);
@@ -142,8 +142,8 @@ public class ManpowerBean implements ManpowerBeanLocal {
     }
 
     @Override
-    public List<Manpower> getAllNonStandardManpowers() {
-        Query q = em.createQuery("SELECT * FROM Manpower m WHERE m.standard = FALSE");
+    public List<ManpowerEntity> getAllNonStandardManpowers() {
+        Query q = em.createQuery("SELECT * FROM ManpowerEntity m WHERE m.standard = FALSE");
         return q.getResultList();
     }
 }

@@ -49,7 +49,7 @@ public class UserEntity implements Serializable {
     private Collection<RightsEntity> rights = new ArrayList<RightsEntity> ();
     
     @OneToMany
-    private Collection<PaymentRecord> payments = new ArrayList<PaymentRecord> ();
+    private Collection<ShopCartRecordEntity> payments = new ArrayList<ShopCartRecordEntity> ();
     
     @OneToMany
     private Collection<BookingFees> bookingfees = new ArrayList<BookingFees> ();
@@ -76,11 +76,11 @@ public class UserEntity implements Serializable {
         this.bookingfees = bookingfees;
     }
 
-    public Collection<PaymentRecord> getPayments() {
+    public Collection<ShopCartRecordEntity> getPayments() {
         return payments;
     }
 
-    public void setPayments(Collection<PaymentRecord> payments) {
+    public void setPayments(Collection<ShopCartRecordEntity> payments) {
         this.payments = payments;
     }
     

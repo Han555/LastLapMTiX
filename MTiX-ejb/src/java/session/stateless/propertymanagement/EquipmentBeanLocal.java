@@ -5,8 +5,8 @@
  */
 package session.stateless.propertymanagement;
 
-import entity.Equipment;
-import entity.Property;
+import entity.EquipmentEntity;
+import entity.PropertyEntity;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -17,29 +17,29 @@ import javax.ejb.Local;
 @Local
 public interface EquipmentBeanLocal {
 
-    public List<Equipment> getEquipmentInProperty(Long propertyId);
+    public List<EquipmentEntity> getEquipmentInProperty(Long propertyId);
 
-    public List<Equipment> getNonSEquipmentInProperty(Long propertyId);
+    public List<EquipmentEntity> getNonSEquipmentInProperty(Long propertyId);
 
-    public Property getPropertyById(Long id);
+    public PropertyEntity getPropertyById(Long id);
 
-    public Equipment getEquipmentById(Long equipmentId);
+    public EquipmentEntity getEquipmentById(Long equipmentId);
 
    
 
     public Boolean deleteEquipmentById(Long equipmentId);
 
-    public List<Equipment> getAllEquipments();
+    public List<EquipmentEntity> getAllEquipments();
 
  //   public Boolean addEquipment(String name, String location, Integer price, Boolean standard, Long propertyId);
 
     public boolean editEquipment(Long equipmentId, String name, String location);
 
-    public Equipment addEquipment(String name, String location, Boolean standard, Long propertyId);
+    public EquipmentEntity addEquipment(String name, String location, Boolean standard, Long propertyId);
 
-    public Equipment setNoSPrice(Long eid, Integer price);
+    public EquipmentEntity setNoSPrice(Long eid, Integer price);
 
-    public List<Equipment> getAllNonStandardEquipments();
+    public List<EquipmentEntity> getAllNonStandardEquipments();
 
   //  public Equipment editEquipment(Long id, String name, String location);
     

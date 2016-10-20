@@ -85,9 +85,7 @@ public interface ProductSessionLocal {
 
     public ArrayList getEventOrganizersEmail();
     
-    public List<SectionEntity> getClosedSectionsBySessionId(long id);
-
-    public List<SectionEntity> getReservedSectionsBySessionId(long id);
+  
 
 
 

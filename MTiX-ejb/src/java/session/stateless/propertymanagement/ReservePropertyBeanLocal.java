@@ -5,10 +5,10 @@
  */
 package session.stateless.propertymanagement;
 
-import entity.Equipment;
+import entity.EquipmentEntity;
 import entity.Event;
-import entity.Manpower;
-import entity.Property;
+import entity.ManpowerEntity;
+import entity.PropertyEntity;
 import entity.SubEvent;
 import entity.UserEntity;
 import java.text.ParseException;
@@ -30,9 +30,9 @@ public interface ReservePropertyBeanLocal {
     
 
   
-    public List<Property> getReservationSearchResult(String visual, String eventScale, String daterange) throws ParseException;
+    //public List<PropertyEntity> getReservationSearchResult(String visual, String eventScale, String daterange) throws ParseException;
 
-    public List<Property> checkRecommendation(List<Property> properties, String visual);
+    public List<PropertyEntity> checkRecommendation(List<PropertyEntity> properties, String visual);
 
     public UserEntity getUserByEmail(String email);
 
@@ -44,19 +44,19 @@ public interface ReservePropertyBeanLocal {
 
     public List<SubEvent> getSubEventReservationByProperty(Long propertyId);
 
-    public Event addNewEvent(String eventName, String eventDescription, Date startDateTime, Date endDateTime, Long propertyId, String email);
+    //public Event addNewEvent(String eventName, String eventDescription, Date startDateTime, Date endDateTime, Long propertyId, String email);
 
-    public SubEvent addNewSubEvent(String eventName, Date start, Date end, Long propertyId, Long eId, String email);
+    //public SubEvent addNewSubEvent(String eventName, Date start, Date end, Long propertyId, Long eId, String email);
 
     public Event getEventById(Long id);
 
-    public List<Equipment> saveEquipmentSub(String[] evalues, Long pid, Long seid);
+    public List<EquipmentEntity> saveEquipmentSub(String[] evalues, Long pid, Long seid);
 
-    public List<Equipment> saveEquipmentEvent(String[] evalues, Long pid, Long seid);
+    public List<EquipmentEntity> saveEquipmentEvent(String[] evalues, Long pid, Long seid);
 
-    public List<Manpower> saveManpowerSub(String[] evalues, Long pid, Long seid);
+    public List<ManpowerEntity> saveManpowerSub(String[] evalues, Long pid, Long seid);
 
-    public List<Manpower> saveManpowerEvent(String[] evalues, Long pid, Long seid);
+    public List<ManpowerEntity> saveManpowerEvent(String[] evalues, Long pid, Long seid);
 
     public Boolean deleteEventReservationById(Long eId);
 
@@ -69,6 +69,16 @@ public interface ReservePropertyBeanLocal {
     public SubEvent getSubEventById(Long id);
 
     public List<SubEvent> getListOfSubEvent(Event event);
+
+    public List<PropertyEntity> getAvailableProperties(String eventcate, String eventScale, String daterange) throws ParseException;
+
+    public List<PropertyEntity> getReservationSearchResult(List<PropertyEntity> properties, String eventcate, String eventScale) throws ParseException;
+
+    public Event addNewEvent(String eventName, String eventDescription, Date startDateTime, Date endDateTime, Long propertyId, String email, String type);
+
+    //public SubEvent addNewSubEvent(String eventName, Date start, Date end, Long propertyId, Long eId, String email);
+
+    public SubEvent addNewSubEvent(String eventName, Date start, Date end, Long propertyId, Long eId, String email, String type);
 
 
     

@@ -5,8 +5,8 @@
  */
 package session.stateless.propertymanagement;
 
-import entity.Equipment;
-import entity.Property;
+import entity.EquipmentEntity;
+import entity.PropertyEntity;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -30,20 +30,20 @@ public class EquipmentBean implements EquipmentBeanLocal {
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
     @Override
-    public List<Equipment> getEquipmentInProperty(Long propertyId) {
+    public List<EquipmentEntity> getEquipmentInProperty(Long propertyId) {
 
-        Property property = spm.getPropertyById(propertyId);
-        Query query = em.createQuery("SELECT eq FROM Equipment eq where eq.property=:inProperty");
+        PropertyEntity property = spm.getPropertyById(propertyId);
+        Query query = em.createQuery("SELECT eq FROM EquipmentEntity eq where eq.property=:inProperty");
         query.setParameter("inProperty", property);
         return query.getResultList();
 
     }
 
     @Override
-    public List<Equipment> getNonSEquipmentInProperty(Long propertyId) {
+    public List<EquipmentEntity> getNonSEquipmentInProperty(Long propertyId) {
 
-        Property property = spm.getPropertyById(propertyId);
-        Query query = em.createQuery("SELECT eq FROM Equipment eq where eq.property=:inProperty AND eq.standard=:standard");
+        PropertyEntity property = spm.getPropertyById(propertyId);
+        Query query = em.createQuery("SELECT eq FROM EquipmentEntity eq where eq.property=:inProperty AND eq.standard=:standard");
         query.setParameter("inProperty", property);
         query.setParameter("standard", Boolean.FALSE);
         return query.getResultList();
@@ -51,15 +51,15 @@ public class EquipmentBean implements EquipmentBeanLocal {
     }
 
     @Override
-    public Property getPropertyById(Long id) {
-        Property property = em.find(Property.class, id);
+    public PropertyEntity getPropertyById(Long id) {
+        PropertyEntity property = em.find(PropertyEntity.class, id);
         return property;
 
     }
 
     @Override
-    public Equipment getEquipmentById(Long equipmentId) {
-        Equipment equipment = em.find(Equipment.class, equipmentId);
+    public EquipmentEntity getEquipmentById(Long equipmentId) {
+        EquipmentEntity equipment = em.find(EquipmentEntity.class, equipmentId);
         return equipment;
 
     }
@@ -67,12 +67,12 @@ public class EquipmentBean implements EquipmentBeanLocal {
     // "Insert Code > Add Business Method")
 
     @Override
-    public Equipment addEquipment(String name, String location, Boolean standard, Long propertyId) {
+    public EquipmentEntity addEquipment(String name, String location, Boolean standard, Long propertyId) {
         //  System.out.println("addEquipment() called with equipment ID:" + id);
         try {
-            Property property = getPropertyById(propertyId);
+            PropertyEntity property = getPropertyById(propertyId);
             // Equipment equipment = getEquipmentById(id);
-            Equipment equipment = new Equipment();
+            EquipmentEntity equipment = new EquipmentEntity();
             equipment.setEquipmentName(name);
             equipment.setLocation(location);
             // equipment.setPrice(price);
@@ -96,7 +96,7 @@ public class EquipmentBean implements EquipmentBeanLocal {
     public boolean editEquipment(Long equipmentId, String name, String location) {
         System.out.println("editEquipment() called with equipment ID:" + equipmentId);
         try {
-            Equipment equipment = em.getReference(Equipment.class, equipmentId);
+            EquipmentEntity equipment = em.getReference(EquipmentEntity.class, equipmentId);
             if (equipment == null) {
                 System.out.println("Cannot find equipment");
                 return false;
@@ -119,7 +119,7 @@ public class EquipmentBean implements EquipmentBeanLocal {
 
         System.out.println("deleteEquipmentById" + equipmentId);
         try {
-            Equipment equipment = getEquipmentById(equipmentId);
+            EquipmentEntity equipment = getEquipmentById(equipmentId);
             em.remove(equipment);
             System.out.println("The equipment" + equipmentId + "is deleted successfully.");
             return true;
@@ -130,16 +130,16 @@ public class EquipmentBean implements EquipmentBeanLocal {
     }
 
     @Override
-    public List<Equipment> getAllEquipments() {
+    public List<EquipmentEntity> getAllEquipments() {
 
-        Query q = em.createQuery("SELECT e FROM Equipment e");
+        Query q = em.createQuery("SELECT e FROM EquipmentEntity e");
         return q.getResultList();
 
     }
 
     @Override
-    public Equipment setNoSPrice(Long eid, Integer price) {
-        Equipment e = getEquipmentById(eid);
+    public EquipmentEntity setNoSPrice(Long eid, Integer price) {
+        EquipmentEntity e = getEquipmentById(eid);
         System.out.println("=======Bean" + price);
         e.setPrice(price);
         em.merge(e);
@@ -149,8 +149,8 @@ public class EquipmentBean implements EquipmentBeanLocal {
     }
 
     @Override
-    public List<Equipment> getAllNonStandardEquipments() {
-        Query q = em.createQuery("SELECT * FROM Equipment e WHERE e.standard = FALSE");
+    public List<EquipmentEntity> getAllNonStandardEquipments() {
+        Query q = em.createQuery("SELECT * FROM EquipmentEntity e WHERE e.standard = FALSE");
         return q.getResultList();
     }
     

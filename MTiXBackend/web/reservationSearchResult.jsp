@@ -6,8 +6,8 @@
 
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<jsp:useBean id="pList" class="java.util.List<entity.Property>" scope="request"/>
-<jsp:useBean id="pRList" class="java.util.List<entity.Property>" scope="request"/>
+<jsp:useBean id="pList" class="java.util.List<entity.PropertyEntity>" scope="request"/>
+<jsp:useBean id="pRList" class="java.util.List<entity.PropertyEntity>" scope="request"/>
 <jsp:include page="header.jsp" />
 
 
@@ -109,7 +109,8 @@
 
 
         </div>
-        <% session.setAttribute("daterange", request.getAttribute("daterange")); %>
+        <% session.setAttribute("daterange", request.getAttribute("daterange"));
+        session.setAttribute("type", request.getAttribute("type"));%>
     </div>
 </div>
 

@@ -5,8 +5,8 @@
  */
 package session.stateless.propertymanagement;
 
-import entity.FoodOutlet;
-import entity.Property;
+import entity.FoodOutletEntity;
+import entity.PropertyEntity;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -30,25 +30,25 @@ public class FoodOutletBean implements FoodOutletBeanLocal {
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
     @Override
-    public List<FoodOutlet> getFoodOutletInProperty(Long propertyId) {
+    public List<FoodOutletEntity> getFoodOutletInProperty(Long propertyId) {
 
-        Property property = spm.getPropertyById(propertyId);
-        Query query = em.createQuery("SELECT fo FROM FoodOutlet fo where fo.property=:inProperty");
+        PropertyEntity property = spm.getPropertyById(propertyId);
+        Query query = em.createQuery("SELECT fo FROM FoodOutletEntity fo where fo.property=:inProperty");
         query.setParameter("inProperty", property);
         return query.getResultList();
 
     }
 
     @Override
-    public Property getPropertyById(Long id) {
-        Property property = em.find(Property.class, id);
+    public PropertyEntity getPropertyById(Long id) {
+        PropertyEntity property = em.find(PropertyEntity.class, id);
         return property;
 
     }
 
     @Override
-    public FoodOutlet getFoodOutletById(Long id) {
-        FoodOutlet foodOutlet = em.find(FoodOutlet.class, id);
+    public FoodOutletEntity getFoodOutletById(Long id) {
+        FoodOutletEntity foodOutlet = em.find(FoodOutletEntity.class, id);
         return foodOutlet;
 
     }
@@ -58,12 +58,12 @@ public class FoodOutletBean implements FoodOutletBeanLocal {
     // "Insert Code > Add Business Method")
 
     @Override
-    public FoodOutlet addFoodOutlet(String name, String type, String description, Long propertyId) {
+    public FoodOutletEntity addFoodOutlet(String name, String type, String description, Long propertyId) {
         //  System.out.println("addEquipment() called with equipment ID:" + id);
         try {
-            Property property = getPropertyById(propertyId);
+            PropertyEntity property = getPropertyById(propertyId);
             // Equipment equipment = getEquipmentById(id);
-            FoodOutlet foodOutlet = new FoodOutlet();
+            FoodOutletEntity foodOutlet = new FoodOutletEntity();
             foodOutlet.setOutletName(name);
             foodOutlet.setOutletType(type);
             // equipment.setPrice(price);
@@ -84,7 +84,7 @@ public class FoodOutletBean implements FoodOutletBeanLocal {
     public boolean editFoodOutlet(String name, String type, String description, Long outletId) {
         //System.out.println("editEquipment() called with equipment ID:" + fId);
         try {
-            FoodOutlet foodoutlet = em.getReference(FoodOutlet.class, outletId);
+            FoodOutletEntity foodoutlet = em.getReference(FoodOutletEntity.class, outletId);
             if (foodoutlet == null) {
                 System.out.println("Cannot find equipment");
                 return false;
@@ -108,7 +108,7 @@ public class FoodOutletBean implements FoodOutletBeanLocal {
 
         System.out.println("deleteEquipmentById" + outletId);
         try {
-            FoodOutlet foodoutlet = getFoodOutletById(outletId);
+            FoodOutletEntity foodoutlet = getFoodOutletById(outletId);
             em.remove(foodoutlet);
             System.out.println("The equipment" + outletId + "is deleted successfully.");
             return true;
@@ -119,9 +119,9 @@ public class FoodOutletBean implements FoodOutletBeanLocal {
     }
 
     @Override
-    public List<FoodOutlet> getAllFoodOutlet() {
+    public List<FoodOutletEntity> getAllFoodOutlet() {
 
-        Query q = em.createQuery("SELECT fo FROM FoodOutlet fo");
+        Query q = em.createQuery("SELECT fo FROM FoodOutletEntity fo");
         return q.getResultList();
 
     }

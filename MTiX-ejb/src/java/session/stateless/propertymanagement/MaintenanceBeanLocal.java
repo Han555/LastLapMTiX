@@ -7,7 +7,7 @@ package session.stateless.propertymanagement;
 
 import java.util.Date;
 import java.util.List;
-import entity.MaintenanceSchedule;
+import entity.MaintenanceScheduleEntity;
 import javax.ejb.Local;
 
 
@@ -17,8 +17,8 @@ public interface MaintenanceBeanLocal {
     public Boolean addMaintenance(Long propertyId, Date start, Date end);
     public Boolean removeMaintenance(Long id);
     public Boolean updateMaintenance(Long mid, Long propertyId, Date start, Date end);
-    public List<MaintenanceSchedule> getMaintenanceInProperty(Long propertyId);
+    public List<MaintenanceScheduleEntity> getMaintenanceInProperty(Long propertyId);
     
-    public MaintenanceSchedule getMaintenanceScheduleById(Long id);
+    public MaintenanceScheduleEntity getMaintenanceScheduleById(Long id);
     
 }

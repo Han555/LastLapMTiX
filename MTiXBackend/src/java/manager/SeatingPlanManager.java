@@ -6,8 +6,8 @@
 package manager;
 
 import session.stateless.propertymanagement.SeatingPlanManagementBeanLocal;
-import entity.Property;
-import entity.Seat;
+import entity.PropertyEntity;
+import entity.SeatEntity;
 import entity.SectionEntity;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +24,7 @@ public class SeatingPlanManager {
         this.seatingPlanManagementBeanLocal = seatingPlanManagementBeanLocal;
     }
 
-    public List<Property> getAllProperties() {
+    public List<PropertyEntity> getAllProperties() {
         return seatingPlanManagementBeanLocal.getAllProperties();
     }
 
@@ -32,7 +32,7 @@ public class SeatingPlanManager {
         return seatingPlanManagementBeanLocal.getAllSectionsInOneProperty(propertyId);
     }
 
-    public List<Seat> getAllSeatsInOneSection(Long sectionId) {
+    public List<SeatEntity> getAllSeatsInOneSection(Long sectionId) {
         return seatingPlanManagementBeanLocal.getAllSeatsInOneSection(sectionId);
     }
 
@@ -60,11 +60,11 @@ public class SeatingPlanManager {
         return seatingPlanManagementBeanLocal.getSectionsByPropertyId(propertyId);
     }
 
-    public List<Seat> getSeatsBySectionId(Long sectionId) {
+    public List<SeatEntity> getSeatsBySectionId(Long sectionId) {
         return seatingPlanManagementBeanLocal.getSeatsBySectionId(sectionId);
     }
     
-    public Property getPropertyById(Long propertyId) {
+    public PropertyEntity getPropertyById(Long propertyId) {
         return seatingPlanManagementBeanLocal.getPropertyById(propertyId);
     }
     

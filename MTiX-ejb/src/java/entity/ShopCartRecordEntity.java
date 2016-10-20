@@ -6,17 +6,21 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  *
  * @author Student-ID
  */
 @Entity
-public class PaymentRecord implements Serializable {
+public class ShopCartRecordEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,14 +36,56 @@ public class PaymentRecord implements Serializable {
     private String zip;
     private String country;
     private String promotion;
+    
+     @OneToMany
+     private Collection<SeatEntity> seats = new ArrayList<SeatEntity> ();
+     
+     @OneToOne
+     private SectionEntity section = new SectionEntity();
+     
+     @OneToOne
+     private SessionEntity session = new SessionEntity();
+    
 
-    public PaymentRecord() {
+    public ShopCartRecordEntity() {
+    }
+
+    public Collection<SeatEntity> getSeats() {
+        return seats;
+    }
+
+    public void setSeats(Collection<SeatEntity> seats) {
+        this.seats = seats;
+    }
+
+    public SectionEntity getSection() {
+        return section;
+    }
+
+    public void setSection(SectionEntity section) {
+        this.section = section;
+    }
+
+    public SessionEntity getSession() {
+        return session;
+    }
+
+    public void setSession(SessionEntity session) {
+        this.session = session;
     }
     
     public void createRecord(String payer, String receiver, String eventName, String ticketQuantity, String amount, String promotion) {
         this.payer = payer;
         this.receiver = receiver;
-        this.eventName = eventName;
+        
+        SessionEntity s = new SessionEntity();
+        s = this.getSession();
+        if(s.getEvent()==null) {
+            this.eventName = s.getSubEvent().getName();
+        } else {
+            this.eventName = s.getEvent().getName();
+        }
+        
         this.ticketQuantity = ticketQuantity;
         this.amount = amount;
         this.promotion = promotion;
@@ -157,10 +203,10 @@ public class PaymentRecord implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof PaymentRecord)) {
+        if (!(object instanceof ShopCartRecordEntity)) {
             return false;
         }
-        PaymentRecord other = (PaymentRecord) object;
+        ShopCartRecordEntity other = (ShopCartRecordEntity) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }

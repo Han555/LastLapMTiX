@@ -22,7 +22,7 @@ import org.hibernate.validator.constraints.Length;
  * @author catherinexiong
  */
 @Entity
-public class MaintenanceSchedule implements Serializable {
+public class MaintenanceScheduleEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +35,7 @@ public class MaintenanceSchedule implements Serializable {
     private String purpose;
     
     @ManyToOne
-    private Property property;
+    private PropertyEntity property;
 
     public Long getId() {
         return id;
@@ -55,10 +55,10 @@ public class MaintenanceSchedule implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof MaintenanceSchedule)) {
+        if (!(object instanceof MaintenanceScheduleEntity)) {
             return false;
         }
-        MaintenanceSchedule other = (MaintenanceSchedule) object;
+        MaintenanceScheduleEntity other = (MaintenanceScheduleEntity) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -101,14 +101,14 @@ public class MaintenanceSchedule implements Serializable {
     /**
      * @return the property
      */
-    public Property getProperty() {
+    public PropertyEntity getProperty() {
         return property;
     }
 
     /**
      * @param property the property to set
      */
-    public void setProperty(Property property) {
+    public void setProperty(PropertyEntity property) {
         this.property = property;
     }
 

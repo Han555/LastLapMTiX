@@ -10,7 +10,7 @@ import javax.ejb.Stateless;
 import entity.Event;
 import entity.Promotion;
 import entity.PromotionType;
-import entity.Property;
+import entity.PropertyEntity;
 import entity.SectionCategoryEntity;
 import entity.SectionEntity;
 import entity.SessionCategoryPrice;
@@ -1242,25 +1242,7 @@ public class ProductSession implements ProductSessionLocal {
         }
         return sessionsInventory;
     }
-    @Override
-    public List<SectionEntity> getReservedSectionsBySessionId(long id) {
-        SessionEntity sessionE = em.find(SessionEntity.class, id);
-        
-
-        Query q = em.createQuery("SELECT s.sectionEntity FROM SessionSeatsInventory s WHERE s.session=:session AND s.reserveTickets=TRUE");
-        q.setParameter("session", sessionE);
-        return q.getResultList();
-    }
-    
-    @Override
-    public List<SectionEntity> getClosedSectionsBySessionId(long id) {
-        SessionEntity sessionE = em.find(SessionEntity.class, id);
-       
-
-        Query q = em.createQuery("SELECT s.sectionEntity FROM SessionSeatsInventory s WHERE s.session=:session AND s.stopTicketsSales=TRUE");
-        q.setParameter("session", sessionE);
-        return q.getResultList();
-    }
+   
 
     public long getPropertyID(long id) { //sessionID
         SessionEntity session = em.find(SessionEntity.class, id);

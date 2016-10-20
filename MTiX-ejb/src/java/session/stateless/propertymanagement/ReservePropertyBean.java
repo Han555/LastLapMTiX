@@ -5,11 +5,11 @@
  */
 package session.stateless.propertymanagement;
 
-import entity.Equipment;
+import entity.EquipmentEntity;
 import entity.Event;
-import entity.MaintenanceSchedule;
-import entity.Manpower;
-import entity.Property;
+import entity.MaintenanceScheduleEntity;
+import entity.ManpowerEntity;
+import entity.PropertyEntity;
 import entity.SubEvent;
 import entity.UserEntity;
 import java.text.DateFormat;
@@ -37,10 +37,10 @@ public class ReservePropertyBean implements ReservePropertyBeanLocal {
 
     @EJB
     private SeatingPlanManagementBeanLocal spm;
-    
+
     @EJB
     private EquipmentBeanLocal ebl;
-    
+
     @EJB
     private ManpowerBeanLocal mbl;
 
@@ -53,8 +53,6 @@ public class ReservePropertyBean implements ReservePropertyBeanLocal {
         UserEntity user = em.find(UserEntity.class, userId);
         return user;
     }
-    
-    
 
     private Boolean checkPropertyConflict(Date startDate, Date endDate, Long propertyId) {
         Query query = em.createQuery("SELECT e FROM Event e WHERE e.property = :property AND e.start <= :endDate AND e.end >= :startDate");
@@ -75,8 +73,8 @@ public class ReservePropertyBean implements ReservePropertyBeanLocal {
     }
 
     private Boolean checkMaintenanceConflict(Date startDate, Date endDate, Long propertyId) {
-        List<MaintenanceSchedule> ms = spm.getPropertyById(propertyId).getMaintenanceSchedule();
-        for (MaintenanceSchedule m : ms) {
+        List<MaintenanceScheduleEntity> ms = spm.getPropertyById(propertyId).getMaintenanceSchedule();
+        for (MaintenanceScheduleEntity m : ms) {
             if (endDate.getTime() >= m.getStartDate().getTime()) {
                 if (startDate.getTime() <= m.getEndDate().getTime()) {
                     return true;
@@ -88,40 +86,25 @@ public class ReservePropertyBean implements ReservePropertyBeanLocal {
     }
 
     @Override
-    public List<Property> checkRecommendation(List<Property> properties, String visual) {
-        Boolean vEvent = false;
-        if (visual.equalsIgnoreCase("yes")) {
-            vEvent = true;
-        }
-        List<Property> pRListFinal = new ArrayList();
-        if (vEvent) {
+    public List<PropertyEntity> checkRecommendation(List<PropertyEntity> properties, String eventcate) {
 
-            for (Property p : properties) {
-                if (p.getPropertyName().equals("Merlion Star Theater")) {
-                    pRListFinal.add(spm.getPropertyById(Long.valueOf(2)));
+        List<PropertyEntity> pRListFinal = new ArrayList();
 
-                } 
-
+        for (PropertyEntity p : properties) {
+            if (eventcate.equals(p.getRecommend())) {
+                pRListFinal.add(p);
             }
-        } else{
-            for (Property p : properties) {
-                if (p.getPropertyName().equals("Merlion Concert Hall")) {
-                    pRListFinal.add(spm.getPropertyById(Long.valueOf(1)));
 
-                } 
+        }
 
-            
-        }
-        }
         return pRListFinal;
-
     }
 
     @Override
     public Event getEventById(Long id) {
         return (Event) em.find(Event.class, id);
     }
-    
+
     @Override
     public SubEvent getSubEventById(Long id) {
         return (SubEvent) em.find(SubEvent.class, id);
@@ -148,7 +131,7 @@ public class ReservePropertyBean implements ReservePropertyBeanLocal {
     }
 
     @Override
-    public Event addNewEvent(String eventName, String eventDescription, Date startDateTime, Date endDateTime, Long propertyId, String email)  {
+    public Event addNewEvent(String eventName, String eventDescription, Date startDateTime, Date endDateTime, Long propertyId, String email,String type) {
         if (!checkPropertyConflict(startDateTime, endDateTime, propertyId) && !checkMaintenanceConflict(startDateTime, endDateTime, propertyId)) {
             UserEntity user = getUserByEmail(email);
             Event event = new Event();
@@ -157,6 +140,7 @@ public class ReservePropertyBean implements ReservePropertyBeanLocal {
             event.setStart(startDateTime);
             event.setEnd(endDateTime);
             event.setHasSubEvent(false);
+            event.setType(type);
             event.setProperty(spm.getPropertyById(propertyId));
             event.setUser(user);
             //  event.setStatus("Pending");
@@ -165,20 +149,23 @@ public class ReservePropertyBean implements ReservePropertyBeanLocal {
             user.getEvents().add(event);
             em.merge(user);
             return event;
-        } else
-        return null;
+        } else {
+            return null;
+        }
     }
+
     @Override
-    public SubEvent addNewSubEvent(String eventName,  Date start, Date end, Long propertyId, Long eId, String email){
-    if (!checkPropertyConflict(start, end,propertyId) && !checkMaintenanceConflict(start, end, propertyId)) {
+    public SubEvent addNewSubEvent(String eventName, Date start, Date end, Long propertyId, Long eId, String email,String type) {
+        if (!checkPropertyConflict(start, end, propertyId) && !checkMaintenanceConflict(start, end, propertyId)) {
             UserEntity user = getUserByEmail(email);
             Event event = getEventById(eId);
-            System.out.println(eId+event.getName());
+            System.out.println(eId + event.getName());
             SubEvent subevent = new SubEvent();
             subevent.setName(eventName);
-           // event.setDescription(eventDescription);
+            // event.setDescription(eventDescription);
             subevent.setStart(start);
             subevent.setEnd(end);
+            subevent.setType(type);
             //event.setHasSubEvent(false);
             subevent.setProperty(spm.getPropertyById(propertyId));
             subevent.setUser(user);
@@ -191,9 +178,11 @@ public class ReservePropertyBean implements ReservePropertyBeanLocal {
             em.merge(event);
             em.merge(user);
             return subevent;
-        } else
-        return null;
-}
+        } else {
+            return null;
+        }
+    }
+
     @Override
     public Event addNewEventWithSub(String eventName, String eventDescription, String eoEmail) {
 
@@ -202,7 +191,6 @@ public class ReservePropertyBean implements ReservePropertyBeanLocal {
         event.setName(eventName);
         event.setDescription(eventDescription);
         event.setHasSubEvent(true);
-       
 
         event.setUser(user);
         //  event.setStatus("Pending");
@@ -212,148 +200,185 @@ public class ReservePropertyBean implements ReservePropertyBeanLocal {
         em.merge(user);
         return event;
     }
-
     @Override
-    public List<Property> getReservationSearchResult(String visual, String eventScale, String daterange) throws ParseException {
-        Boolean vEvent = false;
-        if (visual.equalsIgnoreCase("yes")) {
-            vEvent = true;
-        }
+    public List<PropertyEntity> getAvailableProperties(String eventcate, String eventScale, String daterange) throws ParseException {
         String[] parts = daterange.split("-");
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
         Date startDate = df.parse(parts[0]);
         Date endDate = df.parse(parts[1]);
 
-        List<Property> pList = spm.getAllProperties();
-        List<Property> aList = new ArrayList();
-        List<Property> aListFinal = new ArrayList();
-        for (Property p : pList) {
+        List<PropertyEntity> pList = spm.getAllProperties();
+        List<PropertyEntity> aList = new ArrayList();
+        for (PropertyEntity p : pList) {
             if ((!checkPropertyConflict(startDate, endDate, p.getId())) && (!checkMaintenanceConflict(startDate, endDate, p.getId()))) {
                 aList.add(p);
 
             }
         }
+        return aList;
+    }
+
+    @Override
+    public List<PropertyEntity> getReservationSearchResult(List<PropertyEntity> properties,String eventcate, String eventScale) throws ParseException {
+
+        List<PropertyEntity> scaleList = new ArrayList();
         if (eventScale.equalsIgnoreCase("SS")) {
-            for (Property pa : aList) {
+            for (PropertyEntity pa : properties) {
                 if (pa.getCapacity() <= 3000) {
-                    aListFinal.add(pa);
+                    String[] types = pa.getTypes().split(",");
+                    for(int i=0;i<types.length;i++){
+                        if (eventcate.equals(types[i])) {
+                            scaleList.add(pa);
+                    }
+                    
+
+                            
+                        }
+                    }
                 }
-            }
+          
 
         } else if (eventScale.equalsIgnoreCase("MS")) {
-            for (Property pa : aList) {
-                if (pa.getCapacity() <= 8000) {
-                    aListFinal.add(pa);
+            for (PropertyEntity pa : scaleList) {
+                if (pa.getCapacity()>3000 && pa.getCapacity() <= 7000) {
+                    String[] types = pa.getTypes().split(",");
+                    for(int i=0;i<types.length;i++){
+                        if (eventcate.equals(types[i])) {
+                            scaleList.add(pa);
+                    }
+                    
+
+                            
+                        }
+                    }
                 }
-            }
         } else {
-            for (Property pa : aList) {
-                if (pa.getCapacity() > 8000) {
-                    aListFinal.add(pa);
+            for (PropertyEntity pa : scaleList) {
+                if (pa.getCapacity() > 7000) {
+                    String[] types = pa.getTypes().split(",");
+                    for(int i=0;i<types.length;i++){
+                        if (eventcate.equals(types[i])) {
+                    scaleList.add(pa);
+                        }
+                    
+
+                            
+                        }
+                    }
                 }
-            }
         }
+        return scaleList;
 
-        return aListFinal;
-
-    }
     
+    }
+
     @Override
-    public List<Event> getEventReservationByProperty(Long propertyId){
-        Property property = spm.getPropertyById(propertyId);
+    public List<Event> getEventReservationByProperty(Long propertyId) {
+        PropertyEntity property = spm.getPropertyById(propertyId);
         Query query = em.createQuery("SELECT e FROM Event e WHERE e.property = :property");
         query.setParameter("property", property);
         return query.getResultList();
-        
-        
+
     }
-    
+
     @Override
-    public List<SubEvent> getSubEventReservationByProperty(Long propertyId){
-        Property property = spm.getPropertyById(propertyId);
-        System.out.println("====getSubRES"+property.getPropertyName());
+    public List<SubEvent> getSubEventReservationByProperty(Long propertyId) {
+        PropertyEntity property = spm.getPropertyById(propertyId);
+        System.out.println("====getSubRES" + property.getPropertyName());
         Query query = em.createQuery("SELECT e FROM SubEvent e WHERE e.property = :property");
         query.setParameter("property", property);
         return query.getResultList();
     }
-    
+
     @Override
-    public List<Equipment> saveEquipmentSub(String[] evalues,Long pid, Long seid){
-        if(evalues.length != 0){
-            List <Equipment> eList = new ArrayList();
-        for(int i=0;i<evalues.length;i++){
-            Long eid= Long.valueOf(evalues[i]);
-            Equipment eq = ebl.getEquipmentById(eid);
-            SubEvent se = getSubEventById(seid);
-            Property p = spm.getPropertyById(pid);
-            se.getEquipments().add(eq);
-            em.merge(se);
-            
+    public List<EquipmentEntity> saveEquipmentSub(String[] evalues, Long pid, Long seid) {
+        if (evalues.length != 0) {
+            List<EquipmentEntity> eList = new ArrayList();
+            for (int i = 0; i < evalues.length; i++) {
+                Long eid = Long.valueOf(evalues[i]);
+                EquipmentEntity eq = ebl.getEquipmentById(eid);
+                SubEvent se = getSubEventById(seid);
+                PropertyEntity p = spm.getPropertyById(pid);
+                se.getEquipments().add(eq);
+                em.merge(se);
+
 //            eq.getSubEvents().add(se);
 //            em.merge(eq);
-            eList.add(eq);
-        } return eList;
-        } else return null;
-        
+                eList.add(eq);
+            }
+            return eList;
+        } else {
+            return null;
+        }
+
     }
-    
+
     @Override
-    public List<Equipment> saveEquipmentEvent(String[] evalues,Long pid, Long eventid){
-        if(evalues.length != 0){
-            List <Equipment> eList = new ArrayList();
-        for(int i=0;i<evalues.length;i++){
-            Long eid= Long.valueOf(evalues[i]);
-            Equipment eq = ebl.getEquipmentById(eid);
-            Event e = getEventById(eventid);
-            Property p = spm.getPropertyById(pid);
-            e.getEquipments().add(eq);
-            em.merge(e);
+    public List<EquipmentEntity> saveEquipmentEvent(String[] evalues, Long pid, Long eventid) {
+        if (evalues.length != 0) {
+            List<EquipmentEntity> eList = new ArrayList();
+            for (int i = 0; i < evalues.length; i++) {
+                Long eid = Long.valueOf(evalues[i]);
+                EquipmentEntity eq = ebl.getEquipmentById(eid);
+                Event e = getEventById(eventid);
+                PropertyEntity p = spm.getPropertyById(pid);
+                e.getEquipments().add(eq);
+                em.merge(e);
 //            eq.getEvents().add(e);
 //            em.merge(eq);
-            eList.add(eq);
-        } return eList;
-        } else return null;
-        
+                eList.add(eq);
+            }
+            return eList;
+        } else {
+            return null;
+        }
+
     }
-    
+
     @Override
-    public List<Manpower> saveManpowerSub(String[] evalues,Long pid, Long seid){
-        if(evalues.length != 0){
-            List <Manpower> mList = new ArrayList();
-        for(int i=0;i<evalues.length;i++){
-            Long eid= Long.valueOf(evalues[i]);
-            Manpower m = mbl.getManpowerById(eid);
-            SubEvent se = getSubEventById(seid);
-            Property p = spm.getPropertyById(pid);
-            se.getManpower().add(m);
-            em.merge(se);
+    public List<ManpowerEntity> saveManpowerSub(String[] evalues, Long pid, Long seid) {
+        if (evalues.length != 0) {
+            List<ManpowerEntity> mList = new ArrayList();
+            for (int i = 0; i < evalues.length; i++) {
+                Long eid = Long.valueOf(evalues[i]);
+                ManpowerEntity m = mbl.getManpowerById(eid);
+                SubEvent se = getSubEventById(seid);
+                PropertyEntity p = spm.getPropertyById(pid);
+                se.getManpower().add(m);
+                em.merge(se);
 //            m.getSubEvents().add(se);
 //            em.merge(m);
-            mList.add(m);
-        } return mList;
-        } else return null;
-        
+                mList.add(m);
+            }
+            return mList;
+        } else {
+            return null;
+        }
+
     }
-    
+
     @Override
-    public List<Manpower> saveManpowerEvent(String[] evalues,Long pid, Long eventid){
-        if(evalues.length != 0){
-            List <Manpower> mList = new ArrayList();
-        for(int i=0;i<evalues.length;i++){
-            Long eid= Long.valueOf(evalues[i]);
-            Manpower m = mbl.getManpowerById(eid);
-            Event e = getEventById(eid);
-            Property p = spm.getPropertyById(pid);
-            e.getManpower().add(m);
-            em.merge(e);
+    public List<ManpowerEntity> saveManpowerEvent(String[] evalues, Long pid, Long eventid) {
+        if (evalues.length != 0) {
+            List<ManpowerEntity> mList = new ArrayList();
+            for (int i = 0; i < evalues.length; i++) {
+                Long eid = Long.valueOf(evalues[i]);
+                ManpowerEntity m = mbl.getManpowerById(eid);
+                Event e = getEventById(eid);
+                PropertyEntity p = spm.getPropertyById(pid);
+                e.getManpower().add(m);
+                em.merge(e);
 //            m.getEvents().add(e);
 //            em.merge(m);
-            mList.add(m);
-        } return mList;
-        } else return null;
-        
+                mList.add(m);
+            }
+            return mList;
+        } else {
+            return null;
+        }
+
     }
-    
+
     @Override
     public Boolean deleteEventReservationById(Long eId) {
 
@@ -368,7 +393,7 @@ public class ReservePropertyBean implements ReservePropertyBeanLocal {
             return false;
         }
     }
-    
+
     @Override
     public Boolean deleteSubEventReservationById(Long eId) {
 
@@ -383,9 +408,9 @@ public class ReservePropertyBean implements ReservePropertyBeanLocal {
             return false;
         }
     }
-    
+
     @Override
-    public Boolean editEventReservation(Long eId, String name, String des){
+    public Boolean editEventReservation(Long eId, String name, String des) {
         System.out.println("editEvent() called with Event ID:" + eId);
         try {
             Event event = getEventById(eId);
@@ -393,10 +418,10 @@ public class ReservePropertyBean implements ReservePropertyBeanLocal {
                 System.out.println("Cannot find event");
                 return false;
             }
-            
+
             event.setName(name);
             event.setDescription(des);
-           
+
             em.merge(event);
             System.out.println("event details have been updated successfully.");
             return true;
@@ -405,9 +430,9 @@ public class ReservePropertyBean implements ReservePropertyBeanLocal {
             return false;
         }
     }
-    
-     @Override
-    public Boolean editSubEventReservation(Long eId, String name){
+
+    @Override
+    public Boolean editSubEventReservation(Long eId, String name) {
         System.out.println("editSubEvent() called with Sub Event ID:" + eId);
         try {
             SubEvent subevent = getSubEventById(eId);
@@ -415,10 +440,10 @@ public class ReservePropertyBean implements ReservePropertyBeanLocal {
                 System.out.println("Cannot find subevent");
                 return false;
             }
-            
+
             subevent.setName(name);
            // event.setDescription(des);
-           
+
             em.merge(subevent);
             System.out.println("subevent details have been updated successfully.");
             return true;
@@ -427,21 +452,18 @@ public class ReservePropertyBean implements ReservePropertyBeanLocal {
             return false;
         }
     }
-    
-    
-    public List<SubEvent> getListOfSubEvent(Event event){
+
+    public List<SubEvent> getListOfSubEvent(Event event) {
         Query query = em.createQuery("SELECT e FROM SubEvent e WHERE e.event=:event");
         query.setParameter("event", event);
-       
+
         List resultList = query.getResultList();
-        if(resultList.isEmpty()){
+        if (resultList.isEmpty()) {
             return null;
         }
         return resultList;
-        
-        
-    }
 
+    }
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")

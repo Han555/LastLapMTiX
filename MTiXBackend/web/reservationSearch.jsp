@@ -31,17 +31,28 @@
                         <c:url var="formAction" value="/BackController?action=reservationSearchResult" />
                         <form class="form-horizontal" id="formSubmit" action="${formAction}" method="post">
                             <div class="form-group" style="padding-bottom: 20px;" >
-                                <label for="eventscale" class="col-sm-2 control-label">Scale of Event</label>
+                                <label for="eventcate" class="col-sm-2 control-label">Event Category</label>
                                 <div class="col-sm-6">
-                                    <select class="js-example-basic-single js-states" style="width: 100%" name="eventscale" id="eventscale">
-                                        <option value="SS">Expect Audience smaller than 3000</option>
-                                        <option value="SS">Expect Audience between (3000,7000)</option>
-                                        <option value="LS">Expect Audience larger than 8000</option>
+                                    <select class="js-example-basic-single js-states" style="width: 100%" name="eventcate" id="eventcate">
+                                        <option value="concert">Concert</option>
+                                        <option value="dance">Dance</option>
+                                        <option value="sports">Sports</option>
 
                                     </select>
                                 </div> 
                             </div>
-                            <div class="form-group" style="padding-bottom: 20px;">
+                            <div class="form-group" style="padding-bottom: 20px;" >
+                                <label for="eventscale" class="col-sm-2 control-label">Scale of Event</label>
+                                <div class="col-sm-6">
+                                    <select class="js-example-basic-single js-states" style="width: 100%" name="eventscale" id="eventscale">
+                                        <option value="SS">Expect Audience smaller than 3000</option>
+                                        <option value="MS">Expect Audience between (3000,7000)</option>
+                                        <option value="LS">Expect Audience larger than 7000</option>
+
+                                    </select>
+                                </div> 
+                            </div>
+<!--                            <div class="form-group" style="padding-bottom: 20px;">
 
                                 <label for="radio1" class="col-sm-2 control-label">Visual Event</label>
                                 <div class="col-sm-4">
@@ -60,7 +71,7 @@
                                     </div>
 
                                 </div>
-                            </div>
+                            </div>-->
 
                             <div class="form-group" style="padding-bottom: 20px;">
 

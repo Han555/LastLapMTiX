@@ -6,7 +6,7 @@
 
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<jsp:useBean id="properties" class="java.util.List<entity.Property>" scope="request"/>
+<jsp:useBean id="properties" class="java.util.List<entity.PropertyEntity>" scope="request"/>
 <jsp:include page="header.jsp" />
 <!-- Main Content -->
 
@@ -34,9 +34,9 @@
                                 </div> 
                             </div>
                             <div class="form-group" style="padding-bottom: 20px;" >
-                                <label for="ename" class="col-sm-2 control-label">Number of the Staff<span style="color:#FF0000">*</span></label>
+                                <label for="mnumber" class="col-sm-2 control-label">Number of the Staff<span style="color:#FF0000">*</span></label>
                                 <div class="col-sm-4">
-                                    <input type="text" name="mnumber" id="mnumber" class="form-control" value="" required = "true"> 
+                                    <input type="number" name="mnumber" id="mnumber" class="form-control" value="" required = "true"> 
                                 </div> 
                             </div>
                             <div class="form-group" style="padding-bottom: 20px;" >
@@ -106,5 +106,24 @@
 
 
 </script>      -->
+
+
+<script>
+ var num = 1;
+$(function() { 
+    $('#mstandard').change(function() {
+        if($(this).val()=='ns'){
+         $('#mnumber').val(num);
+         document.getElementById('mnumber').disabled = true;
+     } else {
+         $('#mnumber').removeAttr('disabled');
+     }
+    }) 
+});
+
+
+
+
+</script>  
 
 <jsp:include page="footer.jsp" />
