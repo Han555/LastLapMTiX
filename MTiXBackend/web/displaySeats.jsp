@@ -38,30 +38,30 @@
                 %>
                 <%  if (x.equals("1")) { %>
                 <table>
-                        <tr>
-                            <td>&nbsp; Previous Price : &nbsp;</td>
-                            <%  if (x.equals("1")) { %>
-                            <td><select class="form-control" required="true">
-                                    <option>ID | CAT1 | CAT2 | CAT3 | CAT 4 | Seats Option</option>
-                                    <%
-                                        for (int i = 0; i < price.size(); i = i + 4) {
-                                    %>
-                                    <option><%=price.get(i).get(0) + " | " + price.get(i).get(2) + " | " + price.get(i + 1).get(2) + " | " + price.get(i + 2).get(2) + " | " + price.get(i + 3).get(2) + " | " + price.get(i).get(3)%></option>
-                                    <%}%>
-                                </select></td> <%} else {%>
-                            <td><select class="form-control" required="true">
-                                    <option>ID | CAT1 | CAT2 | CAT3 | Seats Option</option>
-                                    <%
-                                        for (int i = 0; i < price.size(); i = i + 3) {
-                                    %>
-                                    <option><%=price.get(i).get(0) + " | " + price.get(i).get(2) + " | " + price.get(i + 1).get(2) + " | " + price.get(i + 2).get(2) + " | " + price.get(i).get(3)%></option>
-                                    <%}%>
-                                </select></td> <%}%>
-                        </tr>
-                        <tr>
-                            <td>&nbsp</td> 
-                        </tr>
-                    </table>
+                    <tr>
+                        <td>&nbsp; Previous Price : &nbsp;</td>
+                        <%  if (x.equals("1")) { %>
+                        <td><select class="form-control" required="true">
+                                <option>ID | CAT1 | CAT2 | CAT3 | CAT 4 | Seats Option</option>
+                                <%
+                                    for (int i = 0; i < price.size(); i = i + 4) {
+                                %>
+                                <option><%=price.get(i).get(0) + " | " + price.get(i).get(2) + " | " + price.get(i + 1).get(2) + " | " + price.get(i + 2).get(2) + " | " + price.get(i + 3).get(2) + " | " + price.get(i).get(3)%></option>
+                                <%}%>
+                            </select></td> <%} else {%>
+                        <td><select class="form-control" required="true">
+                                <option>ID | CAT1 | CAT2 | CAT3 | Seats Option</option>
+                                <%
+                                    for (int i = 0; i < price.size(); i = i + 3) {
+                                %>
+                                <option><%=price.get(i).get(0) + " | " + price.get(i).get(2) + " | " + price.get(i + 1).get(2) + " | " + price.get(i + 2).get(2) + " | " + price.get(i).get(3)%></option>
+                                <%}%>
+                            </select></td> <%}%>
+                    </tr>
+                    <tr>
+                        <td>&nbsp</td> 
+                    </tr>
+                </table>
                 <img id="shape1" src="img/property/Concerthall_layout.png" style="width:100%; height: 100%;" usemap="#concertHall" alt="" />
                 <map name="concertHall" id="concertHall">
                     <area shape="rect" coords="1078,1078,1080,1080" alt="Image Map" style="outline:none;" title="Image Map"/>
@@ -102,7 +102,6 @@
                             fillOpacity: 1,
                         });
                     });
-
                     function setCat1() {
                         $('#Seat_19').mapster('select');
                     }
@@ -118,30 +117,30 @@
                 </script>
                 <%} else {%>
                 <table>
-                        <tr>
-                            <td>&nbsp; Previous Price : &nbsp;</td>
-                            <%  if (x.equals("1")) { %>
-                            <td><select class="form-control" required="true">
-                                    <option>ID | CAT1 | CAT2 | CAT3 | CAT 4 | Seats Option</option>
-                                    <%
-                                        for (int i = 0; i < price.size(); i = i + 4) {
-                                    %>
-                                    <option><%=price.get(i).get(0) + " | " + price.get(i).get(2) + " | " + price.get(i + 1).get(2) + " | " + price.get(i + 2).get(2) + " | " + price.get(i + 3).get(2) + " | " + price.get(i).get(3)%></option>
-                                    <%}%>
-                                </select></td> <%} else {%>
-                            <td><select class="form-control" required="true">
-                                    <option>ID | CAT1 | CAT2 | CAT3 | Seats Option</option>
-                                    <%
-                                        for (int i = 0; i < price.size(); i = i + 3) {
-                                    %>
-                                    <option><%=price.get(i).get(0) + " | " + price.get(i).get(2) + " | " + price.get(i + 1).get(2) + " | " + price.get(i + 2).get(2) + " | " + price.get(i).get(3)%></option>
-                                    <%}%>
-                                </select></td> <%}%>
-                        </tr>
-                        <tr>
-                            <td>&nbsp</td> 
-                        </tr>
-                    </table>
+                    <tr>
+                        <td>&nbsp; Previous Price : &nbsp;</td>
+                        <%  if (x.equals("1")) { %>
+                        <td><select class="form-control" required="true">
+                                <option>ID | CAT1 | CAT2 | CAT3 | CAT 4 | Seats Option</option>
+                                <%
+                                    for (int i = 0; i < price.size(); i = i + 4) {
+                                %>
+                                <option><%=price.get(i).get(0) + " | " + price.get(i).get(2) + " | " + price.get(i + 1).get(2) + " | " + price.get(i + 2).get(2) + " | " + price.get(i + 3).get(2) + " | " + price.get(i).get(3)%></option>
+                                <%}%>
+                            </select></td> <%} else {%>
+                        <td><select class="form-control" required="true">
+                                <option>ID | CAT1 | CAT2 | CAT3 | Seats Option</option>
+                                <%
+                                    for (int i = 0; i < price.size(); i = i + 3) {
+                                %>
+                                <option><%=price.get(i).get(0) + " | " + price.get(i).get(2) + " | " + price.get(i + 1).get(2) + " | " + price.get(i + 2).get(2) + " | " + price.get(i).get(3)%></option>
+                                <%}%>
+                            </select></td> <%}%>
+                    </tr>
+                    <tr>
+                        <td>&nbsp</td> 
+                    </tr>
+                </table>
                 <img id="shape1" src="img/property/Theatre.png" style="width:100%; height: 100%;" usemap="#theatre" alt="" />
                 <map name="theatre" id="theatre">
                     <area shape="rect" coords="766,574,768,576" alt="Image Map" style="outline:none;" title="Image Map" href="http://www.image-maps.com/index.php?aff=mapped_users_0" />
@@ -164,7 +163,6 @@
                             fillOpacity: 1,
                         });
                     });
-
                     function setCat1() {
                         $('#seat_1').mapster('select');
                     }
@@ -243,6 +241,24 @@
                     </table>
                     <input type="hidden" value=<%=data.get(0).get(6)%> name="noCat">
                     <%}%>
+                    <script>
+                        $("form").submit(function (event) {
+                            var i;
+                            var j;
+                            if ($('#seatsOption').val() == "Free Seating") {
+                                for (i = 1; i <= <%=Integer.valueOf(data.get(0).get(6).toString())%>; i++) {
+                                    for (j = i + 1; j <= <%=Integer.valueOf(data.get(0).get(6).toString())%>; j++) {
+                                        var x = document.getElementById("cat" + i).value;
+                                        var y = document.getElementById("cat" + j).value;
+                                        if (x !== y) {
+                                            alert("For Free seating ticket price must be the same as all category.");
+                                            return false;
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    </script>
                 </form>
             </div>
         </div> 

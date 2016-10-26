@@ -48,13 +48,13 @@ import manager.ReservationManager;
 import manager.ResetPasswordManager;
 import manager.SeatingPlanManager;
 import manager.UnlockManager;
-import session.stateless.commoninfrastucture.BulletinSessionLocal;
+import session.stateless.BulletinSessionLocal;
 import session.stateless.commoninfrastucture.GetAllProductDetailsLocal;
 import session.stateless.commoninfrastucture.LockAccountSessionLocal;
 import session.stateless.commoninfrastucture.LoginSessionLocal;
-import session.stateless.commoninfrastucture.MessageSessionLocal;
+import session.stateless.MessageSessionLocal;
 import session.stateless.commoninfrastucture.ProductSessionLocal;
-import session.stateless.commoninfrastucture.RegisterSessionLocal;
+import session.stateless.RegisterSessionLocal;
 import session.stateless.commoninfrastucture.ResetPasswordSessionLocal;
 import session.stateless.commoninfrastucture.UnlockAccountSessionLocal;
 
@@ -171,7 +171,7 @@ public class BackController extends HttpServlet {
                         if (lockManager.passThrough(username)) {
                             role = loginManager.getRoles(username);
                             System.out.println("role: " + role);
-                            if (loginManager.getRoles(username).equals("super administrator") || loginManager.getRoles(username).equals("property manager") || loginManager.getRoles(username).equals("product manager")) {
+                            if (loginManager.getRoles(username).equals("super administrator") || loginManager.getRoles(username).equals("property manager") || loginManager.getRoles(username).equals("product manager") || loginManager.getRoles(username).equals("event organizer") || loginManager.getRoles(username).equals("content manager") ||  loginManager.getRoles(username).equals("finance manager") || loginManager.getRoles(username).equals("crm manager")) {
                                 System.out.println("here new 1");
                                 logManager.logMessage(username + " logged in.");
                                 currentUser = username;
@@ -191,7 +191,7 @@ public class BackController extends HttpServlet {
                             System.out.println("here 4");
                             role = loginManager.getRoles(username);
                             System.out.println("role: " + role);
-                            if (loginManager.getRoles(username).equals("super administrator") || loginManager.getRoles(username).equals("property manager") || loginManager.getRoles(username).equals("product manager")) {
+                            if (loginManager.getRoles(username).equals("super administrator") || loginManager.getRoles(username).equals("property manager") || loginManager.getRoles(username).equals("product manager") || loginManager.getRoles(username).equals("event organizer") || loginManager.getRoles(username).equals("content manager") || loginManager.getRoles(username).equals("crm manager") || loginManager.getRoles(username).equals("finance manager")) {
                                 System.out.println("here new 1");
                                 logManager.logMessage(username + " logged in.");
                                 currentUser = username;
@@ -865,25 +865,31 @@ public class BackController extends HttpServlet {
                 String eDes = request.getParameter("eventdes");
                 String email = request.getParameter("eoemail");
                 String type = request.getParameter("type");
-
+                System.out.println("Entered save new event 1.");
+                System.out.println("email save new event: " + email);
                 boolean checkUser = rm.checkUser(email);
                 Long pid = spm.getPropertyByName(pname);
 
                 request.setAttribute("role", role);
                 request.setAttribute("username", currentUser);
                 if (checkUser) {
+                    System.out.println("Entered save new event 2.");
                     Event event = rm.addNewEvent(ename, eDes, daterange, pid, email,type);
                     if (event != null) {
+                        System.out.println("Entered save new event 3.");
                         request.setAttribute("event", event);
                         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                         request.setAttribute("start", format.format(event.getStart()));
                         request.setAttribute("end", format.format(event.getEnd()));
                         request.getRequestDispatcher("/saveNewEvent.jsp").forward(request, response);
                     } else {
+                        System.out.println("Entered save new event 4.");
                         request.setAttribute("msg", "error when creating the reservation");
                         if (pname.equals("Merlion Concert Hall")) {
+                            System.out.println("Entered save new event 5.");
                             request.getRequestDispatcher("/concertHallSelected.jsp").forward(request, response);
                         } else {
+                            System.out.println("Entered save new event 6.");
                             request.getRequestDispatcher("/theaterSelected.jsp").forward(request, response);
                         }
                     }

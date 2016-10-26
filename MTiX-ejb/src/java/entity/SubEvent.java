@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -53,6 +52,10 @@ public class SubEvent implements Serializable {
     private PropertyEntity property;
     
     private String type;
+    
+    @OneToOne(orphanRemoval= true, mappedBy = "subevent")
+    private WebContentEntity content;
+
 
     public String getType() {
         return type;
@@ -164,6 +167,14 @@ public class SubEvent implements Serializable {
 
     public void setPromotions(Collection<Promotion> promotions) {
         this.promotions = promotions;
+    }
+
+    public WebContentEntity getContent() {
+        return content;
+    }
+
+    public void setContent(WebContentEntity content) {
+        this.content = content;
     }
     
     @Override

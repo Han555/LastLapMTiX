@@ -121,12 +121,33 @@ public class ReservePropertyBean implements ReservePropertyBeanLocal {
 
     @Override
     public Boolean checkUser(String username) {
-        Query q1 = em.createQuery("SELECT u FROM UserEntity u WHERE u.username = " + "'" + username + "'");
-
-        if (q1.getResultList().isEmpty()) {
+        try {
+            System.out.println("check user entry 1" );
+            System.out.println("check user username: " + username);
+            Query q = em.createQuery("SELECT a FROM UserEntity a"); // WHERE a.username=:name
+            System.out.println("check user entry 2" );
+            //q.setParameter("name", username);
+            //UserEntity user = (UserEntity) q.getSingleResult(); The user will be point to the real user here
+            System.out.println("check user entry 3" );
+            //em.refresh(user);
+            for (Object o: q.getResultList()) {
+                UserEntity u = (UserEntity) o;
+                System.out.println("User: " + u.getUsername());
+                System.out.println("roles: " + u.getRoles().get(0));
+                /*if (u.getRoles().get(0).equals("event organizer")) {
+                    return true;
+                } else {
+                    return false;
+                }*/
+                if(u.getUsername().equals(username)) {
+                    if(u.getRoles().get(0).equals("event organizer")) {
+                        return true;
+                    }
+                }
+            }
             return false;
-        } else {
-            return true;
+        } catch (Exception ex) {
+            return false;
         }
     }
 

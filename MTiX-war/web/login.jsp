@@ -24,7 +24,7 @@
     <body>
 
 
-        <c:url var="formAction" value="/Controller?action=doLogin" />
+        <c:url var="formAction" value="/ContentController?action=doLogin" />
         <div class="container">
             <section id="content">
 

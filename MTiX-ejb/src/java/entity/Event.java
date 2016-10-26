@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 
 import javax.persistence.Entity;
@@ -60,6 +61,9 @@ public class Event implements Serializable {
     private PropertyEntity property;
     
     private String type;
+    
+    @OneToOne(orphanRemoval= true, mappedBy = "event")
+    private WebContentEntity content;
 
     public String getType() {
         return type;
@@ -192,6 +196,14 @@ public class Event implements Serializable {
 
     public void setPromotions(List<Promotion> promotions) {
         this.promotions = promotions;
+    }
+
+    public WebContentEntity getContent() {
+        return content;
+    }
+
+    public void setContent(WebContentEntity content) {
+        this.content = content;
     }
 
     @Override

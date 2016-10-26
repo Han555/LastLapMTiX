@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package session.stateless.commoninfrastucture;
+package session.stateless;
 
 import entity.MessageEntity;
+import entity.UserEntity;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Properties;
@@ -107,10 +108,20 @@ public class MessageSession implements MessageSessionLocal {
 
     @Override
     public void createMessage(String to, String from, String message, String subject) {
+        /*MessageEntity m = new MessageEntity();
+         m.createMessage(to, from, message, subject);
+         entityManager.persist(m);*/
+
         MessageEntity m = new MessageEntity();
         m.createMessage(to, from, message, subject);
-        entityManager.persist(m);
-
+        Query q = entityManager.createQuery("SELECT u FROM UserEntity u WHERE u.username = " + "'" + to + "'");
+        UserEntity u = new UserEntity();
+        
+        for(Object o: q.getResultList()) {
+            u = (UserEntity) o;
+            u.getMessages().add(m);
+            entityManager.merge(u);
+        }
     }
 
     @Override
@@ -140,18 +151,18 @@ public class MessageSession implements MessageSessionLocal {
     public ArrayList<String> retrieveMessage(String id) {
         ArrayList<String> message = new ArrayList();
         Query q = entityManager.createQuery("SELECT m FROM MessageEntity m WHERE m.id = " + id);
-        
-        Query q2 = entityManager.createQuery("UPDATE MessageEntity m SET m.status = " +"'read'"+" WHERE m.id = " +id);
+
+        Query q2 = entityManager.createQuery("UPDATE MessageEntity m SET m.status = " + "'read'" + " WHERE m.id = " + id);
         q2.executeUpdate();
-        
+
         for (Object o : q.getResultList()) {
-            MessageEntity m = (MessageEntity) o;           
+            MessageEntity m = (MessageEntity) o;
             message.add(m.getSender());
             message.add(m.getSubject());
-            message.add(m.getContent()); 
+            message.add(m.getContent());
             message.add(Long.toString(m.getId()));
         }
-        
+
         return message;
     }
 

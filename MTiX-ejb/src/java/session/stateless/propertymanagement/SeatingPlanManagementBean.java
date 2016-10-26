@@ -137,8 +137,10 @@ public class SeatingPlanManagementBean implements SeatingPlanManagementBeanLocal
     
     @Override
     public List<SectionCategoryEntity> getAllCategoryInOneProperty(Long propertyId) {
+
         PropertyEntity property = getPropertyById(propertyId);
         Query query = em.createQuery("SELECT sc FROM SectionCategoryEntity sc WHERE sc.property = :inProperty");
+
         query.setParameter("inProperty", property);
         return query.getResultList();
     }
@@ -223,7 +225,7 @@ public class SeatingPlanManagementBean implements SeatingPlanManagementBeanLocal
 //            List<SectionCategory> category = new ArrayList();
 //            category = getAllCategories();
 //            
-//            for(SectionCategory sc:category){
+//            for(SectionCategoryEntity sc:category){
 //                List<SectionEntity> sections = getAllSectionsInOneCategory(sc.getId());
 //                sc.setSection(sections);
 //                em.merge(sc);
