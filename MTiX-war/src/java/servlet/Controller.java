@@ -7,6 +7,8 @@ package servlet;
 
 import session.stateless.ticketing.BookingSessionLocal;
 import entity.Event;
+import entity.Promotion;
+import entity.ShopCartRecordEntity;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -40,9 +42,13 @@ import session.stateless.commoninfrastucture.UnlockAccountSessionLocal;
 import session.stateless.propertymanagement.SeatingPlanManagementBeanLocal;
 import session.stateless.propertymanagement.ReservePropertyBeanLocal;
 import entity.SubEvent;
+import java.util.Collection;
+import java.util.List;
 import manager.ProductManager;
 import manager.ReservationManager;
+import manager.ShopCartManager;
 import session.stateless.commoninfrastucture.ProductSessionLocal;
+import session.stateless.ticketing.ShoppingCartSessionLocal;
 
 
 /**
@@ -82,6 +88,8 @@ public class Controller extends HttpServlet {
     private SeatingPlanManagementBeanLocal spmbl;
     @EJB
     private ReservePropertyBeanLocal rpbl;
+    @EJB
+    private ShoppingCartSessionLocal scsl;
 
     public String currentUser;
     public String subject = "";
@@ -114,6 +122,7 @@ public class Controller extends HttpServlet {
             SeatingPlanManager spm  = new SeatingPlanManager(spmbl);
             ReservationManager rm = new ReservationManager(rpbl);
             ProductManager pm = new ProductManager(productSession);
+            ShopCartManager scm = new ShopCartManager(scsl);
 
             action = request.getParameter("action");
             String name = request.getParameter("name");
@@ -137,7 +146,7 @@ public class Controller extends HttpServlet {
                         if (request.getParameter("password").equals(request.getParameter("passwordAgain"))) {
                             registerManager.register(request.getParameter("userName"), request.getParameter("password"), request.getParameter("mobileNumber"));
 
-                            registerManager.sendEmail(request.getParameter("userName"), "is3102mtix@gmail.com", "http://localhost:8080/MTiX-war/Controller?" + "name=" + request.getParameter("userName"), "MTiX Account Verification", "smtp.gmail.com");
+                            registerManager.sendEmail(request.getParameter("userName"), "is3102mtix@gmail.com", "Please click the link to do the verfication of your account http://localhost:8080/MTiX-war/Controller?" + "name=" + request.getParameter("userName"), "MTiX Account Verification", "smtp.gmail.com");
                             request.setAttribute("registered", "true");
                             request.getRequestDispatcher("/login.jsp").forward(request, response);
                         } else {
@@ -175,7 +184,7 @@ public class Controller extends HttpServlet {
                                 logManager.logMessage(username + " logged in.");
                                 currentUser = username;
                                 request.setAttribute("username", username);
-                                request.getRequestDispatcher("/home.jsp").forward(request, response);
+                                request.getRequestDispatcher("/home2.jsp").forward(request, response);
                             } else {
                                 request.setAttribute("role", "true");
                                 request.getRequestDispatcher("/login.jsp").forward(request, response);
@@ -192,7 +201,7 @@ public class Controller extends HttpServlet {
                                 logManager.logMessage(username + " logged in.");
                                 currentUser = username;
                                 request.setAttribute("username", username);
-                                request.getRequestDispatcher("/home.jsp").forward(request, response);
+                                request.getRequestDispatcher("/home2.jsp").forward(request, response);
                             } else {
                                 request.setAttribute("role", "true");
                                 request.getRequestDispatcher("/login.jsp").forward(request, response);
@@ -411,6 +420,8 @@ public class Controller extends HttpServlet {
                     request.setAttribute("sessions", sessionManager.getSessionsByEventIdSorted(id));
                     request.setAttribute("sections", spm.getAllSectionsInOneProperty(event.getProperty().getId()));
                     request.setAttribute("type","event");
+                    Collection<Promotion> promotions = sessionManager.getPromotionsByEventId(id);
+                    request.setAttribute("promotions",promotions);
                     //request.setAttribute("priceHashMap", sessionManager.getSessionsPricingByEventId(id));
                     //request.setAttribute("reservedSection", pm.getReservedSectionsBySessionId(id));
                     //request.setAttribute("closedSection", pm.getClosedSectionsBySessionId(id));
@@ -420,13 +431,54 @@ public class Controller extends HttpServlet {
                     request.setAttribute("sessions", sessionManager.getSessionsBySubeventId(id));
                     request.setAttribute("sections", spm.getAllSectionsInOneProperty(event.getProperty().getId()));
                     request.setAttribute("type","subevent");
+                    Collection<Promotion> promotions = sessionManager.getPromotionsByEventId(id);
+                    request.setAttribute("promotions",promotions);
                 }
                
                 
                 request.getRequestDispatcher("/bookingTickets.jsp").forward(request, response);
                 
  
-            } else if (action.equals("finances")) {
+            } else if (action.equals("promptLogin")){
+                String numOfTickets = request.getParameter("numTicket-pop");
+                String promotionIdStr = request.getParameter("promotion-pop");
+                String userName = request.getParameter("userName");
+                String password = request.getParameter("password");
+                System.out.println(numOfTickets+"   "+promotionIdStr+"   "+userName+"   "+password);
+                String type="event";
+                Long id = Long.valueOf("2");
+                
+                if (type.equals("event")) { 
+                    Event event = rm.getEventById(id);
+                    request.setAttribute("sessions", sessionManager.getSessionsByEventIdSorted(id));
+                    request.setAttribute("sections", spm.getAllSectionsInOneProperty(event.getProperty().getId()));
+                    request.setAttribute("type","event");
+                    Collection<Promotion> promotions = sessionManager.getPromotionsByEventId(id);
+                    request.setAttribute("promotions",promotions);
+                    //request.setAttribute("priceHashMap", sessionManager.getSessionsPricingByEventId(id));
+                    //request.setAttribute("reservedSection", pm.getReservedSectionsBySessionId(id));
+                    //request.setAttribute("closedSection", pm.getClosedSectionsBySessionId(id));
+                }
+                //request.getRequestDispatcher("/bookingTickets.jsp").forward(request, response);
+            }else if (action.equals("promptRegister")){
+                request.getRequestDispatcher("/bookingTickets.jsp").forward(request, response);
+            }else if (action.equals("addToCartSuccess")){
+                String username = (String) request.getSession(false).getAttribute("username");
+                System.out.println("====addToCartSuccess Username: "+username);
+                System.out.println(username);
+                Collection<ShopCartRecordEntity> records= scm.getShopCartRecordByUsername(username);
+                request.setAttribute("records", records);
+                request.getRequestDispatcher("/shoppingCart.jsp").forward(request, response);
+            }else if (action.equals("loginSuccess")){
+                
+                request.getRequestDispatcher("/home.jsp").forward(request, response);
+            }else if (action.equals("shopCart")){
+                String username = (String) request.getSession(false).getAttribute("username");
+                System.out.println("====shopCart Username: "+username);
+                Collection<ShopCartRecordEntity> records= scm.getShopCartRecordByUsername(username);
+                request.setAttribute("records", records);
+                request.getRequestDispatcher("/shoppingCart.jsp").forward(request, response);
+            }else if (action.equals("finances")) {
                 request.setAttribute("username", currentUser);
                 request.getRequestDispatcher("/finances.jsp").forward(request, response);
             } else if (action.equals("createAdmin")) {

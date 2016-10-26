@@ -45,6 +45,10 @@ public class LoginManager {
         }
     }
     
+    public boolean checkUser(String username){
+        return loginSessionLocal.checkUser(username);
+    }
+    
     public boolean checkVerification(String username) {
         return loginSessionLocal.checkFirstLogin(username);
     }

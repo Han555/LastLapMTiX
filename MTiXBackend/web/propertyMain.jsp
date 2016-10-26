@@ -13,7 +13,7 @@
 
     <div class="container"> 
         <div class="page-title">
-            <span class="title">Product Management System</span>
+            <span class="title">Property Management System</span>
         </div>
 
         <div class="row">

@@ -5,39 +5,23 @@
  */
 package servlet;
 
-import session.stateless.propertymanagement.ReservePropertyBeanLocal;
-import com.google.gson.Gson;
-import entity.EquipmentEntity;
-import entity.Event;
-import entity.SectionEntity;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import manager.ProductManager;
-import manager.SessionManager;
-import model.ReservedClosedModel;
-import session.stateless.commoninfrastucture.ProductSessionLocal;
-import session.stateless.ticketing.BookingSessionLocal;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author catherinexiong
  */
-@WebServlet(name = "ReservedClosedSectionsController", urlPatterns = {"/sectionListSpecial"})
-public class ReservedClosedSectionsController extends HttpServlet {
-@EJB 
-   private ProductSessionLocal psbl;
-@EJB 
-   private BookingSessionLocal bsl;
+@WebServlet(name = "LogOutController", urlPatterns = {"/LogOutController"})
+public class LogOutController extends HttpServlet {
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -49,36 +33,26 @@ public class ReservedClosedSectionsController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Cookie[] cookies = request.getCookies();
+    	if(cookies != null){
+    	for(Cookie cookie : cookies){
+    		if(cookie.getName().equals("JSESSIONID")){
+    			System.out.println("JSESSIONID="+cookie.getValue());
+    			break;
+    		}
+    	}
+    	}
+        HttpSession session = request.getSession(false);
+    	System.out.println("User="+session.getAttribute("username"));
+    	if(session != null){
+    		session.invalidate();
+    	}
         
-        ProductManager pm = new ProductManager(psbl);
-        SessionManager bm = new SessionManager (bsl);
-        String idStr = request.getParameter("id");
-        Long sessionId = Long.valueOf(idStr);
-        
-        String type = request.getParameter("type");
-        
-        List<SectionEntity> resultList = new ArrayList();
-      
-        List<ReservedClosedModel> specialList = new ArrayList<ReservedClosedModel>();
-        if (type.equals("reserved")) {
-            resultList = bm.getReservedSectionsBySessionId(sessionId);
-        } else {
-            resultList = bm.getClosedSectionsBySessionId(sessionId);
+        request.getRequestDispatcher("/home.jsp").forward(request, response);
         }
-        
-        for (SectionEntity s: resultList) {
-            ReservedClosedModel special = new ReservedClosedModel();
-            special.setId(s.getId());
-            special.setCapacity(s.getCapacity());
-            special.setNumberInProperty(s.getNumberInProperty());
-            specialList.add(special);
-        }
-        Gson gson = new Gson();
-        response.setContentType("application/json");
-        response.getWriter().write(gson.toJson(specialList));
-        
-        
-    }
+    
+    
+
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

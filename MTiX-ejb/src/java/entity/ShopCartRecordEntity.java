@@ -46,9 +46,16 @@ public class ShopCartRecordEntity implements Serializable {
      @OneToOne
      private SessionEntity session = new SessionEntity();
     
-
+//     @OneToOne
+//     private Promotion promo = new Promotion();
+     
+     
     public ShopCartRecordEntity() {
     }
+
+   
+    
+    
 
     public Collection<SeatEntity> getSeats() {
         return seats;

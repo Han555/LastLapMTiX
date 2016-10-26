@@ -30,7 +30,17 @@ public class SectionCategoryEntity implements Serializable {
     @ManyToOne
     PropertyEntity property;
     
+//    @OneToMany
+//    List<SectionEntity> sections = new ArrayList<SectionEntity>();
 
+//    public List<SectionEntity> getSections() {
+//        return sections;
+//    }
+//
+//    public void setSections(List<SectionEntity> sections) {
+//        this.sections = sections;
+//    }
+    
     public PropertyEntity getProperty() {
         return property;
     }

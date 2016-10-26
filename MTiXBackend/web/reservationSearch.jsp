@@ -75,7 +75,7 @@
 
                             <div class="form-group" style="padding-bottom: 20px;">
 
-                                <label for="eventdaterange" class="col-sm-2 control-label">Event Date Range</label>
+                                <label for="daterange" class="col-sm-2 control-label">Event Date Range</label>
                                 <div class="col-sm-6">
                                     <input type="text" name="daterange" id="daterange" class="form-control" value="" required
                                            data-fv-notempty-message="Event Date Range is required">

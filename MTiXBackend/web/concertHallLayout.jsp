@@ -16,7 +16,7 @@
             <span class="title" style="font-size: 40px;color: #22A7F0">Merlion Concert Hall</span>
         </div>
         <div class="row">
-            <img src="img/property/Concerthall_layout.png" alt="concert_layout" usemap="#image-map" >
+            <img src="../MTiX-war/images/property/Concerthall_layout.png" alt="concert_layout" usemap="#image-map" >
             <map name="image-map">
                 <c:forEach items="${sections}" var="section">
                 <area data-toggle="modal" data-target="#myModal" id="${section.numberInProperty}" class= "p1" alt="section${section.numberInProperty}" title="section${section.numberInProperty}" href="#" coords="${section.coords}" shape="poly">

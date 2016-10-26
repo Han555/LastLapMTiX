@@ -18,6 +18,7 @@
         <link rel="stylesheet" type="text/css" href="lib/css/checkbox3.min.css">
         <link rel="stylesheet" type="text/css" href="lib/css/jquery.dataTables.min.css">
         <link rel="stylesheet" type="text/css" href="lib/css/dataTables.bootstrap.css">
+<!--        <link rel="stylesheet" href="path/to/react-bootstrap-table/dist/react-bootstrap-table-all.min.css">-->
         <link rel="stylesheet" type="text/css" href="lib/css/select2.min.css">
         <link rel="stylesheet" type="text/css" href="lib/css/jquery.seat-charts.css">
         <!-- CSS App -->

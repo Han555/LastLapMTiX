@@ -55,6 +55,10 @@ public class PropertyEntity implements Serializable {
     
     private String recommend;
     
+//    private String layoutPath;
+//    
+//    private String mainPath;
+    
     public void createProperty(String propertyName, Integer propertyNo, Integer capacity){
         this.setPropertyName(propertyName);
         this.setPropertyNo(propertyNo);

@@ -4,9 +4,11 @@
  * and open the template in the editor.
  */
 package manager;
+import entity.Promotion;
 import entity.SectionEntity;
 import entity.SessionEntity;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -51,4 +53,14 @@ public class SessionManager {
         
     }
     
+    public Collection<Promotion> getPromotionsByEventId(Long id){
+        return bsbl.getPromotionsByEventId(id);
+    }
+    public Collection<Promotion> getPromotionsBySubEventId(Long id){
+        return bsbl.getPromotionsByEventId(id);
+    }
+    
+    public Boolean addToCartByUsernameFree(String username, Long sessionId, Long promotionId, String numOfTickets, String price){
+        return bsbl.addToCartByUsernameFree(username, sessionId, promotionId, numOfTickets, price);
+    }
 }

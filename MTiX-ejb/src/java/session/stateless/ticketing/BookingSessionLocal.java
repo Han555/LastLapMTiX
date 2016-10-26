@@ -5,8 +5,10 @@
  */
 package session.stateless.ticketing;
 
+import entity.Promotion;
 import entity.SectionEntity;
 import entity.SessionEntity;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import javax.ejb.Local;
@@ -34,6 +36,11 @@ public interface BookingSessionLocal {
   
 
     public List<Double> getSessionsPricingBySessionId(Long id, String type);
+
+    public Collection<Promotion> getPromotionsByEventId(Long id);
+    public Collection<Promotion> getPromotionsBySubEventId(Long id);
+
+    public Boolean addToCartByUsernameFree(String username, Long sessionId, Long promotionId, String numOfTickets, String price);
 
    
 }

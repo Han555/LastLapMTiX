@@ -7,11 +7,16 @@ package session.stateless.ticketing;
 
 import session.stateless.propertymanagement.ReservePropertyBeanLocal;
 import entity.Event;
+import entity.Promotion;
 import entity.SectionCategoryEntity;
 import entity.SectionEntity;
 import entity.SessionEntity;
 import entity.SessionSeatsInventory;
+import entity.ShopCartRecordEntity;
+import entity.SubEvent;
+import entity.UserEntity;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -113,18 +118,80 @@ public class BookingSession implements BookingSessionLocal {
         List<Double> prices = new ArrayList<Double>();
         if (type.equals("event")) {
             List<SectionEntity> sections = spm.getAllSectionsInOneProperty(s.getEvent().getProperty().getId());
-           
+
             for (SectionEntity sec : sections) {
                 prices.add(getPriceBySessionAndSectionId(id, sec.getId()));
             }
         } else {
-             List<SectionEntity> sections = spm.getAllSectionsInOneProperty(s.getSubEvent().getProperty().getId());
-            
+            List<SectionEntity> sections = spm.getAllSectionsInOneProperty(s.getSubEvent().getProperty().getId());
+
             for (SectionEntity sec : sections) {
                 prices.add(getPriceBySessionAndSectionId(id, sec.getId()));
             }
         }
         return prices;
+    }
+
+    
+    @Override
+    public Collection<Promotion> getPromotionsByEventId(Long id) {
+        Event e = em.find(Event.class, id);
+        Collection<Promotion> promotions = new ArrayList();
+        promotions = e.getPromotions();
+        return promotions;
+
+    }
+
+    @Override
+    public Collection<Promotion> getPromotionsBySubEventId(Long id) {
+        SubEvent e = em.find(SubEvent.class, id);
+        Collection<Promotion> promotions = new ArrayList();
+        promotions = e.getPromotions();
+        return promotions;
+    }
+
+    @Override
+    public Boolean addToCartByUsernameFree(String username, Long sessionId, Long promotionId, String numOfTickets, String price) {
+        try {
+            SessionEntity s = em.find(SessionEntity.class, sessionId);
+            String promotion;
+            if(promotionId == 0){
+                promotion = "Standard";
+            } else {
+                Promotion p = em.find(Promotion.class, promotionId);
+                promotion = p.getName();
+            }
+            Promotion p = em.find(Promotion.class, promotionId);
+            Query q = em.createQuery("SELECT u FROM UserEntity u WHERE u.username=:username");
+            q.setParameter("username", username);
+            UserEntity user = (UserEntity) q.getSingleResult();
+            Double priceD = Double.valueOf(price);
+            Integer number = Integer.valueOf(numOfTickets);
+            Double priceTotal = priceD * number;
+            
+            
+            ShopCartRecordEntity scre = new ShopCartRecordEntity();
+            scre.setSession(s);
+
+            scre.setPromotion(promotion);
+            scre.setTicketQuantity(numOfTickets);
+            scre.setAmount(String.valueOf(priceTotal));
+            scre.setSection(null);
+            scre.setSeats(null);
+            if(s.getEvent()== null){
+                scre.setEventName(s.getSubEvent().getName());
+            } else {
+                scre.setEventName(s.getEvent().getName());
+            }
+            em.persist(scre);
+            em.flush();
+            user.getPayments().add(scre);
+            em.merge(user);
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
     }
 
 }

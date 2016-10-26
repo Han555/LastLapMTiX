@@ -33,25 +33,25 @@
                             <div class="row">
                                 <div class="col-md-8">
                                     <div class="header">
-                                        <h4 class="title">Compose New Message</h4>   
+                                        <h4 class="title" style="padding-left: 20px">Compose New Message</h4>   
                                     </div>
                                     <div class="content">             
                                         <form id="contact_form" action="${formAction}" method="POST">
-                                            <div class="row">
+                                            <div class="row" style="padding-left: 20px">
                                                 <label style="text-align: justify" for="name">To:</label><br />
                                                 <input style="text-align: justify" id="to" class="input" name="to" type="text" value="" size="30" /><br />
                                             </div>
-                                            <div class="row">
+                                            <div class="row" style="padding-left: 20px">
                                                 <label style="text-align: justify" for="email">Subject:</label><br />
                                                 <input style="text-align: justify" id="subject" class="input" name="subject" type="text" value="" size="30" /><br />
                                             </div>
-                                            <div class="row">
+                                            <div class="row" style="padding-left: 20px">
                                                 <label style="text-align: justify" for="message">Your message:</label><br />
                                                 <textarea style="text-align: justify" id="message" class="input" name="message" rows="7" cols="30"></textarea><br />
                                             </div>
                                             <input type="hidden" name="username" value=<%= request.getAttribute("username")%> readonly="readonly" />
                                             <c:url var="formAction" value="/BackController" />
-                                            <input type="submit" value="Send message" />
+                                            <button class="btn btn-default" type="submit" value="Send message">Send Message</button>
                                         </form>						
 
                                     </div>
