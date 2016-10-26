@@ -22,16 +22,20 @@ public class TicketSales implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    //private int customerID; //Need to create a customer Entity
-    //private Double finalPrice;
+   
+    private Double finalPrice;
     //private int seatID;
     
-    
+    private Integer ticketQuantity;
     //@ManyToOne
    // private Promotion promotion = new Promotion();
+    private String promotion;
+            
     @ManyToOne
     private SessionEntity session; 
+    
+    @ManyToOne
+    private UserEntity user;
    // @ManyToOne
    // private SessionCategoryPrice sessionCategoryPrice= new SessionCategoryPrice();
     @ManyToOne
@@ -47,6 +51,38 @@ public class TicketSales implements Serializable {
         this.id = id;
     }
 
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
+    }
+    
+    public String getPromotion() {
+        return promotion;
+    }
+
+    public void setPromotion(String promotion) {
+        this.promotion = promotion;
+    }
+    
+    public Integer getTicketQuantity() {
+        return ticketQuantity;
+    }
+
+    public void setTicketQuantity(Integer ticketQuantity) {
+        this.ticketQuantity = ticketQuantity;
+    }
+
+    public Double getFinalPrice() {
+        return finalPrice;
+    }
+
+    public void setFinalPrice(Double finalPrice) {
+        this.finalPrice = finalPrice;
+    }
+    
     public SessionEntity getSession() {
         return session;
     }

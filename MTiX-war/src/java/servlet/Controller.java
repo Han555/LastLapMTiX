@@ -44,6 +44,9 @@ import java.util.List;
 import manager.ProductManager;
 import manager.ReservationManager;
 import manager.ShopCartManager;
+import session.stateless.BulletinSessionLocal;
+import session.stateless.MessageSessionLocal;
+import session.stateless.commoninfrastucture.RegisterSessionLocal;
 import session.stateless.commoninfrastucture.ProductSessionLocal;
 import session.stateless.ticketing.ShoppingCartSessionLocal;
 
@@ -410,14 +413,19 @@ public class Controller extends HttpServlet {
                 //HttpSession session = request.getSession();
                 //String type = session.getAttribute("type");
                 //Long id = (Long) session.getAttribute("id");
-
-                String type="event";
-                Long id = Long.valueOf("2");
+                String idStr = request.getParameter("id");
+                String[] eventType = idStr.split(" ");
+                
+                String type=eventType[1];
+                Long id = Long.valueOf(eventType[0]);
+                System.out.println("====bookTicket: "+type +id);
                 
                 if (type.equals("event")) { 
                     Event event = rm.getEventById(id);
                     request.setAttribute("sessions", sessionManager.getSessionsByEventIdSorted(id));
                     request.setAttribute("sections", spm.getAllSectionsInOneProperty(event.getProperty().getId()));
+                    request.setAttribute("capacity",event.getProperty().getCapacity());
+                    request.setAttribute("property", event.getProperty());
                     request.setAttribute("type","event");
                     Collection<Promotion> promotions = sessionManager.getPromotionsByEventId(id);
                     request.setAttribute("promotions",promotions);
@@ -426,11 +434,12 @@ public class Controller extends HttpServlet {
                     //request.setAttribute("closedSection", pm.getClosedSectionsBySessionId(id));
                 }
                 else {
-                    SubEvent event = rm.getSubEventById(id);
+                    SubEvent subevent = rm.getSubEventById(id);
                     request.setAttribute("sessions", sessionManager.getSessionsBySubeventId(id));
-                    request.setAttribute("sections", spm.getAllSectionsInOneProperty(event.getProperty().getId()));
+                    request.setAttribute("sections", spm.getAllSectionsInOneProperty(subevent.getProperty().getId()));
                     request.setAttribute("type","subevent");
-                    Collection<Promotion> promotions = sessionManager.getPromotionsByEventId(id);
+                    request.setAttribute("property", subevent.getProperty());
+                    Collection<Promotion> promotions = sessionManager.getPromotionsBySubEventId(id);
                     request.setAttribute("promotions",promotions);
                 }
                

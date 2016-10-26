@@ -14,6 +14,7 @@ import entity.SessionEntity;
 import entity.SessionSeatsInventory;
 import entity.ShopCartRecordEntity;
 import entity.SubEvent;
+import entity.TicketSales;
 import entity.UserEntity;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -132,7 +133,6 @@ public class BookingSession implements BookingSessionLocal {
         return prices;
     }
 
-    
     @Override
     public Collection<Promotion> getPromotionsByEventId(Long id) {
         Event e = em.find(Event.class, id);
@@ -155,7 +155,7 @@ public class BookingSession implements BookingSessionLocal {
         try {
             SessionEntity s = em.find(SessionEntity.class, sessionId);
             String promotion;
-            if(promotionId == 0){
+            if (promotionId == 0) {
                 promotion = "Standard";
             } else {
                 Promotion p = em.find(Promotion.class, promotionId);
@@ -168,8 +168,7 @@ public class BookingSession implements BookingSessionLocal {
             Double priceD = Double.valueOf(price);
             Integer number = Integer.valueOf(numOfTickets);
             Double priceTotal = priceD * number;
-            
-            
+
             ShopCartRecordEntity scre = new ShopCartRecordEntity();
             scre.setSession(s);
 
@@ -178,7 +177,8 @@ public class BookingSession implements BookingSessionLocal {
             scre.setAmount(String.valueOf(priceTotal));
             scre.setSection(null);
             scre.setSeats(null);
-            if(s.getEvent()== null){
+            scre.setPaymentStatus("unpaid");
+            if (s.getEvent() == null) {
                 scre.setEventName(s.getSubEvent().getName());
             } else {
                 scre.setEventName(s.getEvent().getName());
@@ -192,6 +192,43 @@ public class BookingSession implements BookingSessionLocal {
             ex.printStackTrace();
             return false;
         }
+    }
+
+    @Override
+    public List<Integer> getTicketSalesBySessionId(Long id, String type) {
+        SessionEntity s = em.find(SessionEntity.class, id);
+        Collection<TicketSales> sales = s.getTicketSales();
+        List<Integer> capacityList = new ArrayList();
+        if (type == "event") {
+            Event event = s.getEvent();
+            List<SectionEntity> sections = spm.getAllSectionsInOneProperty(event.getProperty().getId());
+            for (SectionEntity section : sections) {
+                Integer capacity = section.getCapacity();
+                for (TicketSales ts : sales) {
+                    if (ts.getSectionEntity().equals(section)) {
+                        capacity -= ts.getTicketQuantity();
+                    }
+                }
+                capacityList.add(capacity);
+            }
+        } else {
+
+            Event event = s.getEvent();
+            List<SectionEntity> sections = spm.getAllSectionsInOneProperty(event.getProperty().getId());
+            for (SectionEntity section : sections) {
+                Integer capacity = section.getCapacity();
+                for (TicketSales ts : sales) {
+                    if (ts.getSectionEntity().equals(section)) {
+                        capacity -= ts.getTicketQuantity();
+                    }
+                }
+                capacityList.add(capacity);
+            }
+
+        }
+
+        return capacityList;
+
     }
 
 }

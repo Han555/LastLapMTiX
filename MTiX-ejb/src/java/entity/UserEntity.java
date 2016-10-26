@@ -8,6 +8,7 @@ package entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -22,6 +24,7 @@ import javax.persistence.OneToOne;
  */
 @Entity
 public class UserEntity implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,35 +36,131 @@ public class UserEntity implements Serializable {
     private boolean firstLogin;
     private boolean resetPassword;
     private ArrayList<String> roles;
-    
-    @OneToMany(mappedBy="user")
+
+    private String firstName;
+    private String lastName;
+    private Integer age;
+    private String address;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date DOB;
+//    private String phone;
+    private String loyaltyCardId;
+    private Integer loyaltyPoints;
+    private Double cumulativeSpending;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date joinDate;
+
+    @OneToMany(orphanRemoval = true, mappedBy = "user")
+    private Collection<TicketSales> ticketSales = new ArrayList<TicketSales>();
+
+    @OneToMany(mappedBy = "user")
     private Collection<SubEvent> subEvents = new ArrayList<SubEvent>();
-    
-    @OneToMany(mappedBy="user")
+
+    @OneToMany(mappedBy = "user")
     private Collection<Event> events = new ArrayList<Event>();
-    
+
     @OneToMany
-    private Collection<MessageEntity> messages = new ArrayList<MessageEntity> ();
-    
+    private Collection<MessageEntity> messages = new ArrayList<MessageEntity>();
+
     @ManyToMany
-    private Collection<BulletinEntity> bulletins = new ArrayList<BulletinEntity> (); 
-    
+    private Collection<BulletinEntity> bulletins = new ArrayList<BulletinEntity>();
+
     @ManyToMany
-    private Collection<RightsEntity> rights = new ArrayList<RightsEntity> ();
-    
+    private Collection<RightsEntity> rights = new ArrayList<RightsEntity>();
+
     @OneToMany
-    private Collection<ShopCartRecordEntity> payments = new ArrayList<ShopCartRecordEntity> ();
-    
+    private Collection<ShopCartRecordEntity> payments = new ArrayList<ShopCartRecordEntity>();
+
     @OneToMany
-    private Collection<BookingFees> bookingfees = new ArrayList<BookingFees> ();
-    
+    private Collection<BookingFees> bookingfees = new ArrayList<BookingFees>();
+
     @OneToMany
-    private Collection<LicensePaymentEntity> licensePayments = new ArrayList<LicensePaymentEntity> ();
-    
-    @OneToOne(orphanRemoval= true, mappedBy = "user")
-    private CompanyProfile companyProfile; 
-    
+    private Collection<LicensePaymentEntity> licensePayments = new ArrayList<LicensePaymentEntity>();
+
+    @OneToOne(orphanRemoval = true, mappedBy = "user")
+    private CompanyProfile companyProfile;
+
     public UserEntity() {
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Date getDOB() {
+        return DOB;
+    }
+
+    public void setDOB(Date DOB) {
+        this.DOB = DOB;
+    }
+
+    public String getLoyaltyCardId() {
+        return loyaltyCardId;
+    }
+
+    public void setLoyaltyCardId(String loyaltyCardId) {
+        this.loyaltyCardId = loyaltyCardId;
+    }
+
+    public Integer getLoyaltyPoints() {
+        return loyaltyPoints;
+    }
+
+    public void setLoyaltyPoints(Integer loyaltyPoints) {
+        this.loyaltyPoints = loyaltyPoints;
+    }
+
+    public Double getCumulativeSpending() {
+        return cumulativeSpending;
+    }
+
+    public void setCumulativeSpending(Double cumulativeSpending) {
+        this.cumulativeSpending = cumulativeSpending;
+    }
+
+    public Date getJoinDate() {
+        return joinDate;
+    }
+
+    public void setJoinDate(Date joinDate) {
+        this.joinDate = joinDate;
+    }
+
+    public Collection<TicketSales> getTicketSales() {
+        return ticketSales;
+    }
+
+    public void setTicketSales(Collection<TicketSales> ticketSales) {
+        this.ticketSales = ticketSales;
     }
 
     public Collection<LicensePaymentEntity> getLicensePayments() {
@@ -87,9 +186,7 @@ public class UserEntity implements Serializable {
     public void setPayments(Collection<ShopCartRecordEntity> payments) {
         this.payments = payments;
     }
-    
-    
-    
+
     public Collection<RightsEntity> getRights() {
         return rights;
     }
@@ -129,7 +226,7 @@ public class UserEntity implements Serializable {
     public void setResetPassword(boolean resetPassword) {
         this.resetPassword = resetPassword;
     }
-    
+
     public void createAccount(String username, String password, String mobileNumber, String salt) {
         this.username = username;
         this.password = password;
@@ -138,10 +235,35 @@ public class UserEntity implements Serializable {
         this.resetPassword = false;
         this.salt = salt;
         ArrayList<String> roles = new ArrayList();
-        roles.add("customer");       
+        roles.add("customer");
         this.roles = roles;
-        
-        ArrayList<String> dynamic= new ArrayList();
+
+        ArrayList<String> dynamic = new ArrayList();
+        dynamic.add("buy tickets");
+        dynamic.add("finances");
+        RightsEntity rights = new RightsEntity();
+        rights.createRight("customer", dynamic);
+        this.rights.add(rights);
+    }
+
+    public void createCustomer(String username, String password, String mobileNumber, String salt, String firstName, String lastName, Integer age, Date DOB,Integer loyaltyPoints) {
+        this.username = username;
+        this.password = password;
+        this.mobileNumber = mobileNumber;
+        this.firstLogin = true;
+        this.resetPassword = false;
+        this.salt = salt;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.DOB = DOB;
+        this.age = age;
+        this.loyaltyPoints = 0;
+        this.joinDate = new Date();
+        ArrayList<String> roles = new ArrayList();
+        roles.add("customer");
+        this.roles = roles;
+
+        ArrayList<String> dynamic = new ArrayList();
         dynamic.add("buy tickets");
         dynamic.add("finances");
         RightsEntity rights = new RightsEntity();
@@ -204,7 +326,7 @@ public class UserEntity implements Serializable {
     public void setRoles(ArrayList<String> roles) {
         this.roles = roles;
     }
-    
+
     public Long getUserId() {
         return userId;
     }
@@ -245,5 +367,5 @@ public class UserEntity implements Serializable {
     public String toString() {
         return "entity.UserEntity[ id=" + userId + " ]";
     }
-    
+
 }

@@ -54,7 +54,7 @@ import session.stateless.commoninfrastucture.LockAccountSessionLocal;
 import session.stateless.commoninfrastucture.LoginSessionLocal;
 import session.stateless.MessageSessionLocal;
 import session.stateless.commoninfrastucture.ProductSessionLocal;
-import session.stateless.RegisterSessionLocal;
+import session.stateless.commoninfrastucture.RegisterSessionLocal;
 import session.stateless.commoninfrastucture.ResetPasswordSessionLocal;
 import session.stateless.commoninfrastucture.UnlockAccountSessionLocal;
 

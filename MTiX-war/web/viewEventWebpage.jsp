@@ -92,11 +92,12 @@ border-radius: 2px 2px 2px 2px;">
         <div class="col-md-4"> 
             <div class="ui-widget-content" style="width: 250px;background-color:#F1F1F1;margin-bottom:50px;-webkit-border-radius: 2px 2px 2px 2px;
 border-radius: 2px 2px 2px 2px;">
+              
                 <%if (sessions.size()!=0){%>
-                <a href="PUTTICKETCONTROLLER?id<%=data.get(14)%>"><button type="button" class="btn btn-info" style="margin-top:20px;margin-left:25px;width: 200px">Buy Ticket</button></a>
+                <a href="Controller?action=bookTicket&id=<%=data.get(14)%>"><button type="button" class="btn btn-info" style="margin-top:20px;margin-left:25px;width: 200px">Buy Ticket</button></a>
                 <%}%>
                 <p><br></p>
-                <div style="margin-left:20px;margin-bottom:20px" ><b>Event Name</b><br><%=data.get(9)%></p></div>
+                <div style="margin-left:20px;margin-bottom:20px" ><b>Event Name</b><br><%=data.get(9)%></div>
                  <div style="margin-left:20px;margin-bottom:20px" ><b>Event Start</b><br><%=data.get(10)%></div>
                  <div style="margin-left:20px;margin-bottom:20px" ><b>Event End</b><br><%=data.get(11)%></div>
                  <div style="margin-left:20px;margin-bottom:20px" ><b>Event Description</b><br><%=data.get(12)%></div>

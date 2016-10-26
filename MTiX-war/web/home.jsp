@@ -117,11 +117,11 @@
                             <option value="sports">Sports</option>
                         </select></td>
                 </tr>
-                <tr>
+<!--                <tr>
                     <div class="image">
                 <a href="ContentController?action=volumeDiscountPromotion"><img src="images/Content/About-Us.png" width="150px" height="150px"></a>
                 <h6>Volume Discount Promotion</h6></div> 
-                </tr>
+                </tr>-->
             </table>
         </div>
     </div>

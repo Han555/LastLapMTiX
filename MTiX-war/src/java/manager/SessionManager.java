@@ -57,10 +57,14 @@ public class SessionManager {
         return bsbl.getPromotionsByEventId(id);
     }
     public Collection<Promotion> getPromotionsBySubEventId(Long id){
-        return bsbl.getPromotionsByEventId(id);
+        return bsbl.getPromotionsBySubEventId(id);
     }
     
     public Boolean addToCartByUsernameFree(String username, Long sessionId, Long promotionId, String numOfTickets, String price){
         return bsbl.addToCartByUsernameFree(username, sessionId, promotionId, numOfTickets, price);
+    }
+    
+    public List<Integer> getTicketSalesBySessionId(Long id, String type){
+        return bsbl.getTicketSalesBySessionId(id,type);
     }
 }

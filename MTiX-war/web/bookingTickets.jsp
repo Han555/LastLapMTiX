@@ -181,7 +181,14 @@
                     Step 2: Select Section
                 </div>
                 <div class="panel-body" id="ssection-panel-body">
+                    <c:if test="${property.propertyName == 'Merlion Concert Hall'}">
+                       
                     <img src="images/property/Concerthall_layout.png" alt="concert_layout" usemap="#image-map" >
+                    </c:if>
+                    <c:if test="${property.propertyName == 'Merlion Star Theater'}">
+                       
+                    <img src="images/property/Theatre.png" alt="concert_layout" usemap="#image-map" >
+                    </c:if>
                     <map name="image-map">
                         <c:forEach items="${sections}" var="section">
                             <area id="${section.numberInProperty}" class= "p1" href="#"  coords="${section.coords}"  shape="poly"  >
@@ -350,7 +357,9 @@
     var hoveredId;
     var category = [];
     var promotionPrice = [];
+    var remains = [];
     var currentPrice;
+    var remainCapacityFree;
     <c:forEach items="${sections}" var="section">
     category.push("${section.category.categoryName}");
     </c:forEach>
@@ -390,8 +399,31 @@
                 console.log(priceList);
             }
         });
+        
+        $.ajax({
+            url: "CheckTicketSalesController?type=${type}&id=" + selectedSession,
+            async: false,
+            success: function (result) {
+                remains = result;
+                console.log(remains);
+            }
+        });
+        
+        remainCapacityFree = 0;
+        for (var i=1; i <= remains.length;i++){
+              
+              remainCapacityFree+=remains[i]  
+        }
+        for (var i = 0; i < closedSectionsCapacity.length; i++) {
+            remainCapacityFree -= closedSectionsCapacity[i];
+        }
+        for (var i = 0; i < reservedSectionsCapacity.length; i++) {
+            remainCapacityFree -= reservedSectionsCapacity[i];
 
-
+        }
+        console.log(remainCapacityFree);
+            
+        
 
 
     <%if (seatOption.equals("Free Seating")) {%>
@@ -432,12 +464,20 @@
         console.log(selectedPromotion);
         $("#numOfTickets1").select2("val", " ");
         if (selectedPromotion == 0) {
-            var str = "<option></option>";
-            for (var i = 1; i <= 10; i++) {
-                str += "<option value=" + i + ">" + i + "</option>";
+            if (remainCapacity < 10) {
+                var str = "<option></option>";
+                for (var i = 1; i <= remainCapacity; i++) {
+                    str += "<option value=" + i + ">" + i + "</option>";
 
+                }
+
+            } else {
+                var str = "<option></option>";
+                for (var i = 1; i <= 10; i++) {
+                    str += "<option value=" + i + ">" + i + "</option>";
+
+                }
             }
-
         } else {
     <c:forEach items="${promotions}" var="promotion">
             if (selectedPromotion ==${promotion.id}) {
@@ -448,9 +488,19 @@
                 }
 
                 else {
-                    var str = "<option></option>";
-                    for (var i = 1; i <= 10; i++) {
-                        str += "<option value=" + i + ">" + i + "</option>";
+                    if (remainCapacity < 10) {
+                        var str = "<option></option>";
+                        for (var i = 1; i <= remainCapacity; i++) {
+                            str += "<option value=" + i + ">" + i + "</option>";
+
+                        }
+
+                    } else {
+                        var str = "<option></option>";
+                        for (var i = 1; i <= 10; i++) {
+                            str += "<option value=" + i + ">" + i + "</option>";
+
+                        }
                     }
 
                 }
@@ -464,14 +514,14 @@
     $('#numOfTickets1').change(function () {
         numOfTickets1 = $(this).val();
         console.log("=====get Select2 Tickets " + numOfTickets1);
-        for(var i=0;i<promotionPrice.length;i++){
-             var priceSplit = promotionPrice[i].split("$");
-             console.log("====Split the Price "+priceSplit[0]+priceSplit[1]);
-            if(selectedPromotion == priceSplit[0]){
+        for (var i = 0; i < promotionPrice.length; i++) {
+            var priceSplit = promotionPrice[i].split("$");
+            console.log("====Split the Price " + priceSplit[0] + priceSplit[1]);
+            if (selectedPromotion == priceSplit[0]) {
                 currentPrice = priceSplit[1];
             }
         }
-        
+
     });
 
     $("#tablight tr:gt(0)").click(function () //获取第2行及以后的 
@@ -498,15 +548,14 @@
 
 
     <%} else {%>
-        <c:url var="addToCartSuccess" value="Controller?action=addToCartSuccess"/>
+    <c:url var="addToCartSuccess" value="Controller?action=addToCartSuccess"/>
         $.ajax({
-            url: "AddToCartController?username=<%=username%>&sid=" + selectedSession+"&pid="+selectedPromotion+"&numT="+numOfTickets1+"&price="+currentPrice,
-          
+            url: "AddToCartController?username=<%=username%>&sid=" + selectedSession + "&pid=" + selectedPromotion + "&numT=" + numOfTickets1 + "&price=" + currentPrice,
             success: function (result) {
-                if(result= "\"success\""){
-                    
-                 window.location.href = "${addToCartSuccess}";    
-        }
+                if (result = "\"success\"") {
+
+                    window.location.href = "${addToCartSuccess}";
+                }
             }
         });
 
@@ -515,9 +564,9 @@
     });
 
     $("#login-submit").click(function () {
-        console.log("===login-submit: "+currentPrice);
-            <c:url var="loginSuccess" value="Controller?action=loginSuccess"/>
-            <c:url var="shopCart" value="Controller?action=shopCart"/>
+        console.log("===login-submit: " + currentPrice);
+    <c:url var="loginSuccess" value="Controller?action=loginSuccess"/>
+    <c:url var="shopCart" value="Controller?action=shopCart"/>
         $.ajax({
             type: "POST",
             url: "promptLoginCheckController",
@@ -525,15 +574,15 @@
             success: function (result) {
                 console.log(result);
                 if (result == "\"mismatch\"") {
-                    
+
                     $("#notifyLoginError").html("Email and Password Mismatch.").css("color", "red");
                 } else if (result == "\"nouser\"") {
                     $("#notifyLoginError").html("Username is not Exist.").css("color", "red");
-                } else if (result == "\"successadd\""){
-                   window.location.href = "${shopCart}"; 
-        } else if (result == "\"failtoadd\"") {
-            window.location.href = "${loginSuccess}";
-}
+                } else if (result == "\"successadd\"") {
+                    window.location.href = "${shopCart}";
+                } else if (result == "\"failtoadd\"") {
+                    window.location.href = "${loginSuccess}";
+                }
             }
         });
     });
