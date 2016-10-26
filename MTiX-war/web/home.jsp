@@ -12,10 +12,10 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <!doctype html>
-<jsp:include page="header.jsp" />
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<jsp:include page="header2.jsp" />
+<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
 <style>
     .carousel-inner > .item > img,
     .carousel-inner > .item > a > img {
@@ -33,7 +33,7 @@
     %>
     <div class="row">
         <div class="col-lg-12">
-            <div id="myCarousel" class="carousel slide" data-ride="carousel">
+            <div id="myCarousel" class="carousel slide" data-ride>
                 <!-- Indicators -->
                 <ol class="carousel-indicators">
                     <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -90,7 +90,7 @@
                 <h5 class="title">Promotions</h5> 
             </div>
             <div class="image">
-                <a href="ContentController?action=creditCardPromotion"><img src="images/Content/creditcards.jpg" width="150px" height="150px"></a>
+                <a href="ContentController?action=creditCardPromotion"><img src="/MTiX-war/images/Content/creditcards.jpg" width="150px" height="150px"></a>
                 <h6>Credit Card Promotion</h6></div>
             <div class="image">
                 <a href="ContentController?action=volumeDiscountPromotion"><img src="images/Content/volume_discount.png" width="150px" height="150px"></a>
@@ -99,57 +99,81 @@
         <div class="col-md-6 ">
             <div class="card">
                 <div class="header">
-                    <h5 class="title">Events</h5> 
-                </div><div class="card-body ">
-                    <% int no = 3;
-                        for (int i = 1; i <= data.size(); i++) {
-                    %>
-                    <div class="col-md-4 ">
-                        <div class="image">
-                            <a href="ContentController?action=viewEventWebpage&id=<%=data.get(i - 1).get(0)%>"><img src="ContentImageController?id=<%=data.get(i - 1).get(2)%>" width="150px" height="150px"></a>
-                            <h6><%=data.get(i - 1).get(1)%></h6></div>
-                        &nbsp;
-                    </div>
-                    <%if (i % no == 0) {%>
-                </div><div class="card-body ">
-                    <%}
-                        }%>
+                    <h5 class="title" >Events</h5> 
+                </div>
+                <div id ="eventList">
+
                 </div>
             </div>
         </div>
-                <div class="col-md-3 ">
-                    <table>
-                        <tr>
-                            <td align="right">Event Type : &nbsp</td>
-                            <td><select class="form-control" onchange="myFunction()" required="true" id="eventType" name="eventType">
-                                    <option value="All">All</option>
-                                    <option value="Concert">Concert</option>
-                                    <option value="Dance">Dance</option>
-                                    <option value="Sports">Sports</option>
-                                </select></td>
-                        </tr>
-                    </table>
-                </div>
-                <script>function myFunction() {
-                    var x = document.getElementById(eventType).value;
-                            $.ajax({
-                                url: "ContentEventTypeController?type=" + x,
-                                success: function (result) {
-                                    $("#sectionData").val(result);
-                                    $('#seat_1').mapster('deselect');
-                                    $('#seat_2').mapster('deselect');
-                                    $('#seat_3').mapster('deselect');
-                                    $('#seat_4').mapster('deselect');
-                                    $('#seat_5').mapster('deselect');
-                                    $('#seat_6').mapster('deselect');
-                                    $('#seat_7').mapster('deselect');
-                                    $('#seat_8').mapster('deselect');
-                                    $('#seat_9').mapster('deselect');
-                                }
-                            });
-                        }
-                        ;</script>
-
+        <div class="col-md-3 ">
+            <table>
+                <tr>
+                    <td align="right">Event Type : &nbsp</td>
+                    <td><select class="form-control" onchange="myFunction()" required="true" id="eventType" name="eventType">
+                            <option value="All">All</option>
+                            <option value="concert">Concert</option>
+                            <option value="dance">Dance</option>
+                            <option value="sports">Sports</option>
+                        </select></td>
+                </tr>
+                <tr>
+                    <div class="image">
+                <a href="ContentController?action=volumeDiscountPromotion"><img src="images/Content/About-Us.png" width="150px" height="150px"></a>
+                <h6>Volume Discount Promotion</h6></div> 
+                </tr>
+            </table>
+        </div>
     </div>
+
 </div>
+<script>
+
+    $(document).ready(function () {
+        var eventList = [];
+        var no = 3;
+        var str = "";
+        var x = $('#eventType').val();
+        $.ajax({
+            url: "ContentEventTypeController?type=All",
+            success: function (result) {
+                eventList = result;
+                for (var i = 1; i <= result.length; i++) {
+                    str += "<div class=\"card-body \"> <div class=\"col-md-4 \"><div class=\"image\">";
+                    str += "<a href=\"ContentController?action=viewEventWebpage&id=" + result[i - 1].id + "\"><img src=\"ContentImageController?id=" + result[i - 1].fileName + "\" width=\"150px\" height=\"150px\"></a>";
+                    str += "<h6>" + result[i - 1].eventTitle + "</h6></div></div>";
+                    if (i % no == 0) {
+                        str += "</div><div class=\"card-body \">"
+                    }
+                }
+                str += "</div>"
+                $('#eventList').html(str);
+            }
+        });
+    });
+
+    function myFunction() {
+        var eventList = [];
+        var no = 3;
+        var str = "";
+        var x = $('#eventType').val();
+        $.ajax({
+            url: "ContentEventTypeController?type=" + x,
+            success: function (result) {
+                eventList = result;
+                for (var i = 1; i <= result.length; i++) {
+                    str += "<div class=\"card-body \"> <div class=\"col-md-4 \"><div class=\"image\">";
+                    str += "<a href=\"ContentController?action=viewEventWebpage&id=" + result[i - 1].id + "\"><img src=\"ContentImageController?id=" + result[i - 1].fileName + "\" width=\"150px\" height=\"150px\"></a>";
+                    str += "<h6>" + result[i - 1].eventTitle + "</h6></div></div>";
+                    if (i % no == 0) {
+                        str += "</div><div class=\"card-body \">"
+                    }
+                }
+                str += "</div>"
+                $('#eventList').html(str);
+            }
+        });
+    }
+    ;</script>
+
 <jsp:include page="footer.jsp" />

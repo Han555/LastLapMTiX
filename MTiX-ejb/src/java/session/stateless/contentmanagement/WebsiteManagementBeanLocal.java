@@ -16,7 +16,7 @@ import javax.ejb.Local;
 @Local
 public interface WebsiteManagementBeanLocal {
 
-    public List<ArrayList> geWebpageList();
+    public List<ArrayList> getWebpageList();
 
     public ArrayList getEventWebpageInfo(String id);
 
@@ -27,5 +27,7 @@ public interface WebsiteManagementBeanLocal {
     public List<ArrayList> getCreditCardEvents();
 
     public List<ArrayList> getVolumeDiscountEvents();
+
+    public List<ArrayList> getWebpageListByType(String type);
     
 }

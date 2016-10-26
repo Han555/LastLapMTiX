@@ -31,7 +31,7 @@ public class WebsiteManagementBean implements WebsiteManagementBeanLocal {
     EntityManager em;
 
     @Override
-    public List<ArrayList> geWebpageList() {
+    public List<ArrayList> getWebpageList() {
         Query q = em.createQuery("SELECT a FROM WebContentEntity a");
 
         List<ArrayList> webPageList = new ArrayList();
@@ -43,12 +43,52 @@ public class WebsiteManagementBean implements WebsiteManagementBeanLocal {
             em.refresh(webpage);
             Date today = Calendar.getInstance().getTime();
 
-            if (webpage.getApproved() && (today.after(webpage.getStart()) || today.equals(webpage.getStart()))) {
+            if (webpage.getApproved() && (today.after(webpage.getStart()) || today.equals(webpage.getStart()))
+                    && today.before(webpage.getEnd())) {
                 list.add(webpage.getId()); //0
                 list.add(webpage.getEventTitle()); //1
                 list.add(webpage.getFileName()); //2
 
                 webPageList.add(list);
+            }
+        }
+
+        return webPageList;
+    }
+
+    @Override
+    public List<ArrayList> getWebpageListByType(String type) {
+        Query q = em.createQuery("SELECT a FROM WebContentEntity a");
+
+        List<ArrayList> webPageList = new ArrayList();
+        ArrayList list;
+
+        for (Object o : q.getResultList()) {
+            WebContentEntity webpage = (WebContentEntity) o;
+            list = new ArrayList();
+            em.refresh(webpage);
+            Date today = Calendar.getInstance().getTime();
+
+            if (webpage.getEvent() != null) {
+
+                if (webpage.getApproved() && today.before(webpage.getEnd()) && (today.after(webpage.getStart()) || today.equals(webpage.getStart()))
+                        && webpage.getEvent().getType().equals(type)) {
+                    list.add(webpage.getId()); //0
+                    list.add(webpage.getEventTitle()); //1
+                    list.add(webpage.getFileName()); //2
+
+                    webPageList.add(list);
+                }
+            } else {
+                if (webpage.getApproved() && today.before(webpage.getEnd()) && (today.after(webpage.getStart()) || today.equals(webpage.getStart()))
+                        && webpage.getSubevent().getType().equals(type)) {
+                    list.add(webpage.getId()); //0
+                    list.add(webpage.getEventTitle()); //1
+                    list.add(webpage.getFileName()); //2
+
+                    webPageList.add(list);
+                }
+
             }
         }
 
@@ -108,21 +148,25 @@ public class WebsiteManagementBean implements WebsiteManagementBeanLocal {
             for (Object o : content.getEvent().getSessions()) {
                 SessionEntity session = (SessionEntity) o;
                 em.refresh(session);
-                ArrayList data = new ArrayList();
-                if (today.after(session.getTimeStart())) {
-                    data.add(session.getName() + "     (Ticket Sales - CLOSED)"); //0
-                } else {
-                    data.add(session.getName()); //0
-                }
 
-                data.add(session.getTimeStart()); //1
-                data.add(session.getTimeEnd()); //2
-                for (Object obj : session.getPrice()) {
-                    SessionCategoryPrice price = (SessionCategoryPrice) obj;
-                    data.add(price.getCategory().getCategoryNum()); //3
-                    data.add(price.getPrice()); //4
+                if (session.getPrice().size() != 0) {
+
+                    ArrayList data = new ArrayList();
+                    if (today.after(session.getTimeStart())) {
+                        data.add(session.getName() + "     (Ticket Sales - CLOSED)"); //0
+                    } else {
+                        data.add(session.getName()); //0
+                    }
+
+                    data.add(session.getTimeStart()); //1
+                    data.add(session.getTimeEnd()); //2
+                    for (Object obj : session.getPrice()) {
+                        SessionCategoryPrice price = (SessionCategoryPrice) obj;
+                        data.add(price.getCategory().getCategoryNum()); //3
+                        data.add(price.getPrice()); //4
+                    }
+                    info.add(data);
                 }
-                info.add(data);
             }
         } else {
             for (Object o : content.getSubevent().getSessions()) {
@@ -198,8 +242,11 @@ public class WebsiteManagementBean implements WebsiteManagementBeanLocal {
         ArrayList data = new ArrayList();
         Query q = em.createQuery("SELECT a FROM Promotion a");
         for (Object o : q.getResultList()) {
+            data = new ArrayList();
             Promotion promotion = (Promotion) o;
             boolean isCreditCard = false;
+            em.refresh(promotion);
+            System.out.println(promotion.getId());
 
             for (Object object : promotion.getPromotionsType()) {
                 PromotionType promotions = (PromotionType) object;
@@ -213,8 +260,9 @@ public class WebsiteManagementBean implements WebsiteManagementBeanLocal {
                 if (promotion.getEvent() != null) {
                     if (promotion.getEvent().getContent() != null) {
                         Date today = Calendar.getInstance().getTime();
-                        if (promotion.getEvent().getContent().getApproved() && (today.after(promotion.getEvent().getContent().getStart())
+                        if (promotion.getEvent().getContent().getApproved() && today.before(promotion.getEvent().getContent().getEnd()) && (today.after(promotion.getEvent().getContent().getStart())
                                 || today.equals(promotion.getEvent().getContent().getStart()))) {
+                            em.refresh(promotion);
                             data.add(promotion.getName()); //0
                             data.add(promotion.getDescriptions()); //1
                             data.add(promotion.getDiscountRate()); //2
@@ -229,7 +277,7 @@ public class WebsiteManagementBean implements WebsiteManagementBeanLocal {
                 } else {
                     if (promotion.getSubEvent().getContent() != null) {
                         Date today = Calendar.getInstance().getTime();
-                        if (promotion.getSubEvent().getContent().getApproved() && (today.after(promotion.getSubEvent().getContent().getStart())
+                        if (promotion.getSubEvent().getContent().getApproved() && today.before(promotion.getSubEvent().getContent().getEnd()) && (today.after(promotion.getSubEvent().getContent().getStart())
                                 || today.equals(promotion.getSubEvent().getContent().getStart()))) {
                             data.add(promotion.getName()); //0
                             data.add(promotion.getDescriptions()); //1
@@ -246,14 +294,15 @@ public class WebsiteManagementBean implements WebsiteManagementBeanLocal {
         }
         return arr;
     }
-    
+
     @Override
-      public List<ArrayList> getVolumeDiscountEvents() {
+    public List<ArrayList> getVolumeDiscountEvents() {
         List<ArrayList> arr = new ArrayList();
 
         ArrayList data = new ArrayList();
         Query q = em.createQuery("SELECT a FROM Promotion a");
         for (Object o : q.getResultList()) {
+            data = new ArrayList();
             Promotion promotion = (Promotion) o;
             boolean isCreditCard = false;
 
@@ -269,7 +318,7 @@ public class WebsiteManagementBean implements WebsiteManagementBeanLocal {
                 if (promotion.getEvent() != null) {
                     if (promotion.getEvent().getContent() != null) {
                         Date today = Calendar.getInstance().getTime();
-                        if (promotion.getEvent().getContent().getApproved() && (today.after(promotion.getEvent().getContent().getStart())
+                        if (promotion.getEvent().getContent().getApproved() && today.before(promotion.getEvent().getContent().getEnd()) && (today.after(promotion.getEvent().getContent().getStart())
                                 || today.equals(promotion.getEvent().getContent().getStart()))) {
                             data.add(promotion.getName()); //0
                             data.add(promotion.getDescriptions()); //1
@@ -285,7 +334,7 @@ public class WebsiteManagementBean implements WebsiteManagementBeanLocal {
                 } else {
                     if (promotion.getSubEvent().getContent() != null) {
                         Date today = Calendar.getInstance().getTime();
-                        if (promotion.getSubEvent().getContent().getApproved() && (today.after(promotion.getSubEvent().getContent().getStart())
+                        if (promotion.getSubEvent().getContent().getApproved() && today.before(promotion.getSubEvent().getContent().getEnd()) && (today.after(promotion.getSubEvent().getContent().getStart())
                                 || today.equals(promotion.getSubEvent().getContent().getStart()))) {
                             data.add(promotion.getName()); //0
                             data.add(promotion.getDescriptions()); //1

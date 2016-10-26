@@ -5,6 +5,7 @@
  */
 package servlet;
 
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -15,17 +16,19 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.WebEventsContentModel;
 import session.stateless.contentmanagement.WebsiteManagementBeanLocal;
+import session.stateless.propertymanagement.ReservePropertyBeanLocal;
 
 /**
  *
  * @author JingYing
  */
-@WebServlet(name = "ContentController", urlPatterns = {"/ContentController", "/ContentController/*"})
-public class ContentController extends HttpServlet {
+@WebServlet(name = "ContentEventTypeController", urlPatterns = {"/ContentEventTypeController"})
+public class ContentEventTypeController extends HttpServlet {
 
     @EJB
-    private WebsiteManagementBeanLocal webManagementBean;
+    private WebsiteManagementBeanLocal websiteManagementBean;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,40 +41,38 @@ public class ContentController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        
-        System.err.println("******** ContentController: " + request.getServletPath());
-        System.err.println("******** ContentController: " + request.getContextPath());
-        System.err.println("******** ContentController: " + request.getPathInfo());
-        System.err.println("******** ContentController: " + request.getRequestURI());
-        
-        
-        String action = request.getParameter("action");
+        String type = request.getParameter("type");
+        List<WebEventsContentModel> contentList = new ArrayList<WebEventsContentModel>();
+        if (!type.equals("All")) {
+            List<ArrayList> data = websiteManagementBean.getWebpageListByType(type);
+            for (int i = 0; i < data.size(); i++) {
+                WebEventsContentModel webEventContentModel = new WebEventsContentModel();
+                webEventContentModel.setEventTitle(data.get(i).get(1).toString());
+                webEventContentModel.setId(Long.valueOf(data.get(i).get(0).toString()));
+                webEventContentModel.setFileName(data.get(i).get(2).toString());
 
-        if (action.equals("doLogin")) {
-            List<ArrayList> data = webManagementBean.getWebpageList();
-            request.setAttribute("data", data);
-            request.getRequestDispatcher("/home.jsp").forward(request, response);
-        } else if (action.equals("viewEventWebpage")) {
-            String id = request.getParameter("id");
-            ArrayList data = webManagementBean.getEventWebpageInfo(id);
-            List<ArrayList> sessions = webManagementBean.getEventSessionInfo(id);
-            List<ArrayList> promotions = webManagementBean.getEventPromotionInfo(id);
+                contentList.add(webEventContentModel);
+            }
+        } else {
+            List<ArrayList> data = websiteManagementBean.getWebpageList();
+            System.out.print("Data = " + data.size());
+            
+            for (int i = 0; i < data.size(); i++) {
+                WebEventsContentModel webEventContentModel = new WebEventsContentModel();
+                webEventContentModel.setEventTitle(data.get(i).get(1).toString());
+                webEventContentModel.setId(Long.valueOf(data.get(i).get(0).toString()));
+                webEventContentModel.setFileName(data.get(i).get(2).toString());
 
-            request.setAttribute("data", data);
-            request.setAttribute("promotions", promotions);
-            request.setAttribute("sessions", sessions);
-            request.getRequestDispatcher("/viewEventWebpage.jsp").forward(request, response);
-        } else if (action.equals("creditCardPromotion")) {
-            List<ArrayList> data = webManagementBean.getCreditCardEvents();
-            request.setAttribute("data", data);
-            request.getRequestDispatcher("/creditCardPromotion.jsp").forward(request, response);
-        } else if (action.equals("volumeDiscountPromotion")) {
-            List<ArrayList> data = webManagementBean.getVolumeDiscountEvents();
-            request.setAttribute("data", data);
-            request.getRequestDispatcher("/volumeDiscountPromotion.jsp").forward(request, response);
+                contentList.add(webEventContentModel);
+            }
+
         }
+        
+        System.out.print("Type = " + contentList.size());
 
+        Gson gson = new Gson();
+        response.setContentType("application/json");
+        response.getWriter().write(gson.toJson(contentList));
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

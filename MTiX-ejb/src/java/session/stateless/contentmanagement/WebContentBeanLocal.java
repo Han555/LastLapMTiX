@@ -38,4 +38,11 @@ public interface WebContentBeanLocal {
     public ArrayList reviewWebpageInfo(String id);
 
     public void webpageReviewed(String id, String review, String apply);
+    
+    public void createCompanyWebpage(Part filePart, String mission, String vision, String aboutUs, String contactDetails, String career, String otherDetails, String ext);
+
+    public ArrayList getCompanyInfo();
+
+    public void editCompanyWebpage(long id, Part filePart, String mission, String vision, String aboutUs, String contactDetails, String career, String otherDetails, String ext);
+
 }

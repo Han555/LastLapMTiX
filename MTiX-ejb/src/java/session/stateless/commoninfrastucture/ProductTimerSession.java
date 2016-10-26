@@ -32,7 +32,8 @@ public class ProductTimerSession implements ProductTimerSessionLocal {
     @PersistenceContext
     EntityManager em;
 
-    @Schedule(dayOfWeek = "Mon, Thu") //If put second here means every 5 sec within one of a min of the 5 min
+    //@Schedule(dayOfWeek = "Mon, Thu") ----------------------------- The Real Case
+    @Schedule(minute = "*/20")
     public void automaticInformativeTimer() {
         System.out.println("Timer(): Auto");
         int categoryNo;
@@ -144,7 +145,8 @@ public class ProductTimerSession implements ProductTimerSessionLocal {
         }
     }
 
-    @Schedule(dayOfWeek = "Mon, Wed, Fri") //If put second here means every 5 sec within one of a min of the 5 min
+    //@Schedule(dayOfWeek = "Mon, Wed, Fri") ----------------------------- The Real Case
+    @Schedule(minute = "*/10")
     public void automaticImportantTimer() {
         System.out.println("Timer(): Auto");
         int categoryNo;
@@ -256,7 +258,8 @@ public class ProductTimerSession implements ProductTimerSessionLocal {
         }
     }
 
-    @Schedule(hour = "*/23") //If put second here means every 5 sec within one of a min of the 5 min
+    //@Schedule(hour = "*/23") ----------------------------- The Real Case
+    @Schedule(minute = "*/5")
     public void automaticUrgentTimer() {
         System.out.println("Timer(): Auto");
         int categoryNo;

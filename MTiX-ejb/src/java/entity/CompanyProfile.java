@@ -29,7 +29,8 @@ public class CompanyProfile implements Serializable {
     private String contactDetails;
     private String career;
     private String otherDetails;
-    //Need to tied to user - To indicate it is for which company
+    
+    private UserEntity user; 
 
     public Long getId() {
         return id;
@@ -93,6 +94,14 @@ public class CompanyProfile implements Serializable {
 
     public void setOtherDetails(String otherDetails) {
         this.otherDetails = otherDetails;
+    }
+
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 
     @Override

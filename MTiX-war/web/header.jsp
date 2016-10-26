@@ -3,12 +3,18 @@
 <head>
 <title>Gretong a Ecommerce Category Flat Bootstarp Responsive Website Template | Home :: w3layouts</title>
 <link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" />
 <!-- jQuery (necessary JavaScript plugins) -->
-<script type='text/javascript' src="js/jquery-1.11.1.min.js"></script>
-<!--<script type='text/javascript' src="js/jquery.js"></script>-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js">
+<!--//<script type='text/javascript' src="js/jquery.js"></script>
+<!--<script type='text/javascript' src="lib/js/bootstrap.min.js"></script>-->
+<!--<script type='text/javascript' src="js/jquery-1.11.1.min.js"></script>-->
+
 <script type='text/javascript' src="js/jquery-ui.min.js"></script>
 <!-- Custom Theme files -->
-<link href="css/style.css" rel='stylesheet' type='text/css' />
+
 <!-- Custom Theme files -->
 <!--//theme-style-->
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,6 +24,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Playfair+Display:400,700,900' rel='stylesheet' type='text/css'>
 <!-- start menu -->
+<link href="css/style.css" rel='stylesheet' type='text/css' />
 <link href="css/megamenu.css" rel="stylesheet" type="text/css" media="all" />
 <script type="text/javascript" src="js/megamenu.js"></script>
 <script>$(document).ready(function(){$(".megamenu").megamenu();});</script>
@@ -51,7 +58,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                    <div class="header">
  <div class="head-t">
       <div class="logo">
-			<a href="index.html"><img src="images/sistic.png" style="width:60px;height:60px;" class="img-responsive" alt=""/> </a>
+			<a href="index.html"><img src="images/Content/logo.gif" style="width:60px;height:60px;" class="img-responsive" alt=""/> </a>
 		</div>
 <!--		<div class="logo">
 			<a href="index.html"><img src="images/sistic.png" style="width:80px;height:80px;" class="img-responsive" alt=""/> </a>

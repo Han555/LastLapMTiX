@@ -54,7 +54,7 @@ public class WebContentBean implements WebContentBeanLocal {
 
             em.refresh(user);
             for (int i = 0; i < user.getRoles().size(); i++) {
-                if (user.getRoles().get(i).equals("event organizer")) { 
+                if (user.getRoles().get(i).equals("event organizer")) {
                     return true;
                 } else {
                     return false;
@@ -511,30 +511,46 @@ public class WebContentBean implements WebContentBeanLocal {
         }
     }
 
+    @Override
     public void createCompanyWebpage(Part filePart, String mission, String vision, String aboutUs, String contactDetails, String career, String otherDetails, String ext) {
         try {
+
+            //Link it to super admin 
+            Query q = em.createQuery("SELECT a FROM UserEntity a");
+            UserEntity companySuperAdmin = new UserEntity();
+
+            for (Object o : q.getResultList()) {
+                companySuperAdmin = (UserEntity) o;
+                em.refresh(companySuperAdmin);
+                for (int i = 0; i < companySuperAdmin.getRoles().size(); i++) {
+                    if (companySuperAdmin.getRoles().get(i).equals("super administrator")) {
+                        break;
+                    }
+                }
+            }
+
             CompanyProfile profile = new CompanyProfile();
-            
-            String fileName = "company"; //Need to plus user*
-            
+
+            String fileName = "company_" + companySuperAdmin.getUserId() + "." + ext; //Need to plus user*
+
             //Store the file into system
             OutputStream out = null;
             InputStream filecontent = null;
-            
+
             out = new FileOutputStream(new File("C:/Users/Yong Jing Ying/Desktop/contentManagement" + File.separator
-                    + fileName + "." + ext));
+                    + fileName));
             filecontent = filePart.getInputStream();
-            
+
             int read = 0;
             final byte[] bytes = new byte[1024];
-            
+
             while ((read = filecontent.read(bytes)) != -1) {
                 out.write(bytes, 0, read);
             }
 
             out.close();
             filecontent.close();
-            
+
             profile.setAboutUs(aboutUs);
             profile.setCareer(career);
             profile.setContactDetails(contactDetails);
@@ -542,11 +558,87 @@ public class WebContentBean implements WebContentBeanLocal {
             profile.setMission(mission);
             profile.setOtherDetails(otherDetails);
             profile.setVision(vision);
-            
+            profile.setUser(companySuperAdmin);
+            em.persist(profile);
 
+            companySuperAdmin.setCompanyProfile(profile);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
+
+    @Override
+    public ArrayList getCompanyInfo() {//Link it to super admin 
+        Query q = em.createQuery("SELECT a FROM UserEntity a");
+        UserEntity companySuperAdmin = new UserEntity();
+
+        //Get the company super admin and find out the company content link to it. 
+        for (Object o : q.getResultList()) {
+            companySuperAdmin = (UserEntity) o;
+            em.refresh(companySuperAdmin);
+            for (int i = 0; i < companySuperAdmin.getRoles().size(); i++) {
+                if (companySuperAdmin.getRoles().get(i).equals("super administrator")) {
+                    break;
+                }
+            }
+        }
+
+        ArrayList data = new ArrayList();
+        CompanyProfile company = companySuperAdmin.getCompanyProfile();
+
+        data.add(company.getId()); //0
+        data.add(company.getAboutUs()); //1
+        data.add(company.getCareer()); //2
+        data.add(company.getContactDetails()); //3
+        data.add(company.getFileName()); //4
+        data.add(company.getMission()); //5
+        data.add(company.getOtherDetails()); //6
+        data.add(company.getVision()); //7
+        return data;
+    }
+
+    @Override
+    public void editCompanyWebpage(long id, Part filePart, String mission, String vision, String aboutUs, String contactDetails, String career, String otherDetails, String ext) {
+        try {
+            CompanyProfile companyProfile = em.find(CompanyProfile.class, id);
+            em.refresh(companyProfile);
+
+            String fileName = companyProfile.getFileName(); 
+            
+            Path path = Paths.get("C:/Users/Yong Jing Ying/Desktop/contentManagement" + File.separator
+                    + fileName);
+            Files.delete(path);
+            Thread.sleep(1000);
+
+            //Store the file into system
+            OutputStream out = null;
+            InputStream filecontent = null;
+
+            out = new FileOutputStream(new File("C:/Users/Yong Jing Ying/Desktop/contentManagement" + File.separator
+                    + fileName));
+            filecontent = filePart.getInputStream();
+
+            int read = 0;
+            final byte[] bytes = new byte[1024];
+
+            while ((read = filecontent.read(bytes)) != -1) {
+                out.write(bytes, 0, read);
+            }
+
+            out.close();
+            filecontent.close();
+            
+            companyProfile.setAboutUs(aboutUs);
+            companyProfile.setCareer(career);
+            companyProfile.setContactDetails(contactDetails);
+            companyProfile.setFileName(fileName);
+            companyProfile.setMission(mission);
+            companyProfile.setOtherDetails(otherDetails);
+            companyProfile.setVision(vision);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    
 
 }

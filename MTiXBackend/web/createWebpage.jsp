@@ -113,7 +113,7 @@
 <script>
     function readURL(input) {
         var ext = $('#filePhoto').val().split('.').pop().toLowerCase();
-        if ($.inArray(ext, ['gif', 'png', 'jpg', 'jpeg']) == -1) {
+        if ($.inArray(ext, ['gif', 'png', 'jpg']) == -1) {
             alert('Invalid File Type! Please upload an image file');
             $("#filePhoto").val('');
              

@@ -211,11 +211,34 @@ public class ContentBackController extends HttpServlet {
             String contactDetails = request.getParameter("contactDetails");
             String career = request.getParameter("career");
             String otherDetails = request.getParameter("others");
-            String ext = request.getParameter("ext");                    
+            String ext = request.getParameter("ext");         
             
+            webContentBean.createCompanyWebpage(filePart, mission, vision, aboutUs, contactDetails, career, otherDetails, ext);
+                        
             request.setAttribute("role", "role");
             request.setAttribute("username", "CurrentUser");
-            request.getRequestDispatcher("/createCompanyContent.jsp").forward(request, response);
+            request.getRequestDispatcher("/contentReviewMain.jsp").forward(request, response);
+        } else if (action.equals("editCompanyContent")){
+            ArrayList data = webContentBean.getCompanyInfo();
+            request.setAttribute("data", data);
+            request.setAttribute("role", "role");
+            request.setAttribute("username", "CurrentUser");
+            request.getRequestDispatcher("/editCompanyContent.jsp").forward(request, response);
+        } else if (action.equals("companyInfoEdited")){
+            Part filePart = request.getPart("filePhoto");
+            String mission = request.getParameter("mission");
+            String vision = request.getParameter("vision");
+            String aboutUs = request.getParameter("aboutUs");
+            String contactDetails = request.getParameter("contactDetails");
+            String career = request.getParameter("career");
+            String otherDetails = request.getParameter("others");
+            String ext = request.getParameter("ext"); 
+            long id = Long.valueOf(request.getParameter("id"));
+            
+            webContentBean.editCompanyWebpage(id, filePart, mission, vision, aboutUs, contactDetails, career, otherDetails, ext);
+            request.setAttribute("role", "role");
+            request.setAttribute("username", "CurrentUser");
+            request.getRequestDispatcher("/contentReviewMain.jsp").forward(request, response);
         }
     }
 
