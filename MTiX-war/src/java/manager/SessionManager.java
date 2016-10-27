@@ -64,6 +64,10 @@ public class SessionManager {
         return bsbl.addToCartByUsernameFree(username, sessionId, promotionId, numOfTickets, price);
     }
     
+    public Boolean addToCartByUsernameFreeSection(String username, Long sessionId, Long promotionId, String numOfTickets, String price,String section){
+        return bsbl.addToCartByUsernameFreeSection(username, sessionId, promotionId, numOfTickets, price,section);
+    }
+    
     public List<Integer> getTicketSalesBySessionId(Long id, String type){
         return bsbl.getTicketSalesBySessionId(id,type);
     }

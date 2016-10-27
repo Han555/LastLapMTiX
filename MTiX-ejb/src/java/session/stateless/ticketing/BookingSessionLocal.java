@@ -44,5 +44,7 @@ public interface BookingSessionLocal {
 
     public List<Integer> getTicketSalesBySessionId(Long id, String type);
 
+    public Boolean addToCartByUsernameFreeSection(String username, Long sessionId, Long promotionId, String numOfTickets, String price, String section);
+
    
 }

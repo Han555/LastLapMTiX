@@ -53,94 +53,96 @@ public class ProductTimerSession implements ProductTimerSessionLocal {
 
             Date today = Calendar.getInstance().getTime();
 
-            if (session.getAlert().getAlertType().equals("Informative Alert") && today.after(session.getAlert().getAlertStartDate())
-                    && today.before(session.getAlert().getAlertEndDate())) {
-                if (session.getEvent() != null) {
-                    categoryNo = session.getEvent().getProperty().getCategory().size();
-                    totalSales = new double[categoryNo];
-                    actualSales = new double[categoryNo];
-                    for (int i = 0; i < categoryNo; i++) {
-                        totalSales[i] = 0;
-                        actualSales[i] = 0;
-                    }
+            if (session.getAlert() != null) {
+                if (session.getAlert().getAlertType().equals("Informative Alert") && today.after(session.getAlert().getAlertStartDate())
+                        && today.before(session.getAlert().getAlertEndDate())) {
+                    if (session.getEvent() != null) {
+                        categoryNo = session.getEvent().getProperty().getCategory().size();
+                        totalSales = new double[categoryNo];
+                        actualSales = new double[categoryNo];
+                        for (int i = 0; i < categoryNo; i++) {
+                            totalSales[i] = 0;
+                            actualSales[i] = 0;
+                        }
 
-                    for (Object obj : session.getEvent().getProperty().getSections()) {
-                        SectionEntity sectionEntity = (SectionEntity) obj;
+                        for (Object obj : session.getEvent().getProperty().getSections()) {
+                            SectionEntity sectionEntity = (SectionEntity) obj;
 
-                        boolean isClosed = false;
+                            boolean isClosed = false;
 
-                        for (Object checking : session.getSeatsInventory()) {
-                            SessionSeatsInventory sessionSeatsInventory = (SessionSeatsInventory) checking;
-                            if (sessionSeatsInventory.getSectionEntity().getId() == sectionEntity.getId()
-                                    && sessionSeatsInventory.getStopTicketsSales()) {
-                                System.out.println("This section is closed. Hence it will not be counted" + sessionSeatsInventory.getId());
-                                isClosed = true;
-                                break;
+                            for (Object checking : session.getSeatsInventory()) {
+                                SessionSeatsInventory sessionSeatsInventory = (SessionSeatsInventory) checking;
+                                if (sessionSeatsInventory.getSectionEntity().getId() == sectionEntity.getId()
+                                        && sessionSeatsInventory.getStopTicketsSales()) {
+                                    System.out.println("This section is closed. Hence it will not be counted" + sessionSeatsInventory.getId());
+                                    isClosed = true;
+                                    break;
+                                }
+                            }
+                            if (isClosed) {
+
+                            } else {
+                                totalSales[sectionEntity.getCategory().getCategoryNum() - 1] += sectionEntity.getCapacity();
                             }
                         }
-                        if (isClosed) {
-
-                        } else {
-                            totalSales[sectionEntity.getCategory().getCategoryNum() - 1] += sectionEntity.getCapacity();
+                    } else {
+                        categoryNo = session.getSubEvent().getProperty().getCategory().size();
+                        totalSales = new double[categoryNo];
+                        actualSales = new double[categoryNo];
+                        for (int i = 0; i < categoryNo; i++) {
+                            totalSales[i] = 0;
+                            actualSales[i] = 0;
                         }
-                    }
-                } else {
-                    categoryNo = session.getSubEvent().getProperty().getCategory().size();
-                    totalSales = new double[categoryNo];
-                    actualSales = new double[categoryNo];
-                    for (int i = 0; i < categoryNo; i++) {
-                        totalSales[i] = 0;
-                        actualSales[i] = 0;
-                    }
 
-                    for (Object obj : session.getSubEvent().getProperty().getSections()) {
-                        SectionEntity sectionEntity = (SectionEntity) obj;
+                        for (Object obj : session.getSubEvent().getProperty().getSections()) {
+                            SectionEntity sectionEntity = (SectionEntity) obj;
 
-                        boolean isClosed = false;
+                            boolean isClosed = false;
 
-                        for (Object checking : session.getSeatsInventory()) {
-                            SessionSeatsInventory sessionSeatsInventory = (SessionSeatsInventory) checking;
-                            if (sessionSeatsInventory.getSectionEntity().getId() == sectionEntity.getId()
-                                    && sessionSeatsInventory.getStopTicketsSales()) {
-                                System.out.println("This section is closed. Hence it will not be counted" + sessionSeatsInventory.getId());
-                                isClosed = true;
-                                break;
+                            for (Object checking : session.getSeatsInventory()) {
+                                SessionSeatsInventory sessionSeatsInventory = (SessionSeatsInventory) checking;
+                                if (sessionSeatsInventory.getSectionEntity().getId() == sectionEntity.getId()
+                                        && sessionSeatsInventory.getStopTicketsSales()) {
+                                    System.out.println("This section is closed. Hence it will not be counted" + sessionSeatsInventory.getId());
+                                    isClosed = true;
+                                    break;
+                                }
+                            }
+                            if (isClosed) {
+
+                            } else {
+                                totalSales[sectionEntity.getCategory().getCategoryNum() - 1] += sectionEntity.getCapacity();
                             }
                         }
-                        if (isClosed) {
+                    }
 
-                        } else {
-                            totalSales[sectionEntity.getCategory().getCategoryNum() - 1] += sectionEntity.getCapacity();
+                    for (Object o : session.getTicketSales()) {
+                        TicketSales ticketSales = (TicketSales) o;
+                        actualSales[ticketSales.getSectionEntity().getCategory().getCategoryNum() - 1] += 1;
+                    }
+
+                    //Comparing the sales percentage
+                    for (int i = 0; i < actualSales.length; i++) {
+                        System.out.println("InformativeTimer");
+                        if (totalSales[i] * ((double) session.getAlert().getSales() / 100) > actualSales[i]) {
+                            emailCategory = String.valueOf(i + 1);
+                            emailCurrentSales = String.valueOf((int) actualSales[i]);
+                            emailRequirement = String.valueOf(session.getAlert().getSales());
+                            sendEmail = true;
+                            break;
                         }
                     }
-                }
 
-                for (Object o : session.getTicketSales()) {
-                    TicketSales ticketSales = (TicketSales) o;
-                    actualSales[ticketSales.getSectionEntity().getCategory().getCategoryNum() - 1] += 1;
-                }
-
-                //Comparing the sales percentage
-                for (int i = 0; i < actualSales.length; i++) {
-                    System.out.println("InformativeTimer");
-                    if (totalSales[i] * ((double) session.getAlert().getSales() / 100) > actualSales[i]) {
-                        emailCategory = String.valueOf(i + 1);
-                        emailCurrentSales = String.valueOf((int) actualSales[i]);
-                        emailRequirement = String.valueOf(session.getAlert().getSales());
-                        sendEmail = true;
-                        break;
+                    if (sendEmail) {
+                        this.sendMail(session.getAlert().getInChargePersonEmail(), "is3012mtix@gmail.com", "Dear Sir/Mdm\n\n"
+                                + "Ticket sales percentage went below your requirement (" + emailRequirement + "%) for session no: " + session.getId() + ".\n\n"
+                                + "For category no" + emailCategory + ", only " + emailCurrentSales + " sales tickets are sold.\n\n"
+                                + "Please contact our Product Manager if you would like to associate any promotions to boast the sales."
+                                + " For more details, please login to http://localhost:8080/MTiXBackend/ to view the sales report.\n\n"
+                                + "With regards\nMTIX Sales Team", "[" + session.getAlert().getAlertType() + "] Sales Requirement not met", "smtp.gmail.com");
                     }
-                }
 
-                if (sendEmail) {
-                    this.sendMail(session.getAlert().getInChargePersonEmail(), "is3012mtix@gmail.com", "Dear Sir/Mdm\n\n"
-                            + "Ticket sales percentage went below your requirement (" + emailRequirement + "%) for session no: " + session.getId() + ".\n\n"
-                            + "For category no" + emailCategory + ", only " + emailCurrentSales + " sales tickets are sold.\n\n"
-                            + "Please contact our Product Manager if you would like to associate any promotions to boast the sales."
-                            + " For more details, please login to http://localhost:8080/MTiXBackend/ to view the sales report.\n\n"
-                            + "With regards\nMTIX Sales Team", "[" + session.getAlert().getAlertType() + "] Sales Requirement not met", "smtp.gmail.com");
                 }
-
             }
         }
     }
@@ -166,94 +168,96 @@ public class ProductTimerSession implements ProductTimerSessionLocal {
 
             Date today = Calendar.getInstance().getTime();
 
-            if (session.getAlert().getAlertType().equals("Important Alert") && today.after(session.getAlert().getAlertStartDate())
-                    && today.before(session.getAlert().getAlertEndDate())) {
-                if (session.getEvent() != null) {
-                    categoryNo = session.getEvent().getProperty().getCategory().size();
-                    totalSales = new double[categoryNo];
-                    actualSales = new double[categoryNo];
-                    for (int i = 0; i < categoryNo; i++) {
-                        totalSales[i] = 0;
-                        actualSales[i] = 0;
-                    }
+            if (session.getAlert() != null) {
+                if (session.getAlert().getAlertType().equals("Important Alert") && today.after(session.getAlert().getAlertStartDate())
+                        && today.before(session.getAlert().getAlertEndDate())) {
+                    if (session.getEvent() != null) {
+                        categoryNo = session.getEvent().getProperty().getCategory().size();
+                        totalSales = new double[categoryNo];
+                        actualSales = new double[categoryNo];
+                        for (int i = 0; i < categoryNo; i++) {
+                            totalSales[i] = 0;
+                            actualSales[i] = 0;
+                        }
 
-                    for (Object obj : session.getEvent().getProperty().getSections()) {
-                        SectionEntity sectionEntity = (SectionEntity) obj;
+                        for (Object obj : session.getEvent().getProperty().getSections()) {
+                            SectionEntity sectionEntity = (SectionEntity) obj;
 
-                        boolean isClosed = false;
+                            boolean isClosed = false;
 
-                        for (Object checking : session.getSeatsInventory()) {
-                            SessionSeatsInventory sessionSeatsInventory = (SessionSeatsInventory) checking;
-                            if (sessionSeatsInventory.getSectionEntity().getId() == sectionEntity.getId()
-                                    && sessionSeatsInventory.getStopTicketsSales()) {
-                                System.out.println("This section is closed. Hence it will not be counted" + sessionSeatsInventory.getId());
-                                isClosed = true;
-                                break;
+                            for (Object checking : session.getSeatsInventory()) {
+                                SessionSeatsInventory sessionSeatsInventory = (SessionSeatsInventory) checking;
+                                if (sessionSeatsInventory.getSectionEntity().getId() == sectionEntity.getId()
+                                        && sessionSeatsInventory.getStopTicketsSales()) {
+                                    System.out.println("This section is closed. Hence it will not be counted" + sessionSeatsInventory.getId());
+                                    isClosed = true;
+                                    break;
+                                }
+                            }
+                            if (isClosed) {
+
+                            } else {
+                                totalSales[sectionEntity.getCategory().getCategoryNum() - 1] += sectionEntity.getCapacity();
                             }
                         }
-                        if (isClosed) {
-
-                        } else {
-                            totalSales[sectionEntity.getCategory().getCategoryNum() - 1] += sectionEntity.getCapacity();
+                    } else {
+                        categoryNo = session.getSubEvent().getProperty().getCategory().size();
+                        totalSales = new double[categoryNo];
+                        actualSales = new double[categoryNo];
+                        for (int i = 0; i < categoryNo; i++) {
+                            totalSales[i] = 0;
+                            actualSales[i] = 0;
                         }
-                    }
-                } else {
-                    categoryNo = session.getSubEvent().getProperty().getCategory().size();
-                    totalSales = new double[categoryNo];
-                    actualSales = new double[categoryNo];
-                    for (int i = 0; i < categoryNo; i++) {
-                        totalSales[i] = 0;
-                        actualSales[i] = 0;
-                    }
 
-                    for (Object obj : session.getSubEvent().getProperty().getSections()) {
-                        SectionEntity sectionEntity = (SectionEntity) obj;
+                        for (Object obj : session.getSubEvent().getProperty().getSections()) {
+                            SectionEntity sectionEntity = (SectionEntity) obj;
 
-                        boolean isClosed = false;
+                            boolean isClosed = false;
 
-                        for (Object checking : session.getSeatsInventory()) {
-                            SessionSeatsInventory sessionSeatsInventory = (SessionSeatsInventory) checking;
-                            if (sessionSeatsInventory.getSectionEntity().getId() == sectionEntity.getId()
-                                    && sessionSeatsInventory.getStopTicketsSales()) {
-                                System.out.println("This section is closed. Hence it will not be counted" + sessionSeatsInventory.getId());
-                                isClosed = true;
-                                break;
+                            for (Object checking : session.getSeatsInventory()) {
+                                SessionSeatsInventory sessionSeatsInventory = (SessionSeatsInventory) checking;
+                                if (sessionSeatsInventory.getSectionEntity().getId() == sectionEntity.getId()
+                                        && sessionSeatsInventory.getStopTicketsSales()) {
+                                    System.out.println("This section is closed. Hence it will not be counted" + sessionSeatsInventory.getId());
+                                    isClosed = true;
+                                    break;
+                                }
+                            }
+                            if (isClosed) {
+
+                            } else {
+                                totalSales[sectionEntity.getCategory().getCategoryNum() - 1] += sectionEntity.getCapacity();
                             }
                         }
-                        if (isClosed) {
+                    }
 
-                        } else {
-                            totalSales[sectionEntity.getCategory().getCategoryNum() - 1] += sectionEntity.getCapacity();
+                    for (Object o : session.getTicketSales()) {
+                        TicketSales ticketSales = (TicketSales) o;
+                        actualSales[ticketSales.getSectionEntity().getCategory().getCategoryNum() - 1] += 1;
+                    }
+
+                    //Comparing the sales percentage
+                    for (int i = 0; i < actualSales.length; i++) {
+                        System.out.println("ImportantTimer");
+                        if (totalSales[i] * ((double) session.getAlert().getSales() / 100) > actualSales[i]) {
+                            emailCategory = String.valueOf(i + 1);
+                            emailCurrentSales = String.valueOf((int) actualSales[i]);
+                            emailRequirement = String.valueOf(session.getAlert().getSales());
+                            sendEmail = true;
+                            break;
                         }
                     }
-                }
 
-                for (Object o : session.getTicketSales()) {
-                    TicketSales ticketSales = (TicketSales) o;
-                    actualSales[ticketSales.getSectionEntity().getCategory().getCategoryNum() - 1] += 1;
-                }
-
-                //Comparing the sales percentage
-                for (int i = 0; i < actualSales.length; i++) {
-                    System.out.println("ImportantTimer");
-                    if (totalSales[i] * ((double) session.getAlert().getSales() / 100) > actualSales[i]) {
-                        emailCategory = String.valueOf(i + 1);
-                        emailCurrentSales = String.valueOf((int) actualSales[i]);
-                        emailRequirement = String.valueOf(session.getAlert().getSales());
-                        sendEmail = true;
-                        break;
+                    if (sendEmail) {
+                        this.sendMail(session.getAlert().getInChargePersonEmail(), "is3012mtix@gmail.com", "Dear Sir/Mdm\n\n"
+                                + "Ticket sales percentage went below your requirement (" + emailRequirement + "%) for session no: " + session.getId() + ".\n\n"
+                                + "For category no" + emailCategory + ", only " + emailCurrentSales + " sales tickets are sold.\n\n"
+                                + "Please contact our Product Manager if you would like to associate any promotions to boast the sales."
+                                + " For more details, please login to http://localhost:8080/MTiXBackend/ to view the sales report.\n\n"
+                                + "With regards\nMTIX Sales Team", "[" + session.getAlert().getAlertType() + "] Sales Requirement not met", "smtp.gmail.com");
                     }
-                }
 
-                if (sendEmail) {
-                    this.sendMail(session.getAlert().getInChargePersonEmail(), "is3012mtix@gmail.com", "Dear Sir/Mdm\n\n"
-                            + "Ticket sales percentage went below your requirement (" + emailRequirement + "%) for session no: " + session.getId() + ".\n\n"
-                            + "For category no" + emailCategory + ", only " + emailCurrentSales + " sales tickets are sold.\n\n"
-                            + "Please contact our Product Manager if you would like to associate any promotions to boast the sales."
-                            + " For more details, please login to http://localhost:8080/MTiXBackend/ to view the sales report.\n\n"
-                            + "With regards\nMTIX Sales Team", "[" + session.getAlert().getAlertType() + "] Sales Requirement not met", "smtp.gmail.com");
                 }
-
             }
         }
     }
@@ -279,94 +283,96 @@ public class ProductTimerSession implements ProductTimerSessionLocal {
 
             Date today = Calendar.getInstance().getTime();
 
-            if (session.getAlert().getAlertType().equals("Urgent Alert") && today.after(session.getAlert().getAlertStartDate())
-                    && today.before(session.getAlert().getAlertEndDate())) {
-                if (session.getEvent() != null) {
-                    categoryNo = session.getEvent().getProperty().getCategory().size();
-                    totalSales = new double[categoryNo];
-                    actualSales = new double[categoryNo];
-                    for (int i = 0; i < categoryNo; i++) {
-                        totalSales[i] = 0;
-                        actualSales[i] = 0;
-                    }
+            if (session.getAlert() != null) {
+                if (session.getAlert().getAlertType().equals("Urgent Alert") && today.after(session.getAlert().getAlertStartDate())
+                        && today.before(session.getAlert().getAlertEndDate())) {
+                    if (session.getEvent() != null) {
+                        categoryNo = session.getEvent().getProperty().getCategory().size();
+                        totalSales = new double[categoryNo];
+                        actualSales = new double[categoryNo];
+                        for (int i = 0; i < categoryNo; i++) {
+                            totalSales[i] = 0;
+                            actualSales[i] = 0;
+                        }
 
-                    for (Object obj : session.getEvent().getProperty().getSections()) {
-                        SectionEntity sectionEntity = (SectionEntity) obj;
+                        for (Object obj : session.getEvent().getProperty().getSections()) {
+                            SectionEntity sectionEntity = (SectionEntity) obj;
 
-                        boolean isClosed = false;
+                            boolean isClosed = false;
 
-                        for (Object checking : session.getSeatsInventory()) {
-                            SessionSeatsInventory sessionSeatsInventory = (SessionSeatsInventory) checking;
-                            if (sessionSeatsInventory.getSectionEntity().getId() == sectionEntity.getId()
-                                    && sessionSeatsInventory.getStopTicketsSales()) {
-                                System.out.println("This section is closed. Hence it will not be counted" + sessionSeatsInventory.getId());
-                                isClosed = true;
-                                break;
+                            for (Object checking : session.getSeatsInventory()) {
+                                SessionSeatsInventory sessionSeatsInventory = (SessionSeatsInventory) checking;
+                                if (sessionSeatsInventory.getSectionEntity().getId() == sectionEntity.getId()
+                                        && sessionSeatsInventory.getStopTicketsSales()) {
+                                    System.out.println("This section is closed. Hence it will not be counted" + sessionSeatsInventory.getId());
+                                    isClosed = true;
+                                    break;
+                                }
+                            }
+                            if (isClosed) {
+
+                            } else {
+                                totalSales[sectionEntity.getCategory().getCategoryNum() - 1] += sectionEntity.getCapacity();
                             }
                         }
-                        if (isClosed) {
-
-                        } else {
-                            totalSales[sectionEntity.getCategory().getCategoryNum() - 1] += sectionEntity.getCapacity();
+                    } else {
+                        categoryNo = session.getSubEvent().getProperty().getCategory().size();
+                        totalSales = new double[categoryNo];
+                        actualSales = new double[categoryNo];
+                        for (int i = 0; i < categoryNo; i++) {
+                            totalSales[i] = 0;
+                            actualSales[i] = 0;
                         }
-                    }
-                } else {
-                    categoryNo = session.getSubEvent().getProperty().getCategory().size();
-                    totalSales = new double[categoryNo];
-                    actualSales = new double[categoryNo];
-                    for (int i = 0; i < categoryNo; i++) {
-                        totalSales[i] = 0;
-                        actualSales[i] = 0;
-                    }
 
-                    for (Object obj : session.getSubEvent().getProperty().getSections()) {
-                        SectionEntity sectionEntity = (SectionEntity) obj;
+                        for (Object obj : session.getSubEvent().getProperty().getSections()) {
+                            SectionEntity sectionEntity = (SectionEntity) obj;
 
-                        boolean isClosed = false;
+                            boolean isClosed = false;
 
-                        for (Object checking : session.getSeatsInventory()) {
-                            SessionSeatsInventory sessionSeatsInventory = (SessionSeatsInventory) checking;
-                            if (sessionSeatsInventory.getSectionEntity().getId() == sectionEntity.getId()
-                                    && sessionSeatsInventory.getStopTicketsSales()) {
-                                System.out.println("This section is closed. Hence it will not be counted" + sessionSeatsInventory.getId());
-                                isClosed = true;
-                                break;
+                            for (Object checking : session.getSeatsInventory()) {
+                                SessionSeatsInventory sessionSeatsInventory = (SessionSeatsInventory) checking;
+                                if (sessionSeatsInventory.getSectionEntity().getId() == sectionEntity.getId()
+                                        && sessionSeatsInventory.getStopTicketsSales()) {
+                                    System.out.println("This section is closed. Hence it will not be counted" + sessionSeatsInventory.getId());
+                                    isClosed = true;
+                                    break;
+                                }
+                            }
+                            if (isClosed) {
+
+                            } else {
+                                totalSales[sectionEntity.getCategory().getCategoryNum() - 1] += sectionEntity.getCapacity();
                             }
                         }
-                        if (isClosed) {
+                    }
 
-                        } else {
-                            totalSales[sectionEntity.getCategory().getCategoryNum() - 1] += sectionEntity.getCapacity();
+                    for (Object o : session.getTicketSales()) {
+                        TicketSales ticketSales = (TicketSales) o;
+                        actualSales[ticketSales.getSectionEntity().getCategory().getCategoryNum() - 1] += 1;
+                    }
+
+                    //Comparing the sales percentage
+                    for (int i = 0; i < actualSales.length; i++) {
+                        System.out.println(totalSales[i] * ((double) session.getAlert().getSales() / 100) + "VS" + actualSales[i]);
+                        if (totalSales[i] * ((double) session.getAlert().getSales() / 100) > actualSales[i]) {
+                            emailCategory = String.valueOf(i + 1);
+                            emailCurrentSales = String.valueOf((int) actualSales[i]);
+                            emailRequirement = String.valueOf(session.getAlert().getSales());
+                            sendEmail = true;
+                            break;
                         }
                     }
-                }
 
-                for (Object o : session.getTicketSales()) {
-                    TicketSales ticketSales = (TicketSales) o;
-                    actualSales[ticketSales.getSectionEntity().getCategory().getCategoryNum() - 1] += 1;
-                }
-
-                //Comparing the sales percentage
-                for (int i = 0; i < actualSales.length; i++) {
-                    System.out.println(totalSales[i] * ((double) session.getAlert().getSales() / 100) + "VS" + actualSales[i]);
-                    if (totalSales[i] * ((double) session.getAlert().getSales() / 100) > actualSales[i]) {
-                        emailCategory = String.valueOf(i + 1);
-                        emailCurrentSales = String.valueOf((int) actualSales[i]);
-                        emailRequirement = String.valueOf(session.getAlert().getSales());
-                        sendEmail = true;
-                        break;
+                    if (sendEmail) {
+                        this.sendMail(session.getAlert().getInChargePersonEmail(), "is3012mtix@gmail.com", "Dear Sir/Mdm\n\n"
+                                + "Ticket sales percentage went below your requirement (" + emailRequirement + "%) for session no: " + session.getId() + ".\n\n"
+                                + "For category no" + emailCategory + ", only " + emailCurrentSales + " sales tickets are sold.\n\n"
+                                + "Please contact our Product Manager if you would like to associate any promotions to boast the sales."
+                                + " For more details, please login to http://localhost:8080/MTiXBackend/ to view the sales report.\n\n"
+                                + "With regards\nMTIX Sales Team", "[" + session.getAlert().getAlertType() + "] Sales Requirement not met", "smtp.gmail.com");
                     }
-                }
 
-                if (sendEmail) {
-                    this.sendMail(session.getAlert().getInChargePersonEmail(), "is3012mtix@gmail.com", "Dear Sir/Mdm\n\n"
-                            + "Ticket sales percentage went below your requirement (" + emailRequirement + "%) for session no: " + session.getId() + ".\n\n"
-                            + "For category no" + emailCategory + ", only " + emailCurrentSales + " sales tickets are sold.\n\n"
-                            + "Please contact our Product Manager if you would like to associate any promotions to boast the sales."
-                            + " For more details, please login to http://localhost:8080/MTiXBackend/ to view the sales report.\n\n"
-                            + "With regards\nMTIX Sales Team", "[" + session.getAlert().getAlertType() + "] Sales Requirement not met", "smtp.gmail.com");
                 }
-
             }
         }
     }

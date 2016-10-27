@@ -8,6 +8,7 @@ package session.stateless.ticketing;
 import session.stateless.propertymanagement.ReservePropertyBeanLocal;
 import entity.Event;
 import entity.Promotion;
+import entity.PropertyEntity;
 import entity.SectionCategoryEntity;
 import entity.SectionEntity;
 import entity.SessionEntity;
@@ -68,6 +69,7 @@ public class BookingSession implements BookingSessionLocal {
         Query q = em.createQuery("SELECT scp.price FROM SessionCategoryPrice scp WHERE scp.category=:category AND scp.session=:session");
         q.setParameter("category", sc);
         q.setParameter("session", session);
+        
         return (Double) q.getSingleResult();
     }
 
@@ -114,12 +116,13 @@ public class BookingSession implements BookingSessionLocal {
         return map;
     }
 
+    @Override
     public List<Double> getSessionsPricingBySessionId(Long id, String type) {
         SessionEntity s = em.find(SessionEntity.class, id);
         List<Double> prices = new ArrayList<Double>();
         if (type.equals("event")) {
             List<SectionEntity> sections = spm.getAllSectionsInOneProperty(s.getEvent().getProperty().getId());
-
+            System.out.println("=====getSessionsPricingBySessionId: "+s.getEvent().getProperty().getPropertyName());
             for (SectionEntity sec : sections) {
                 prices.add(getPriceBySessionAndSectionId(id, sec.getId()));
             }
@@ -161,6 +164,14 @@ public class BookingSession implements BookingSessionLocal {
                 Promotion p = em.find(Promotion.class, promotionId);
                 promotion = p.getName();
             }
+            String eventOrganizer;
+            if(s.getEvent()==null){
+               
+               eventOrganizer =s.getSubEvent().getUser().getUsername();
+            } else {
+              
+               eventOrganizer = s.getEvent().getUser().getUsername();
+            }
             Promotion p = em.find(Promotion.class, promotionId);
             Query q = em.createQuery("SELECT u FROM UserEntity u WHERE u.username=:username");
             q.setParameter("username", username);
@@ -177,7 +188,70 @@ public class BookingSession implements BookingSessionLocal {
             scre.setAmount(String.valueOf(priceTotal));
             scre.setSection(null);
             scre.setSeats(null);
+            scre.setPayer(user.getUsername());
+            scre.setReceiver(eventOrganizer);
             scre.setPaymentStatus("unpaid");
+            if (s.getEvent() == null) {
+                scre.setEventName(s.getSubEvent().getName());
+            } else {
+                scre.setEventName(s.getEvent().getName());
+            }
+            em.persist(scre);
+            em.flush();
+            user.getPayments().add(scre);
+            em.merge(user);
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+    
+    @Override
+      public Boolean addToCartByUsernameFreeSection(String username, Long sessionId, Long promotionId, String numOfTickets, String price, String section) {
+        try {
+            SessionEntity s = em.find(SessionEntity.class, sessionId);
+            String promotion;
+            if (promotionId == 0) {
+                promotion = "Standard";
+            } else {
+                Promotion p = em.find(Promotion.class, promotionId);
+                promotion = p.getName();
+            }
+            PropertyEntity property = new PropertyEntity();
+            String eventOrganizer;
+            if(s.getEvent()==null){
+               property=s.getSubEvent().getProperty();
+               eventOrganizer =s.getSubEvent().getUser().getUsername();
+            } else {
+               property=s.getEvent().getProperty(); 
+               eventOrganizer = s.getEvent().getUser().getUsername();
+            }
+            Integer num = Integer.valueOf(section);
+            Query query =em.createQuery("SELECT s FROM SectionEntity s WHERE s.property=:property AND s.numberInProperty=:number");
+            query.setParameter("property", property);
+            query.setParameter("number", num);
+            SectionEntity sec = (SectionEntity) query.getSingleResult();
+            //Promotion p = em.find(Promotion.class, promotionId);
+            Query q = em.createQuery("SELECT u FROM UserEntity u WHERE u.username=:username");
+            
+            q.setParameter("username", username);
+            UserEntity user = (UserEntity) q.getSingleResult();
+            Double priceD = Double.valueOf(price);
+            Integer number = Integer.valueOf(numOfTickets);
+            Double priceTotal = priceD * number;
+
+            ShopCartRecordEntity scre = new ShopCartRecordEntity();
+            scre.setSession(s);
+
+            scre.setPromotion(promotion);
+            scre.setTicketQuantity(numOfTickets);
+            scre.setAmount(String.valueOf(priceTotal));
+            scre.setPayer(user.getUsername());
+            scre.setReceiver(eventOrganizer);
+            scre.setSeats(null);
+            scre.setPaymentStatus("unpaid");
+            scre.setSection(sec);
             if (s.getEvent() == null) {
                 scre.setEventName(s.getSubEvent().getName());
             } else {

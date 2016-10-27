@@ -5,38 +5,25 @@
  */
 package servlet;
 
-import session.stateless.propertymanagement.ReservePropertyBeanLocal;
 import com.google.gson.Gson;
-import entity.EquipmentEntity;
-import entity.Event;
-import entity.SectionEntity;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import manager.ProductManager;
 import manager.SessionManager;
-import session.stateless.commoninfrastucture.ProductSessionLocal;
 import session.stateless.ticketing.BookingSessionLocal;
 
 /**
  *
  * @author catherinexiong
  */
-@WebServlet(name = "SessionPriceListController", urlPatterns = {"/sessionPriceList"})
-public class SessionPriceList extends HttpServlet {
-@EJB 
-   private ProductSessionLocal psbl;
-@EJB 
-   private BookingSessionLocal bsl;
+@WebServlet(name = "AddToCartSectionController", urlPatterns = {"/AddToCartSectionController"})
+public class AddToCartSectionController extends HttpServlet {
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -46,30 +33,29 @@ public class SessionPriceList extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    @EJB
+    private BookingSessionLocal bookSession;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        ProductManager pm = new ProductManager(psbl);
-        SessionManager bm = new SessionManager (bsl);
-        
-        
-                
-        String idStr = request.getParameter("id");
-        String type = request.getParameter("type");
-        
-        System.out.println("====sessionPriceList: "+idStr+type);
-        
-        Long sessionId = Long.valueOf(idStr);
-        List<Double> prices = bm.getSessionsPricingBySessionId(sessionId,type);
-        
-        
-        
-       
+         SessionManager sm = new SessionManager(bookSession);
+        String numOfTickets = request.getParameter("numT");
+        String promotionIdStr = request.getParameter("pid");
+        String sessionIdStr = request.getParameter("sid");
+        String username = request.getParameter("username").toLowerCase();
+        String price = request.getParameter("price");
+        String section = request.getParameter("section");
+        System.out.println("====AddToCartSectionController " + numOfTickets + "  " + promotionIdStr + "  " + sessionIdStr + username + price + section);
+        Boolean result = sm.addToCartByUsernameFreeSection(username, Long.valueOf(sessionIdStr), Long.valueOf(promotionIdStr), numOfTickets, price,section);
+        String msg;
+        if (result) {
+            msg = "success";
+
+        } else {
+            msg = "error";
+        }
         Gson gson = new Gson();
         response.setContentType("application/json");
-        response.getWriter().write(gson.toJson(prices));
-        
-        
+        response.getWriter().write(gson.toJson(msg));
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

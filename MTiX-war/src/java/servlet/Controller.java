@@ -557,7 +557,14 @@ public class Controller extends HttpServlet {
                 Collection<ShopCartRecordEntity> records = scm.getShopCartRecordByUsername(username);
                 request.setAttribute("records", records);
                 request.getRequestDispatcher("/shoppingCart.jsp").forward(request, response);
-            } else if (action.equals("loginSuccess")) {
+            } else if (action.equals("addToCartSuccessSection")) {
+                String username = (String) request.getSession(false).getAttribute("username");
+                System.out.println("====addToCartSuccessSection Username: " + username);
+                System.out.println(username);
+                Collection<ShopCartRecordEntity> records = scm.getShopCartRecordByUsername(username);
+                request.setAttribute("records", records);
+                request.getRequestDispatcher("/shoppingCart.jsp").forward(request, response);
+            }else if (action.equals("loginSuccess")) {
                 List<ArrayList> data = webManagementBean.getWebpageList();
                 request.setAttribute("data", data);
                 request.getRequestDispatcher("/home.jsp").forward(request, response);

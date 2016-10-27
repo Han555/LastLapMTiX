@@ -6,11 +6,13 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -41,7 +43,8 @@ public class TicketSales implements Serializable {
     @ManyToOne
     private SectionEntity sectionEntity= new SectionEntity();
     
-    
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date purchaseDate;
 
     public Long getId() {
         return id;
@@ -51,6 +54,15 @@ public class TicketSales implements Serializable {
         this.id = id;
     }
 
+    public Date getPurchaseDate() {
+        return purchaseDate;
+    }
+
+    public void setPurchaseDate(Date purchaseDate) {
+        this.purchaseDate = purchaseDate;
+    }
+
+    
     public UserEntity getUser() {
         return user;
     }
