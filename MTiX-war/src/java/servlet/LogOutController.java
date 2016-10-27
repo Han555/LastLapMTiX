@@ -7,6 +7,9 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -14,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import session.stateless.contentmanagement.WebsiteManagementBeanLocal;
 
 /**
  *
@@ -21,6 +25,9 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "LogOutController", urlPatterns = {"/LogOutController"})
 public class LogOutController extends HttpServlet {
+
+    @EJB
+    private WebsiteManagementBeanLocal webManagementBean;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,25 +41,23 @@ public class LogOutController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Cookie[] cookies = request.getCookies();
-    	if(cookies != null){
-    	for(Cookie cookie : cookies){
-    		if(cookie.getName().equals("JSESSIONID")){
-    			System.out.println("JSESSIONID="+cookie.getValue());
-    			break;
-    		}
-    	}
-    	}
-        HttpSession session = request.getSession(false);
-    	System.out.println("User="+session.getAttribute("username"));
-    	if(session != null){
-    		session.invalidate();
-    	}
-        
-        request.getRequestDispatcher("/home.jsp").forward(request, response);
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("JSESSIONID")) {
+                    System.out.println("JSESSIONID=" + cookie.getValue());
+                    break;
+                }
+            }
         }
-    
-    
-
+        HttpSession session = request.getSession(false);
+        System.out.println("User=" + session.getAttribute("username"));
+        if (session != null) {
+            session.invalidate();
+        }
+        List<ArrayList> data = webManagementBean.getWebpageList();
+        request.setAttribute("data", data);
+        request.getRequestDispatcher("/home.jsp").forward(request, response);
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

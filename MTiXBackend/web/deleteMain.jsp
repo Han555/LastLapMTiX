@@ -32,7 +32,7 @@
                         <font color="red">Session(s) Deleted Successfully!</font><br/>
                     </c:if>
                     <form id="contact_form" action="${formAction}" method="POST">
-                      
+
                         <table align="center">
                             <tr>
                                 <td>&nbsp</td> 

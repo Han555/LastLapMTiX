@@ -41,33 +41,33 @@
                                     </select>
                                 </div> 
                             </div>
-                            
+
 
                             <div class="form-group" style="padding-bottom: 20px;">
 
-                               
+
                                 <div class="col-sm-6">
                                     <input type="hidden" name="seid" id="seid" class="form-control" value="${seid}">
-                                   
+
 
                                 </div> 
                             </div>
-                                    <div class="form-group" style="padding-bottom: 20px;">
+                            <div class="form-group" style="padding-bottom: 20px;">
 
-                               
+
                                 <div class="col-sm-6">
                                     <input type="hidden" name="eid" id="eid" class="form-control" value="${eventid}">
-                                   
+
 
                                 </div> 
                             </div>
-                                   
-                                   <div class="form-group" style="padding-bottom: 20px;">
 
-                               
+                            <div class="form-group" style="padding-bottom: 20px;">
+
+
                                 <div class="col-sm-6">
                                     <input type="hidden" name="pid" id="pid" class="form-control" value="${pid}">
-                                   
+
 
                                 </div> 
                             </div>
@@ -84,7 +84,7 @@
         </div>
     </div>
 </div>
-    
+
 
 <jsp:include page="footer.jsp" />
 

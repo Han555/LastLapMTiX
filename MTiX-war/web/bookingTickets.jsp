@@ -175,7 +175,7 @@
         </div>
 
         <%} else {%>      
-        <div class="col-lg-10">
+        <div class="col-lg-12">
             <div class="panel panel-default" id="section-panel" style="display: none; margin-left:-15px;">
                 <div class="panel-heading" style="margin-top:10px;color:white;text-align: center;font-size:20px;background-color:#FE980F;">
                     Step 2: Select Section
@@ -464,9 +464,9 @@
         console.log(selectedPromotion);
         $("#numOfTickets1").select2("val", " ");
         if (selectedPromotion == 0) {
-            if (remainCapacity < 10) {
+            if (remainCapacityFree < 10) {
                 var str = "<option></option>";
-                for (var i = 1; i <= remainCapacity; i++) {
+                for (var i = 1; i <= remainCapacityFree; i++) {
                     str += "<option value=" + i + ">" + i + "</option>";
 
                 }
@@ -488,9 +488,9 @@
                 }
 
                 else {
-                    if (remainCapacity < 10) {
+                    if (remainCapacityFree < 10) {
                         var str = "<option></option>";
-                        for (var i = 1; i <= remainCapacity; i++) {
+                        for (var i = 1; i <= remainCapacityFree; i++) {
                             str += "<option value=" + i + ">" + i + "</option>";
 
                         }

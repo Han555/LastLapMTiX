@@ -73,4 +73,17 @@ public class RegisterManager {
     public void createAdministrator() {
         registerSessionLocal.createAdmin();
     }
+    
+     public void regisCustomer(String username, String password, String mobileNumber,String first, String last, String day, String month, String year) {
+        String salt;
+        SecurityManager secure = new SecurityManager();
+        byte[] secureSalt = secure.getNextSalt();
+        salt = secure.byteArrayToHexString(secureSalt);
+        String toBeHashed = salt + password;
+        String hashedPassword = secure.doMD5Hashing(toBeHashed);
+        String birth = day;
+        birth = birth.concat("/"+month);
+        birth = birth.concat("/"+year);
+        registerSessionLocal.createCustomer(username, hashedPassword, mobileNumber, salt,first,last,birth);
+    }
 }

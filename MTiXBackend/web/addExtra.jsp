@@ -36,69 +36,69 @@
                                     <th>End</th>
                                     <th>Venue Name</th>
                                     <th>User Email</th>
-                                    
-                                    
+
+
 
                                 </tr>
                             </thead>
 
                             <tbody>
-                                                                                            
+
 
                                 <c:forEach items="${event.subEvents}" var="subevent">
-                                <tr>
-                                    <td><div class="radio" style="margin-top: 0;">
-                     <input type="radio" name='selectedSubevent' value="${subevent.id}">
-                 </div> </td>
+                                    <tr>
+                                        <td><div class="radio" style="margin-top: 0;">
+                                                <input type="radio" name='selectedSubevent' value="${subevent.id}">
+                                            </div> </td>
 
-                                    <td>${subevent.name}</td>
-                                    <td>${subevent.event.name}</td>
-                                    <td>${subevent.start}</td>
-                                    <td>${subevent.end}</td>
-                                    <td>${subevent.property.propertyName}</td>
-                                    <td>${subevent.user.username}</td>
-                                    
-                                    
-                                   
+                                        <td>${subevent.name}</td>
+                                        <td>${subevent.event.name}</td>
+                                        <td>${subevent.start}</td>
+                                        <td>${subevent.end}</td>
+                                        <td>${subevent.property.propertyName}</td>
+                                        <td>${subevent.user.username}</td>
 
-                                </tr>
+
+
+
+                                    </tr>
                                 </c:forEach>
                             </tbody>
-                                                            
+
 
                         </table>
                     </div>
-                                  
+
                     <div class="sub-title">Please Press the Button Below to Add Extra Equipment and Manpower 
                     </div>
-                    
-                   
-
-<c:url var="formAction" value="/BackController?action=addExtraEquipment" />
-                            <form class="form-horizontal" id="formSubmit" >
-                                 <div class="form-group">
 
 
-                                    <input type="hidden" name="eventid" value="${eventid}">
 
-                                </div>
-                                    
-                                    <div class="form-group" >
-                                    <div class="col-sm-10">
-                                        <button type="submit" class="btn btn-default" value="formSubmit">No More Sub Event</button><span>${msg}</span>
-                                    </div>
-                                </div>
-                                    </form>
-                                    
-                           
-                    
-                        
-                        <div class="col-sm-12 text-center" style="padding-bottom:50px;" >
+                    <c:url var="formAction" value="/BackController?action=addExtraEquipment" />
+                    <form class="form-horizontal" id="formSubmit" >
+                        <div class="form-group">
+
+
+                            <input type="hidden" name="eventid" value="${eventid}">
+
+                        </div>
+
+                        <div class="form-group" >
+                            <div class="col-sm-10">
+                                <button type="submit" class="btn btn-default" value="formSubmit">No More Sub Event</button><span>${msg}</span>
+                            </div>
+                        </div>
+                    </form>
+
+
+
+
+                    <div class="col-sm-12 text-center" style="padding-bottom:50px;" >
                         <a class="btn btn-primary" role="button" id="createEquipment">Create Additional Equipment</a>
                         <a class="btn btn-primary" role="button" id="createManpower">Add Additional Manpower</a>
-                        
+
                     </div>
-                   
+
                 </div>
             </div>
         </div>
@@ -109,20 +109,21 @@
 
 
 <script>
-    
-    $("#createEquipment").click(function(){
+
+    $("#createEquipment").click(function () {
         var selected = $('input[name="selectedSubevent"]:checked').val();
-        if(selected == null) alert("null");
+        if (selected == null)
+            alert("null");
         console.log("Selected: " + selected);
         window.location = "BackendCon?action=hdfs&id=" + selected;
     });
-    
-    $("#createManpower").click(function(){
+
+    $("#createManpower").click(function () {
         var selected = $('input[name="selectedSubevent"]:checked').val();
         console.log("Selected: " + selected);
         window.location = "http://apple.com"
     });
 </script>
-                            
-    <jsp:include page="footer.jsp" />
+
+<jsp:include page="footer.jsp" />
 

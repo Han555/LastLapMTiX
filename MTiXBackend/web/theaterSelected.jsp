@@ -55,7 +55,7 @@
                                 <div class="form-group" style="padding-bottom: 20px;">
 
 
-                                     <input type="hidden" name="pname" value="Merlion Star Theater">
+                                    <input type="hidden" name="pname" value="Merlion Star Theater">
 
                                 </div>
                                 <div class="form-group" >
@@ -64,12 +64,12 @@
                                     <input type="hidden" name="daterange" value="${daterange}">
 
                                 </div>
-                                     <div class="form-group" >
-                                 
-                                    
+                                <div class="form-group" >
+
+
                                     <input type="hidden" name="type" value="${type}">
-                               
-                            </div>
+
+                                </div>
                                 <div class="form-group" >
                                     <div class="col-sm-10">
                                         <button type="submit" class="btn btn-default" value="formSubmit">Reserve Venue</button><span>${msg}</span>

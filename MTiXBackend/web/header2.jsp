@@ -51,14 +51,14 @@
         <script type="text/javascript" src="lib/js/ace/mode-html.js"></script>
         <script type="text/javascript" src="lib/js/ace/theme-github.js"></script>
         <!-- Javascript -->
-<!--
-        <script type="text/javascript" src="js/app.js"></script> -->
+        <!--
+                <script type="text/javascript" src="js/app.js"></script> -->
         <script type="text/javascript" src="js/imagemap.js"></script>
         <!--  <script type="text/javascript" src="js/index.js"></script> -->
         <!--
         <script type="text/javascript" src="js/moment.min.js"></script> -->
         <!--   <script type="text/javascript" src="js/modal.js"></script> -->
-    <!--    <script type="text/javascript" src="js/daterangepicker.js"></script> -->
+        <!--    <script type="text/javascript" src="js/daterangepicker.js"></script> -->
     </head>
 
     <body class="flat-blue">
@@ -144,7 +144,7 @@
                                                     </li>
                                                     <li><c:url var="linkHref" value="/BackController?action=ticketReservationEnterUser" /><a href="${linkHref}">Seats Inventory</a>
                                                     </li>
-                                                    
+
                                                 </ul>
                                             </div>
                                         </div>
@@ -161,7 +161,7 @@
                                         <div id="component-example" class="panel-collapse collapse">
                                             <div class="panel-body">
                                                 <ul class="nav navbar-nav">
-                                                     <li><c:url var="linkHref" value="/BackController?action=viewAllProperty" /><a href="${linkHref}">Seating Plan Management</a>
+                                                    <li><c:url var="linkHref" value="/BackController?action=viewAllProperty" /><a href="${linkHref}">Seating Plan Management</a>
                                                     </li>
                                                     <li><c:url var="linkHref" value="/BackController?action=reservationMain" /><a href="${linkHref}">Reservation Of Properties</a>
                                                     </li>
@@ -195,7 +195,7 @@
                                         </div>
                                     </div>
                                 </li>
-                                
+
                                 <!-- Dropdown-->
                                 <li class="panel panel-default dropdown">
                                     <a data-toggle="collapse" href="#dropdown-example">
@@ -211,10 +211,10 @@
                                         </div>
                                     </div>
                                 </li>
-                                
-                                
+
+
                                 <!-- Dropdown-->
-                                
+
                                 <li>
                                     <a href="license.html">
                                         <span class="icon fa fa-thumbs-o-up"></span><span class="title">License</span>

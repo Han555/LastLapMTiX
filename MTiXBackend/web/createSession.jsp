@@ -31,7 +31,7 @@
         <div class="row">
             <div class="col-md-10">
                 <div class="card">
-                    
+
                     <div class="header">
                         <h4 class="title">Event: <%=data.get(0)%> to <%=data.get(1)%></h4>   
                     </div>                        

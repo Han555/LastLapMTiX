@@ -109,17 +109,17 @@
 
 
 <script>
- var num = 1;
-$(function() { 
-    $('#mstandard').change(function() {
-        if($(this).val()=='ns'){
-         $('#mnumber').val(num);
-         document.getElementById('mnumber').disabled = true;
-     } else {
-         $('#mnumber').removeAttr('disabled');
-     }
-    }) 
-});
+    var num = 1;
+    $(function () {
+        $('#mstandard').change(function () {
+            if ($(this).val() == 'ns') {
+                $('#mnumber').val(num);
+                document.getElementById('mnumber').disabled = true;
+            } else {
+                $('#mnumber').removeAttr('disabled');
+            }
+        })
+    });
 
 
 

@@ -18,7 +18,7 @@
     <c:url var="formAction" value="/BackFinanceController?action=readMessage" />
     <div class="side-body padding-top">
 
-        
+
         <div class="row">
             <c:if test="${reply == 'true'}">
                 <font color="red">Reply successfully sent!</font><br/>
@@ -77,7 +77,7 @@
                                             <input type="submit" value="Mark as paid" /> 
                                         </form>
                                     </td>
-                                        <% } else { %>
+                                    <% } else { %>
                                     <td class="view-message">
                                         <form id="verifyForm" name="verifyForm" action="${formAction}" method="post">
 

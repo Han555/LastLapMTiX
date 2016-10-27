@@ -39,7 +39,7 @@
                             <tbody id="items"></tbody>
                         </table>
                     </div>
-                   <div class="form-group" style="padding-bottom: 50px;" >
+                    <div class="form-group" style="padding-bottom: 50px;" >
                         <label for="propertyList" class="col-sm-2 control-label">Choose a Property</label>
                         <div class="col-sm-6">
                             <select class="js-example-basic-single js-states" id="propertyList" name="propertyList">
@@ -84,21 +84,21 @@
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-body">
-                    <div class="form-group" style="padding-bottom: 30px;" >
-                        <label for="emrole" class="col-sm-2 control-label">Staff Role</label>
-                        <div class="col-sm-6">
-                            <input type="text" id="update-mrole" class="form-control" name="mrole">
-                            <div id="alert-empty"></div>
-                        </div>
+                <div class="form-group" style="padding-bottom: 30px;" >
+                    <label for="emrole" class="col-sm-2 control-label">Staff Role</label>
+                    <div class="col-sm-6">
+                        <input type="text" id="update-mrole" class="form-control" name="mrole">
+                        <div id="alert-empty"></div>
                     </div>
-                    <div class="form-group" style="padding-bottom: 30px;" >
-                        <label for="mnumber" class="col-sm-2 control-label">Number of the Staff</label>
-                        <div class="col-sm-6">
-                            <input type="text" id="update-mnumber" class="form-control" name="mnumber">
-                            <div id="alert-empty"></div>
-                        </div>
-                    </div><br/>
-               
+                </div>
+                <div class="form-group" style="padding-bottom: 30px;" >
+                    <label for="mnumber" class="col-sm-2 control-label">Number of the Staff</label>
+                    <div class="col-sm-6">
+                        <input type="text" id="update-mnumber" class="form-control" name="mnumber">
+                        <div id="alert-empty"></div>
+                    </div>
+                </div><br/>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" id="updateOk">Ok</button>
@@ -111,71 +111,71 @@
 
 <script>
     var propertyId = 1;
-    
+
     var manpowerId;
     var manpowerList = [];
-  
-    var msg;
-   
 
-    
-    
-    
-    
-    
+    var msg;
+
+
+
+
+
+
+
 
     function deleteManpower(id) {
         manpowerId = id;
         $("#delete-confirm").modal();
     }
-    
-    $("#deleteOk").click(function() {
+
+    $("#deleteOk").click(function () {
         $.ajax({
             url: "DeleteManpower?id=" + manpowerId,
-            success:function(result) {
+            success: function (result) {
                 if (result == "\"success\"") {
                     getManpower();
                 }
             }
-            
+
         });
     });
-    
+
     function update(id) {
         manpowerId = id;
-        
+
         console.log(manpowerList);
         var originalname;
         var originalloca;
         for (var i = 0; i < manpowerList.length; i++) {
-           if (manpowerList[i].id == manpowerId) {
-               originalname = manpowerList[i].staffRole;
-               originalloca = manpowerList[i].number;
-           }   
+            if (manpowerList[i].id == manpowerId) {
+                originalname = manpowerList[i].staffRole;
+                originalloca = manpowerList[i].number;
+            }
         }
         $("#update-mrole").val(originalname);
         $("#update-mnumber").val(originalloca);
         $("#update-data").modal();
     }
-    
-    $("#updateOk").click(function() {
+
+    $("#updateOk").click(function () {
         console.log("DAS");
         console.log($("#update-role").val());
         $.ajax({
-            url: "UpdateManpower?mid=" + manpowerId + "&propertyId=" + propertyId + "&mrole=" + $("#update-mrole").val()+ "&mnumber=" + $("#update-mnumber").val(),
-            success:function(result) {
+            url: "UpdateManpower?mid=" + manpowerId + "&propertyId=" + propertyId + "&mrole=" + $("#update-mrole").val() + "&mnumber=" + $("#update-mnumber").val(),
+            success: function (result) {
                 if (result == "\"success\"") {
                     getManpower();
                     $("#update-data").modal('hide');
                 } else {
                     $("#notifyPeak").html("Errors happened when updating data.").css("color", "red");
-                    
+
                 }
             }
-            
+
         });
     });
-    
+
     function getManpower() {
         $.ajax({
             url: "manpowerList?id=" + propertyId,
@@ -184,7 +184,7 @@
                 manpowerList = result;
                 for (var i = 0; i < result.length; i++) {
                     console.log(result[i]);
-                    str += "<tr><td>" + (i + 1) + "</td><td>" + result[i].staffRole + "</td><td>" + result[i].number + "</td><td>" + result[i].standard +"</td><td>" + result[i].price +"</td>";
+                    str += "<tr><td>" + (i + 1) + "</td><td>" + result[i].staffRole + "</td><td>" + result[i].number + "</td><td>" + result[i].standard + "</td><td>" + result[i].price + "</td>";
                     str += '<td><button type="button" class="btn btn-default" onclick="deleteManpower(' + result[i].id + ');">Delete</button></td>';
                     str += '<td><button type="button" class="btn btn-default" onclick="update(' + result[i].id + ');">Update</button></td>';
                     str += '</tr>'
@@ -196,15 +196,15 @@
 
     $(document).ready(function () {
 
-       
+
         getManpower();
         $('#propertyList').change(function () {
             propertyId = $(this).val();
             getManpower();
-           
+
         });
     });
-  
+
 
 
 

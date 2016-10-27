@@ -30,14 +30,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                              
-                                    <tr>
-                                        <td>${outlet.outletName}</td>
-                                        <td>${outlet.outletType}</td>
-                                        <td>${outlet.property.propertyName}</td>
 
-                                    </tr>
-                             
+                                <tr>
+                                    <td>${outlet.outletName}</td>
+                                    <td>${outlet.outletType}</td>
+                                    <td>${outlet.property.propertyName}</td>
+
+                                </tr>
+
 
                             </tbody>
                         </table>

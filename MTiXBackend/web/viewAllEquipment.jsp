@@ -42,10 +42,10 @@
                         <td>${equipment.equipmentName}</td>
                         <td>${equipment.location}</td>
                         <c:if test="${equipment.standard=='TRUE'}">
-                        <td>Yes</td>
+                            <td>Yes</td>
                         </c:if>
                         <c:if test="${equipment.standard=='FALSE'}">
-                        <td>No</td>
+                            <td>No</td>
                         </c:if>
                         <td>${equipment.price}</td>
                     </c:forEach>

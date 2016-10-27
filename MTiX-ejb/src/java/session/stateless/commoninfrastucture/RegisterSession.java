@@ -7,12 +7,16 @@ package session.stateless.commoninfrastucture;
 
 import entity.RightsEntity;
 import entity.UserEntity;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -191,30 +195,50 @@ public class RegisterSession implements RegisterSessionLocal {
         right.createRight(role, dynamic);
         rights.add(right);
         entityManager.merge(u);
-       
+
         System.out.println("admin creating 2");
         Query q = entityManager.createQuery("SELECT u FROM UserEntity u WHERE u.username=" + "'" + username + "'");
         System.out.println("admin creating 3");
         /*for (Object o : q.getResultList()) {
-            System.out.println("admin creating 4");
-            UserEntity u2 = (UserEntity) o;
-            ArrayList<String> roles = new ArrayList();
-            roles = u2.getRoles();
-            roles.remove(0);
-            roles.add(role);
-            entityManager.merge(u);
+         System.out.println("admin creating 4");
+         UserEntity u2 = (UserEntity) o;
+         ArrayList<String> roles = new ArrayList();
+         roles = u2.getRoles();
+         roles.remove(0);
+         roles.add(role);
+         entityManager.merge(u);
 
-            Collection<RightsEntity> rights = u.getRights();
-            rights.remove(0);
-            ArrayList<String> dynamic = new ArrayList();
-            String[] splited = role.split("\\s+");
-            dynamic.add(splited[0]);
-            RightsEntity right = new RightsEntity();
-            right.createRight(role, dynamic);
-            rights.add(right);
+         Collection<RightsEntity> rights = u.getRights();
+         rights.remove(0);
+         ArrayList<String> dynamic = new ArrayList();
+         String[] splited = role.split("\\s+");
+         dynamic.add(splited[0]);
+         RightsEntity right = new RightsEntity();
+         right.createRight(role, dynamic);
+         rights.add(right);
+         entityManager.merge(u);
+         }
+         */
+    }
+
+    @Override
+    public void createCustomer(String username, String password, String mobileNumber, String salt, String first, String last, String birth) {
+        try {
+            UserEntity u = new UserEntity();
+            SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
+            Date dob = format1.parse(birth);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(dob);
+            Calendar current =Calendar.getInstance();
+            int year1 = cal.get(Calendar.YEAR);
+            int year2 = current.get(Calendar.YEAR);
+            Integer age = year2-year1;
+            System.out.println("====create customer: DOB: "+year1+"  CURRENT: "+year2+"age: "+age);
+            u.createCustomer(username, password, mobileNumber, salt, first, last, age, dob, 0);
             entityManager.merge(u);
+        } catch (java.text.ParseException ex) {
+            Logger.getLogger(RegisterSession.class.getName()).log(Level.SEVERE, null, ex);
         }
-                */
     }
 
 }

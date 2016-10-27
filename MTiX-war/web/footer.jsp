@@ -83,6 +83,6 @@
 			
 		</div>
 		<div class="clearfix"> </div>
-			<p>Copyrights © 2015 Gretong. All rights reserved | Template by <a href="http://w3layouts.com/">W3layouts</a></p>
+			<p style="font-size:8px">Copyrights © 2015 Gretong. All rights reserved | Template by <a href="http://w3layouts.com/">W3layouts</a></p>
 	</div>
 </div>

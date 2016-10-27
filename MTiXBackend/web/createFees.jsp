@@ -17,7 +17,7 @@
 <div class="container-fluid">
     <c:url var="formAction" value="/BackFinanceController?action=makeFees" />
     <div class="side-body padding-top">
-       
+
         <div class="row">
             <div class="col-md-6">
                 <div class="card">

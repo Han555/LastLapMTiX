@@ -19,22 +19,22 @@
             <img src="img/property/Theatre.png" alt="theatre_layout" usemap="#image-map" >
             <map name="image-map">
                 <c:forEach items="${sections}" var="section">
-                <area data-toggle="modal" data-target="#myModal" id="${section.numberInProperty}" class= "p1" alt="section${section.numberInProperty}" title="section${section.numberInProperty}" href="#" coords="${section.coords}" shape="poly">
+                    <area data-toggle="modal" data-target="#myModal" id="${section.numberInProperty}" class= "p1" alt="section${section.numberInProperty}" title="section${section.numberInProperty}" href="#" coords="${section.coords}" shape="poly">
                 </c:forEach>
             </map>
         </div>
     </div>
 </div>
 <script>
-var id = 0;
+    var id = 0;
     $(".p1").click(function () {
-        
+
         id = $(this).attr('id');
-       
+
         $(".modal-header #myModalLabel").text('Detailed Seats Arrangement #' + id);
         $("#popup").html("LOADING...");
         $("#popup").html('<iframe id="p1frame" class="embed-responsive-item" frameborder="0" src="http://localhost:8080/MTiXBackend/seat.jsp?id=' + id + '"></iframe>');
-        
+
         //console.log('"http://localhost:8080/MTiX-war/seat.jsp?id=' + id + '"');
     });
 </script>
@@ -60,6 +60,6 @@ var id = 0;
             </div>
         </div>
     </div>
- 
+
 
     <jsp:include page="footer.jsp" />

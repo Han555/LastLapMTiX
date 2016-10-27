@@ -25,9 +25,9 @@
             <div class="col-md-10">
                 <div class="card">       
                     <form id="contact_form" action="${formAction}" method="POST">  
-                         <c:if test="${error == 'true'}">
-                        <font color="red">Cannot Find Event Organizer</font><br/>
-                    </c:if>
+                        <c:if test="${error == 'true'}">
+                            <font color="red">Cannot Find Event Organizer</font><br/>
+                        </c:if>
                         <table align="center">
                             <tr>
                                 <td align="right">Event Organizer Email : &nbsp</td>
@@ -35,8 +35,8 @@
                                     <select class="form-control" name="email" class="form-control date" required="true">
                                         <%
                                             for (int i = 0; i < data.size(); i++){%>
-                                            <option value="<%=data.get(i) %>"><%=data.get(i) %></option>
-                                           <% }
+                                        <option value="<%=data.get(i) %>"><%=data.get(i) %></option>
+                                        <% }
                                         %>
                                     </select></td>  
                             </tr>

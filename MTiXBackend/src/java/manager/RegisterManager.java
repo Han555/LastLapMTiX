@@ -101,5 +101,8 @@ public class RegisterManager {
         registerSessionLocal.adminCreateUser(username, hashedPassword, mobileNumber, salt, role);
     }
     
+   
+    
+    
     
 }

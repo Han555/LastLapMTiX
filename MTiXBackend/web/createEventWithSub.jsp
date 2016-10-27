@@ -36,7 +36,7 @@
                                     <Input type="text" id="eventname" name="eventname" required>
                                 </div> 
                             </div>
-                             <div class="form-group" style="padding-bottom: 20px;" >
+                            <div class="form-group" style="padding-bottom: 20px;" >
                                 <label for="eventdes" class="col-sm-2 control-label">Event Description<span style="color:#FF0000;">*</span></label>
                                 <div class="col-sm-8">
                                     <textarea class="form-control" rows="3" required id="eventdes" name="eventdes"></textarea>
@@ -49,9 +49,9 @@
                                     <span style="color:#FF0000">${userResult}</span>
                                 </div> 
                             </div>
-                            
 
-                            
+
+
 
                             <div class="form-group" style="padding-bottom: 20px;">
                                 <div class="col-sm-offset-2 col-sm-10">
@@ -66,7 +66,7 @@
     </div>
 </div>
 <script>
-   
+
 
 
 </script>      
